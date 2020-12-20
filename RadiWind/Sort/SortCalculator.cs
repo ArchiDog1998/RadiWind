@@ -39,6 +39,14 @@ namespace RadiWind.Sort
             return DispatchIt<T>(sortableTree, out indexs);
         }
 
+        /// <summary>
+        /// Partion sort with tolerance
+        /// </summary>
+        /// <typeparam name="T">ValueType</typeparam>
+        /// <param name="values">ValueList</param>
+        /// <param name="getDouble">how to know the key.</param>
+        /// <param name="tolerance">tolerance in double</param>
+        /// <returns></returns>
         public static List<List<SortableItem<T>>> NumberTolerancePartionSort<T>(List<T> values, Func<T, double> getDouble, double tolerance)
         {
             //Sort it.
@@ -66,6 +74,13 @@ namespace RadiWind.Sort
             return sortableTree;
         }
 
+        /// <summary>
+        /// Dispatch the List
+        /// </summary>
+        /// <typeparam name="T">Value Type</typeparam>
+        /// <param name="sortableTree">Value in double list.</param>
+        /// <param name="indexs">out Index.</param>
+        /// <returns></returns>
         public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexs)
         {
             List<List<T>> outList = new List<List<T>>();

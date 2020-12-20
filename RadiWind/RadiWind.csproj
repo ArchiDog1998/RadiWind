@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="RadiWindInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sort\NearlestPointSortComponent.cs" />
     <Compile Include="Sort\NumberTolerancePartionSortComponent.cs" />
     <Compile Include="Sort\SortableItem.cs" />
     <Compile Include="Sort\SortCalculator.cs" />
