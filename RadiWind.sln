@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiWind", "RadiWind\RadiWind.csproj", "{A7825677-1589-4F5D-A95F-A090D631C8EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7825677-1589-4F5D-A95F-A090D631C8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7825677-1589-4F5D-A95F-A090D631C8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7825677-1589-4F5D-A95F-A090D631C8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7825677-1589-4F5D-A95F-A090D631C8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66D903FD-B6C8-490F-AA82-E8005B621AD9}
+	EndGlobalSection
+EndGlobal
