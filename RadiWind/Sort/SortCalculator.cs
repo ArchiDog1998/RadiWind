@@ -35,6 +35,12 @@ namespace RadiWind.Sort
         /// <returns></returns>
         public static List<List<T>> NumberTolerancePartionSort<T>(List<T> values, Func<T, double> getDouble, double tolerance, out List<List<int>> indexs)
         {
+            List<List<SortableItem<T>>> sortableTree = NumberTolerancePartionSort<T>(values, getDouble, tolerance);
+            return DispatchIt<T>(sortableTree, out indexs);
+        }
+
+        public static List<List<SortableItem<T>>> NumberTolerancePartionSort<T>(List<T> values, Func<T, double> getDouble, double tolerance)
+        {
             //Sort it.
             List<SortableItem<T>> sortableItems = GetSortableItems<T>(values);
             sortableItems.Sort((x, y) =>
@@ -43,11 +49,11 @@ namespace RadiWind.Sort
             });
 
             //Participate it
-            List<List<SortableItem<T>>> sortableTree = new List<List<SortableItem<T>>>() { new List<SortableItem<T>>() { sortableItems[0]} };
+            List<List<SortableItem<T>>> sortableTree = new List<List<SortableItem<T>>>() { new List<SortableItem<T>>() { sortableItems[0] } };
             for (int i = 1; i < sortableItems.Count; i++)
             {
                 //if the gap bigger than tolerance
-                if(getDouble( sortableItems[i].Value) - getDouble(sortableItems[i-1].Value) >= tolerance)
+                if (getDouble(sortableItems[i].Value) - getDouble(sortableItems[i - 1].Value) >= tolerance)
                 {
                     List<SortableItem<T>> list = new List<SortableItem<T>>() { sortableItems[i] };
                     sortableTree.Add(list);
@@ -57,8 +63,11 @@ namespace RadiWind.Sort
                     sortableTree[sortableTree.Count - 1].Add(sortableItems[i]);
                 }
             }
+            return sortableTree;
+        }
 
-            //Dispatch it and return it.
+        public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexs)
+        {
             List<List<T>> outList = new List<List<T>>();
             indexs = new List<List<int>>();
 
