@@ -10,6 +10,7 @@ using Grasshopper.Kernel.Parameters;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
+using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
@@ -74,6 +75,31 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            List<Point3d> inputPts = new List<Point3d>();
+            Plane basePlane = Plane.WorldXY;
+            int axisType = 0;
+            double tolerance = 0;
+
+            DA.GetDataList(0, inputPts);
+            DA.GetData(1, ref basePlane);
+            DA.GetData(2, ref axisType);
+            DA.GetData(3, ref tolerance);
+
+            if(axisType < 0 || axisType > 2)
+            {
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须为0-2！");
+                axisType = 0;
+            }
+
+            //Get the Points' Coordinates.
+            List<Point3d> coordinatePts = new List<Point3d>();
+            foreach (var pt in inputPts)
+            {
+                coordinatePts.Add(PlaneServer.PlaneCoordinate(basePlane, pt));
+            }
+
+            //Sort By the Key.
+            coordinatePts.Sort((x, y) => x[axisType].CompareTo(y[axisType]));
         }
 
 
