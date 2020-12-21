@@ -17,7 +17,24 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
+        #region  SortPointInAxis
+        public static List<Point3d> SortPointInAxisForPython(List<Point3d> values, int type, Plane plane, out List<int> indexes)
+        {
+            List<Point3d> waitToSort = PlaneServer.PlaneCoordinate(plane, values);
+            return SortPointInAxis(waitToSort, type, out indexes);
+        }
 
+        public static List<Point3d> SortPointInAxis(List<Point3d> values, int type, out List<int> indexes)
+        {
+            if (type < 0 || type > 2)
+                throw new ArgumentOutOfRangeException("type", "type must be in 0-2!");
+
+            var needToSorItems = GetSortableItems(values);
+            needToSorItems.Sort((x, y) => x.Value[type].CompareTo(y.Value[type]));
+            return DispatchIt(needToSorItems, out indexes);
+        }
+
+        #endregion
 
         #region NumberTolerancePartion
 

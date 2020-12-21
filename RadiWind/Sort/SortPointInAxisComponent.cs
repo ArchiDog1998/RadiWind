@@ -6,9 +6,11 @@
 */
 
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
+using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
@@ -39,7 +41,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the SortPointInAxis class.
         /// </summary>
         public SortPointInAxisComponent()
-          : base("SortPointInAxis", "点单坐标排序",
+          : base("点单坐标排序", "点单坐标排序",
               "点单坐标排序",
               "RadiWind", "Sort")
         {
@@ -50,6 +52,14 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
+            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("坐标面", "坐标面", "坐标面", GH_ParamAccess.item, Plane.WorldXY);
+            pManager.AddIntegerParameter("轴线选择", "轴线选择", "轴线选择", GH_ParamAccess.item, 0);
+
+            Param_Integer param = pManager[2] as Param_Integer;
+            param.AddNamedValue("X", 0);
+            param.AddNamedValue("Y", 1);
+            param.AddNamedValue("Z", 2);
         }
 
         /// <summary>
@@ -57,6 +67,8 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
+            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
         }
         #endregion
 
@@ -67,6 +79,22 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            List<Point3d> inputPts = new List<Point3d>();
+            Plane basePlane = Plane.WorldXY;
+            int type = 0;
+
+            DA.GetDataList(0, inputPts);
+            DA.GetData(1, ref basePlane);
+            DA.GetData(2, ref type);
+
+            if (type < 0 || type > 2)
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须在0-2之间！");
+
+            List<int> indexes = new List<int>();
+            List<Point3d> result = SortCalculator.SortPointInAxisForPython(inputPts, type, basePlane, out indexes);
+
+            DA.SetDataList(0, result);
+            DA.SetDataList(1, indexes);
         }
         #endregion
 

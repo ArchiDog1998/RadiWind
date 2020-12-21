@@ -16,6 +16,16 @@ namespace RadiWindAlgorithm
 {
     public static class PlaneServer
     {
+        public static List<Point3d> PlaneCoordinate(Plane basePlane, List<Point3d> ptsInWorld)
+        {
+            List<Point3d> outPts = new List<Point3d>();
+            foreach (var pt in ptsInWorld)
+            {
+                outPts.Add(PlaneCoordinate(basePlane, pt));
+            }
+            return outPts;
+        }
+
         public static Point3d PlaneCoordinate(Plane basePlane, Point3d ptInWorld)
         {
             double x = 0;
