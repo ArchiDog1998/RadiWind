@@ -16,6 +16,8 @@ namespace RadiWindAlgorithm
 {
     public static class DataHelper
     {
+
+        #region Double List to DataTree
         public static DataTree<T> SetToDataTree<T>(this DataTree<T> beforeTree, List<List<T>> datas, int runCount = 0)
         {
             return SetToDataTree<T>(datas, runCount, beforeTree);
@@ -40,5 +42,7 @@ namespace RadiWindAlgorithm
             return beforeTree;
 
         }
+        #endregion
+
     }
 }

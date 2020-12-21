@@ -6,6 +6,7 @@
 */
 
 using Grasshopper;
+using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,9 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
-        /// <summary>
-        /// Get the SortableItems.
-        /// </summary>
-        /// <typeparam name="T">Value Type</typeparam>
-        /// <param name="values">Value in list</param>
-        /// <returns></returns>
-        public static List<SortableItem<T>> GetSortableItems<T>(List<T> values)
-        {
-            List<SortableItem<T>> outList = new List<SortableItem<T>>();
-            for (int i = 0; i < values.Count; i++)
-            {
-                outList.Add(new SortableItem<T>(i, values[i]));
-            }
-            return outList;
-        }
+
+
+        #region NumberTolerancePartion
 
         public static DataTree<double> NumberTolerancePartionSortForPython(DataTree<double> values, double tolerance, out DataTree<int> indexes)
         {
@@ -51,7 +40,7 @@ namespace RadiWindAlgorithm.Sort
             return NumberTolerancePartionSort<double>(values, (x) => x, tolerance, out indexes);
         }
 
-        #region NumberTolerancePartion
+
         /// <summary>
         /// Partion sort with tolerance
         /// </summary>
@@ -103,17 +92,72 @@ namespace RadiWindAlgorithm.Sort
         }
         #endregion
 
+        #region NearlestPointSort
+
+        public static List<Point3d> NearlestPointSortForPython(List<Point3d> inputPoints, int index, out List<int> indexes)
+        {
+            List<SortableItem<Point3d>> result = NearlestPointSort(GetSortableItems(inputPoints), index);
+            return DispatchIt<Point3d>(result, out indexes);
+        }
+
+        public static List<SortableItem<Point3d>> NearlestPointSort(List<SortableItem<Point3d>> needToCalculateItems, int index)
+        {
+            List<SortableItem<Point3d>> outItems = new List<SortableItem<Point3d>>() { needToCalculateItems[index] };
+            needToCalculateItems.RemoveAt(index);
+
+            while (needToCalculateItems.Count > 0)
+            {
+                Point3d flagPt = outItems[outItems.Count - 1].Value;
+
+                //Find the point that is nearlist to the flagPt.
+                SortableItem<Point3d> nearlistItem = needToCalculateItems[0];
+                double minDistance = flagPt.DistanceTo(nearlistItem.Value);
+                for (int i = 1; i < needToCalculateItems.Count; i++)
+                {
+                    double distance = flagPt.DistanceTo(needToCalculateItems[i].Value);
+                    if (distance < minDistance)
+                    {
+                        nearlistItem = needToCalculateItems[i];
+                        minDistance = distance;
+                    }
+                }
+
+                //Remove and Add.
+                outItems.Add(nearlistItem);
+                needToCalculateItems.Remove(nearlistItem);
+            }
+            return outItems;
+        }
+        #endregion
+
+        #region Converter
+        /// <summary>
+        /// Get the SortableItems.
+        /// </summary>
+        /// <typeparam name="T">Value Type</typeparam>
+        /// <param name="values">Value in list</param>
+        /// <returns></returns>
+        public static List<SortableItem<T>> GetSortableItems<T>(List<T> values)
+        {
+            List<SortableItem<T>> outList = new List<SortableItem<T>>();
+            for (int i = 0; i < values.Count; i++)
+            {
+                outList.Add(new SortableItem<T>(i, values[i]));
+            }
+            return outList;
+        }
+
         /// <summary>
         /// Dispatch the List
         /// </summary>
         /// <typeparam name="T">Value Type</typeparam>
         /// <param name="sortableTree">Value in double list.</param>
-        /// <param name="indexs">out Index.</param>
+        /// <param name="indexes">out Index.</param>
         /// <returns></returns>
-        public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexs)
+        public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexes)
         {
             List<List<T>> outList = new List<List<T>>();
-            indexs = new List<List<int>>();
+            indexes = new List<List<int>>();
 
             foreach (var sortableList in sortableTree)
             {
@@ -127,10 +171,23 @@ namespace RadiWindAlgorithm.Sort
                 }
 
                 outList.Add(valueList);
-                indexs.Add(indexList);
+                indexes.Add(indexList);
             }
 
             return outList;
         }
+
+        public static List<T> DispatchIt<T>(List<SortableItem<T>> sortableList, out List<int> indexes)
+        {
+            indexes = new List<int>();
+            List<T> values = new List<T>();
+            foreach (var item in sortableList)
+            {
+                indexes.Add(item.Index);
+                values.Add(item.Value);
+            }
+            return values;
+        }
+        #endregion
     }
 }

@@ -69,43 +69,12 @@ namespace RadiWind.Sort
             DA.GetDataList(0, inputPts);
             DA.GetData(1, ref index);
 
-            List<SortableItem<Point3d>> NeedToCalculateItems = SortCalculator.GetSortableItems(inputPts);
-            List<SortableItem<Point3d>> outItems = new List<SortableItem<Point3d>>() { NeedToCalculateItems[index]};
-            NeedToCalculateItems.RemoveAt(index);
+            List<int> indexes = new List<int>();
+            List<Point3d> points = SortCalculator.NearlestPointSortForPython(inputPts, index, out indexes);
 
-            while (NeedToCalculateItems.Count > 0)
-            {
-                Point3d flagPt = outItems[outItems.Count - 1].Value;
 
-                //Find the point that is nearlist to the flagPt.
-                SortableItem<Point3d> nearlistItem = NeedToCalculateItems[0];
-                double minDistance = flagPt.DistanceTo(nearlistItem.Value);
-                for (int i = 1; i < NeedToCalculateItems.Count; i++)
-                {
-                    double distance = flagPt.DistanceTo(NeedToCalculateItems[i].Value);
-                    if (distance < minDistance)
-                    {
-                        nearlistItem = NeedToCalculateItems[i];
-                        minDistance = distance;
-                    }
-                }
-
-                //Remove and Add.
-                outItems.Add(nearlistItem);
-                NeedToCalculateItems.Remove(nearlistItem);
-            }
-
-            #region Transform and Retrun it.
-            List<int> indexs = new List<int>();
-            List<Point3d> points = new List<Point3d>();
-            foreach (var item in outItems)
-            {
-                indexs.Add(item.Index);
-                points.Add(item.Value);
-            }
             DA.SetDataList(0, points);
-            DA.SetDataList(1, indexs);
-            #endregion
+            DA.SetDataList(1, indexes);
         }
     }
 }
