@@ -12,9 +12,13 @@ using System.Collections.Generic;
 
 namespace RadiWind.Sort
 {
-    public class SortPointInAxis : GH_Component
+    public class SortPointInAxisComponent : GH_Component
     {
         #region Basic Component Info
+
+        /// <summary>
+        /// Change The Exposure like slash in the same subcategory on component tab.
+        /// </summary>
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
         /// <summary>
@@ -34,7 +38,7 @@ namespace RadiWind.Sort
         /// <summary>
         /// Initializes a new instance of the SortPointInAxis class.
         /// </summary>
-        public SortPointInAxis()
+        public SortPointInAxisComponent()
           : base("SortPointInAxis", "点单坐标排序",
               "点单坐标排序",
               "RadiWind", "Sort")

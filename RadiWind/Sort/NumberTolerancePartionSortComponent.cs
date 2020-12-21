@@ -10,6 +10,7 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using RadiWindAlgorithm.Sort;
+using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
@@ -72,7 +73,7 @@ namespace RadiWind.Sort
             DA.GetData(1,ref tol);
 
             List<List<int>> indexs = new List<List<int>>();
-            List<List<double>> result = SortCalculator.NumberTolerancePartionSort<double>(values, (x) => { return x; }, tol, out indexs);
+            List<List<double>> result = SortCalculator.NumberTolerancePartionSort(values, tol, out indexs);
 
             //Transform it!
             DA.SetDataTree(0, DataHelper.SetToDataTree<double>(result, this.RunCount));

@@ -5,6 +5,7 @@
     See file LICENSE for detail or copy at http://opensource.org/licenses/MIT
 */
 
+using Grasshopper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,25 @@ namespace RadiWindAlgorithm.Sort
                 outList.Add(new SortableItem<T>(i, values[i]));
             }
             return outList;
+        }
+
+        public static DataTree<double> NumberTolerancePartionSortForPython(DataTree<double> values, double tolerance, out DataTree<int> indexes)
+        {
+            DataTree<double> outTree = new DataTree<double>();
+            indexes = new DataTree<int>();
+            for (int i = 0; i < values.BranchCount; i++)
+            {
+                List<List<int>> resultindexes;
+                List<List<double>> resultTree = NumberTolerancePartionSort(values.Branches[i], tolerance, out resultindexes);
+                outTree.SetToDataTree(resultTree, i);
+                indexes.SetToDataTree(resultindexes, i);
+            }
+            return outTree;
+        }
+
+        public static List<List<double>> NumberTolerancePartionSort(List<double> values, double tolerance, out List<List<int>> indexes)
+        {
+            return NumberTolerancePartionSort<double>(values, (x) => x, tolerance, out indexes);
         }
 
         #region NumberTolerancePartion
