@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiWind", "RadiWind\RadiWi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiWindAlgorithm", "RadiWindAlgorithm\RadiWindAlgorithm.csproj", "{2C275D47-A51E-40B3-B353-C36FB6DA8C3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadiWind.Tests", "RadiWind.Tests\RadiWind.Tests.csproj", "{80B28822-3C7D-4F87-98BC-E762493AD5C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2C275D47-A51E-40B3-B353-C36FB6DA8C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C275D47-A51E-40B3-B353-C36FB6DA8C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C275D47-A51E-40B3-B353-C36FB6DA8C3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B28822-3C7D-4F87-98BC-E762493AD5C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B28822-3C7D-4F87-98BC-E762493AD5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B28822-3C7D-4F87-98BC-E762493AD5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B28822-3C7D-4F87-98BC-E762493AD5C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
