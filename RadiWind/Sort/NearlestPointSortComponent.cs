@@ -9,7 +9,7 @@ using Grasshopper.Kernel;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
-using RadiWindAlgorithm;
+using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {

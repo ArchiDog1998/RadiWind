@@ -43,8 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SortableItem.cs" />
-    <Compile Include="SortCalculator.cs" />
+    <Compile Include="Sort\SortableItem.cs" />
+    <Compile Include="Sort\SortCalculator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

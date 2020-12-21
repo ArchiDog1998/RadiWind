@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadiWindAlgorithm
+namespace RadiWindAlgorithm.Sort
 {
     public struct SortableItem<T>
     {

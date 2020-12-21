@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RadiWindAlgorithm
+namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
@@ -31,6 +31,7 @@ namespace RadiWindAlgorithm
             return outList;
         }
 
+        #region NumberTolerancePartion
         /// <summary>
         /// Partion sort with tolerance
         /// </summary>
@@ -80,6 +81,7 @@ namespace RadiWindAlgorithm
             }
             return sortableTree;
         }
+        #endregion
 
         /// <summary>
         /// Dispatch the List
