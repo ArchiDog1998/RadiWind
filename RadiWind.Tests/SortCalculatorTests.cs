@@ -11,12 +11,34 @@ using System.Collections.Generic;
 using RadiWindAlgorithm.Sort;
 using Grasshopper;
 using Grasshopper.Kernel.Data;
+using Rhino.Geometry;
 
 namespace RadiWind.Tests
 {
     [TestClass]
     public class SortCalculatorTests
     {
+        [TestMethod]
+        public void NearlestPointSortByIndexTest()
+        {
+            List<Point3d> testPts = new List<Point3d>()
+            {
+                new Point3d(41, -52, 0),
+                new Point3d(64, -22, 0),
+                new Point3d(49, 67, 0),
+                new Point3d(14, -56, 0),
+                new Point3d(-30, -3, 0),
+            };
+            List<int> exceptIndex = new List<int>() { 0, 3, 1, 2, 4 };
+
+            List<int> actualIndex;
+            SortCalculator.NearlestPointSortByIndex(testPts, 0, out actualIndex);
+
+            bool flag = TestsHelper.IsListEqual(exceptIndex, actualIndex, (x, y) => x == y);
+
+            Assert.IsTrue(flag);
+        }
+
         [TestMethod]
         public void NumberTolerancePartitionSort()
         {
