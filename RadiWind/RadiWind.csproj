@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sort\NearlestPointSortComponent.cs" />
     <Compile Include="Sort\NumberTolerancePartionSortComponent.cs" />
+    <Compile Include="Sort\SortByCircleComponent.cs" />
     <Compile Include="Sort\SortPointInAxisComponent.cs" />
     <Compile Include="Sort\SortPointInAxisWithToleranceComponent.cs" />
   </ItemGroup>
