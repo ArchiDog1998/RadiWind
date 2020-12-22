@@ -15,6 +15,28 @@ namespace RadiWind.Tests
     [TestClass]
     public class SortCalculatorTests
     {
+        #region Converter Test
+        [TestMethod]
+        public void GetSortableItemsTest()
+        {
+            List<int> testValue = new List<int>() { 10, 30, 20 };
+            List<SortableItem<int>> expectResult = new List<SortableItem<int>>()
+            {
+                new SortableItem<int>(0, 10),
+                new SortableItem<int>(1, 30),
+                new SortableItem<int>(2, 20),
+            };
+
+            List<SortableItem<int>> actualResult = SortCalculator.GetSortableItems(testValue);
+
+            bool flag = IsListEqual(expectResult, actualResult, (x, y) =>
+            {
+                return x.Index == y.Index && x.Value == y.Value;
+            });
+
+            Assert.IsTrue(flag);
+        }
+
         #region Test DipatchIt
         [TestMethod]
         public void DispatchItDoubleListTest()
@@ -51,7 +73,8 @@ namespace RadiWind.Tests
             List<List<int>> actualValue = SortCalculator.DispatchIt(testDoubleList, out actualIndex);
             #endregion
 
-            bool flag = IsDoubleListEqual(expectValue, actualValue) && IsDoubleListEqual(expectIndex, actualIndex);
+            bool flag = IsDoubleListEqual(expectValue, actualValue, (x, y) => x == y) 
+                && IsDoubleListEqual(expectIndex, actualIndex, (x, y) => x == y);
 
             Assert.IsTrue(flag);
 
@@ -74,13 +97,14 @@ namespace RadiWind.Tests
             List<int> actualValue = SortCalculator.DispatchIt(testList, out actualIndex);
             #endregion
 
-            bool flag = IsListEqual(expectValue, actualValue) && IsListEqual(expectIndex, actualIndex);
+            bool flag = IsListEqual(expectValue, actualValue, (x, y) => x == y) 
+                && IsListEqual(expectIndex, actualIndex, (x, y) => x == y);
 
             Assert.IsTrue(flag);
 
         }
         #endregion
-
+        #endregion
         #region Is List Equal
         /// <summary>
         /// Find out is List equal
@@ -88,14 +112,14 @@ namespace RadiWind.Tests
         /// <param name="expectList">list a</param>
         /// <param name="actualList">list b</param>
         /// <returns>is equal</returns>
-        private bool IsListEqual(List<int> expectList, List<int> actualList)
+        private bool IsListEqual<T>(List<T> expectList, List<T> actualList, Func<T, T, bool> equalFunc)
         {
             if (expectList.Count != actualList.Count)
                 return false;
 
             for (int i = 0; i < expectList.Count; i++)
             {
-                if (expectList[i] != actualList[i])
+                if (! equalFunc.Invoke( expectList[i], actualList[i]))
                     return false;
             }
 
@@ -108,14 +132,14 @@ namespace RadiWind.Tests
         /// <param name="expectList">double list a</param>
         /// <param name="actualList">double list b</param>
         /// <returns>is equal</returns>
-        private bool IsDoubleListEqual(List<List<int>> expectList, List<List<int>> actualList)
+        private bool IsDoubleListEqual<T>(List<List<T>> expectList, List<List<T>> actualList, Func<T, T, bool> equalFunc)
         {
             if (expectList.Count != actualList.Count)
                 return false;
 
             for (int i = 0; i < expectList.Count; i++)
             {
-                if (!IsListEqual( expectList[i], actualList[i]))
+                if (!IsListEqual( expectList[i], actualList[i], equalFunc))
                     return false;
             }
 
