@@ -40,6 +40,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="axisType">an integer for type between x, y, z.</param>
         /// <param name="indexes">the sorted points' index</param>
         /// <returns>the sorted points.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<Point3d> SortPointInAxis(List<Point3d> points, int axisType, out List<int> indexes)
         {
             if (axisType < 0 || axisType > 2)
@@ -82,6 +83,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="tolerance">tolerance</param>
         /// <param name="indexes">the sorted numbers' indexes.</param>
         /// <returns>the sorted numbers.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<double>> NumberTolerancePartitionSort(List<double> numberList, double tolerance, out List<List<int>> indexes)
         {
             return NumberTolerancePartitionSort<double>(numberList, (x) => x, tolerance, out indexes);
@@ -96,6 +98,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="tolerance">tolerance in double</param>
         /// <param name="indexs">out in index.</param>
         /// <returns>sorted numbers.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<T>> NumberTolerancePartitionSort<T>(List<T> values, Func<T, double> getDouble, double tolerance, out List<List<int>> indexs)
         {
             List<List<SortableItem<T>>> sortableTree = NumberTolerancePartitionSort<T>(values, getDouble, tolerance);
@@ -198,6 +201,7 @@ namespace RadiWindAlgorithm.Sort
         /// <typeparam name="T">Value Type</typeparam>
         /// <param name="values">Value in list</param>
         /// <returns>sortableItems' list</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<SortableItem<T>> GetSortableItems<T>(List<T> values)
         {
             List<SortableItem<T>> outList = new List<SortableItem<T>>();
@@ -215,6 +219,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="sortableTree">Value in double list.</param>
         /// <param name="indexes">out Index.</param>
         /// <returns>values' double list.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexes)
         {
             List<List<T>> outList = new List<List<T>>();
@@ -245,6 +250,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="sortableList">input sortableItems' list</param>
         /// <param name="indexes">dispatched indexes.</param>
         /// <returns>dispatched values.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<T> DispatchIt<T>(List<SortableItem<T>> sortableList, out List<int> indexes)
         {
             indexes = new List<int>();
