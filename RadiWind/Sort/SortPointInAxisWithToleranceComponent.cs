@@ -11,6 +11,8 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using RadiWindAlgorithm;
+using RadiWindAlgorithm.Sort;
+using Grasshopper;
 
 namespace RadiWind.Sort
 {
@@ -66,7 +68,7 @@ namespace RadiWind.Sort
         {
             pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
             pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
-            pManager.AddCurveParameter("容差可视线", "容差可视线", "容差可视线", GH_ParamAccess.list);
+            //pManager.AddCurveParameter("容差可视线", "容差可视线", "容差可视线", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -91,15 +93,12 @@ namespace RadiWind.Sort
                 axisType = 0;
             }
 
-            //Get the Points' Coordinates.
-            List<Point3d> coordinatePts = new List<Point3d>();
-            foreach (var pt in inputPts)
-            {
-                coordinatePts.Add(PlaneServer.PlaneCoordinate(basePlane, pt));
-            }
+            List<List<int>> indexes;
+            List<List<Point3d>> outDatas = SortCalculator.SortPointInAxisWithTolerance(inputPts, axisType, basePlane, tolerance, out indexes);
 
-            //Sort By the Key.
-            coordinatePts.Sort((x, y) => x[axisType].CompareTo(y[axisType]));
+            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(outDatas, this.RunCount));
+            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int >(indexes, this.RunCount));
+
         }
 
 

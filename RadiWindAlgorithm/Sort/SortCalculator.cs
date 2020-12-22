@@ -18,6 +18,29 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
+        #region  SortPointInAxisWithTolerance
+        /// <summary>
+        /// Sort the point in one axis and group it with tolerance.
+        /// </summary>
+        /// <param name="inputPts">points that inputs. </param>
+        /// <param name="axisType">which axis should input, acutally is the points' index</param>
+        /// <param name="basePlane">basePlane to confirm</param>
+        /// <param name="tolerance">tolerance</param>
+        /// <param name="indexes">the participated indexs</param>
+        /// <returns>particiapted points</returns>
+        [Pythonable]
+        public static List<List<Point3d>> SortPointInAxisWithTolerance(List<Point3d> inputPts, int axisType, Plane basePlane, double tolerance, out List<List<int>> indexes)
+        {
+            List<SortableItem<Point3d>> sortedItems = SortCalculator.SortPointInAxis(inputPts, axisType);
+            List<List<SortableItem<Point3d>>> participatedItems = SortCalculator.NumberTolerancePartitionSort<Point3d>(sortedItems, (x) =>
+            {
+                return PlaneServer.PlaneCoordinate(basePlane, x)[axisType];
+            }, tolerance);
+
+            return SortCalculator.DispatchIt(participatedItems, out indexes);
+        }
+        #endregion
+
         #region  SortPointInAxis
         /// <summary>
         /// Sort point by one axis.
@@ -43,12 +66,24 @@ namespace RadiWindAlgorithm.Sort
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<Point3d> SortPointInAxis(List<Point3d> points, int axisType, out List<int> indexes)
         {
+            return DispatchIt(SortPointInAxis(points, axisType), out indexes);
+        }
+
+        /// <summary>
+        /// Sort point by one axis.
+        /// </summary>
+        /// <param name="points">points to input</param>
+        /// <param name="axisType">an integer for type between x, y, z.</param>
+        /// <returns>the sorted sortableItems.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<SortableItem<Point3d>> SortPointInAxis(List<Point3d> points, int axisType)
+        {
             if (axisType < 0 || axisType > 2)
                 throw new ArgumentOutOfRangeException("type", "type must be in 0-2!");
 
-            var needToSorItems = GetSortableItems(points);
+            List<SortableItem<Point3d>> needToSorItems = GetSortableItems(points);
             needToSorItems.Sort((x, y) => x.Value[axisType].CompareTo(y.Value[axisType]));
-            return DispatchIt(needToSorItems, out indexes);
+            return needToSorItems;
         }
 
         #endregion
@@ -116,8 +151,22 @@ namespace RadiWindAlgorithm.Sort
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<SortableItem<T>>> NumberTolerancePartitionSort<T>(List<T> values, Func<T, double> getDouble, double tolerance)
         {
-            //Sort it.
             List<SortableItem<T>> sortableItems = GetSortableItems<T>(values);
+            return NumberTolerancePartitionSort<T>(sortableItems, getDouble, tolerance);
+        }
+
+        /// <summary>
+        /// Partion sort with tolerance in double.
+        /// </summary>
+        /// <typeparam name="T">ValueType</typeparam>
+        /// <param name="sortableItems"> sortableItems to input.</param>
+        /// <param name="getDouble">how to know the key.</param>
+        /// <param name="tolerance">tolerance in double</param>
+        /// <returns>sorted numbers in sortableItem.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<List<SortableItem<T>>> NumberTolerancePartitionSort<T>(List<SortableItem<T>> sortableItems, Func<T, double> getDouble, double tolerance)
+        {
+            //Sort it
             sortableItems.Sort((x, y) =>
             {
                 return getDouble.Invoke(x.Value).CompareTo(getDouble.Invoke(y.Value));

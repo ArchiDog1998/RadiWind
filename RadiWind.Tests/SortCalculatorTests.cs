@@ -19,6 +19,33 @@ namespace RadiWind.Tests
     public class SortCalculatorTests
     {
         [TestMethod]
+        public void SortPointInAxisWithToleranceTest()
+        {
+            List<Point3d> testPts = new List<Point3d>()
+            {
+                new Point3d(41, -52, 0),
+                new Point3d(64, -22, 0),
+                new Point3d(49, 67, 0),
+                new Point3d(14, -56, 0),
+                new Point3d(-30, -3, 0),
+            };
+            List<List<int>> exceptedList = new List<List<int>>()
+            {
+                new List<int>(){3, 0},
+                new List<int>(){1, 4},
+                new List<int>(){2},
+            };
+
+            List<List<int>> actualList;
+            SortCalculator.SortPointInAxisWithTolerance(testPts, 0, Plane.WorldYZ, 20, out actualList);
+
+            bool flag = TestsHelper.IsDoubleListEqual(exceptedList, actualList, (x, y) => x == y);
+
+            Assert.IsTrue(flag);
+
+        }
+
+        [TestMethod]
         public void SortPointInAxisTest()
         {
             List<Point3d> testPts = new List<Point3d>()
