@@ -19,6 +19,29 @@ namespace RadiWind.Tests
     public class SortCalculatorTests
     {
         [TestMethod]
+        public void SortPointInAxisTest()
+        {
+            List<Point3d> testPts = new List<Point3d>()
+            {
+                new Point3d(41, -52, 0),
+                new Point3d(64, -22, 0),
+                new Point3d(49, 67, 0),
+                new Point3d(14, -56, 0),
+                new Point3d(-30, -3, 0),
+            };
+            List<int> exceptIndex = new List<int>() { 3, 0, 1, 4, 2 };
+
+            List<int> actualIndex;
+            SortCalculator.SortPointInAxis(testPts, 0, Plane.WorldYZ, out actualIndex);
+
+            bool flag = TestsHelper.IsListEqual(exceptIndex, actualIndex, (x, y) => x == y);
+
+            Assert.IsTrue(flag);
+
+
+        }
+
+        [TestMethod]
         public void NearlestPointSortByIndexTest()
         {
             List<Point3d> testPts = new List<Point3d>()
