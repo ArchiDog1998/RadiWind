@@ -76,8 +76,8 @@ namespace RadiWind.Sort
             List<List<double>> result = SortCalculator.NumberTolerancePartitionSort(values, tol, out indexs);
 
             //Transform it!
-            DA.SetDataTree(0, DataHelper.SetToDataTree<double>(result, this.RunCount));
-            DA.SetDataTree(1, DataHelper.SetToDataTree<int>(indexs, this.RunCount));
+            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<double>(result, this.RunCount));
+            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int>(indexs, this.RunCount));
         }
 
 

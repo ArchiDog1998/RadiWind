@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 
 namespace RadiWindAlgorithm.Sort
 {
+    /// <summary>
+    /// A struct that include the value's index.
+    /// </summary>
+    /// <typeparam name="T">Value Type.</typeparam>
     public struct SortableItem<T>
     {
         public int Index { get; }

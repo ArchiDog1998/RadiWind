@@ -14,22 +14,32 @@ using System.Threading.Tasks;
 
 namespace RadiWindAlgorithm
 {
-    public static class DataHelper
+    public static class DataTreeHelper
     {
 
         #region Double List to DataTree
-        public static DataTree<T> SetToDataTree<T>(this DataTree<T> beforeTree, List<List<T>> datas, int runCount = 0)
+        /// <summary>
+        /// Transform datatree from double list, also can add to Datatree given before. In extention method.
+        /// </summary>
+        /// <typeparam name="T">Value Type</typeparam>
+        /// <param name="beforeTree">before DataTree in grasshopper.</param>
+        /// <param name="datas">Value as double list</param>
+        /// <param name="runCount">or the further path interger.</param>
+        /// <returns>added DataTree in grasshopper.</returns>
+        public static DataTree<T> SetDataIntoDataTree<T>(this DataTree<T> beforeTree, List<List<T>> datas, int runCount = 0)
         {
-            return SetToDataTree<T>(datas, runCount, beforeTree);
+            return SetDataIntoDataTree<T>(datas, runCount, beforeTree);
         }
 
         /// <summary>
         /// Transform datatree from double list, also can add to Datatree given before.
         /// </summary>
         /// <typeparam name="T">Value Type</typeparam>
+        /// <param name="beforeTree">before DataTree in grasshopper.</param>
         /// <param name="datas">Value as double list</param>
-        /// <returns></returns>
-        public static DataTree<T> SetToDataTree<T> (List<List<T>> datas, int runCount = 0, DataTree<T> beforeTree = null)
+        /// <param name="runCount">or the further path interger.</param>
+        /// <returns>added DataTree in grasshopper.</returns>
+        public static DataTree<T> SetDataIntoDataTree<T> (List<List<T>> datas, int runCount = 0, DataTree<T> beforeTree = null)
         {
             beforeTree = beforeTree ?? new DataTree<T>();
             for (int i = 0; i < datas.Count; i++)

@@ -69,8 +69,8 @@ namespace RadiWindAlgorithm.Sort
             {
                 List<List<int>> resultindexes;
                 List<List<double>> resultTree = NumberTolerancePartitionSort(numberTree.Branches[i], tolerance, out resultindexes);
-                outTree.SetToDataTree(resultTree, i);
-                indexes.SetToDataTree(resultindexes, i);
+                outTree.SetDataIntoDataTree(resultTree, i);
+                indexes.SetDataIntoDataTree(resultindexes, i);
             }
             return outTree;
         }

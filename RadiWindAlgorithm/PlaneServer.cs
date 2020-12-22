@@ -34,7 +34,6 @@ namespace RadiWindAlgorithm
 
             Point3d closestPt = basePlane.ClosestPoint(ptInWorld);
             double z = closestPt.DistanceTo(ptInWorld);
-            //double z = basePlane.DistanceTo(ptInWorld);
 
             return new Point3d(x, y, z);
         }
