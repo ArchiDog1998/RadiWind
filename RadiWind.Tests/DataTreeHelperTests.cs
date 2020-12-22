@@ -31,7 +31,7 @@ namespace RadiWind.Tests
 
             actualTree.SetDataIntoDataTree(addedList, 1);
 
-            Assert.IsTrue(AreDataTreeEqual(expectTree, actualTree));
+            Assert.IsTrue(TestsHelper.AreDataTreeEqual(expectTree, actualTree, (x, y) => x==y));
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace RadiWind.Tests
 
             actualTree.SetDataIntoDataTree(addedList, 0);
 
-            Assert.IsTrue(AreDataTreeEqual(expectTree, actualTree));
+            Assert.IsTrue(TestsHelper.AreDataTreeEqual(expectTree, actualTree, (x, y) => x == y));
         }
 
         #region Check DataTree helper.
@@ -70,41 +70,7 @@ namespace RadiWind.Tests
             return expectTree;
         }
 
-        /// <summary>
-        /// Check the DataTree<int> is Equal
-        /// </summary>
-        /// <param name="expectTree">expectTree</param>
-        /// <param name="actualTree">actualTree</param>
-        /// <returns>is Equal</returns>
-        private bool AreDataTreeEqual(DataTree<int> expectTree, DataTree<int> actualTree)
-        {
-            //Check Path Count
-            if (expectTree.BranchCount != actualTree.BranchCount)
-                return false;
 
-            //Check is Path equal.
-            for (int i = 0; i < expectTree.BranchCount; i++)
-            {
-                if (expectTree.Path(i) != actualTree.Path(i))
-                    return false;
-            }
-
-            List<int> expectDatas = expectTree.AllData();
-            List<int> actualDatas = actualTree.AllData();
-
-            //Check Data Count.
-            if (expectDatas.Count != actualDatas.Count)
-                return false;
-
-            //Check is Data equal.
-            for (int j = 0; j < expectDatas.Count; j++)
-            {
-                if (expectDatas[j] != actualDatas[j])
-                    return false;
-            }
-
-            return true;
-        }
         #endregion
     }
 }

@@ -9,12 +9,52 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using RadiWindAlgorithm.Sort;
+using Grasshopper;
+using Grasshopper.Kernel.Data;
 
 namespace RadiWind.Tests
 {
     [TestClass]
     public class SortCalculatorTests
     {
+        [TestMethod]
+        public void NumberTolerancePartitionSort()
+        {
+            DataTree<double> testDatas = new DataTree<double>();
+            testDatas.AddRange(new List<double>()
+            {
+                1.0, 1.1, 1.9, 2.0, 1.2, 1.8
+            }, new GH_Path(0));
+            testDatas.AddRange(new List<double>()
+            {
+                2.0, 2.1, 2.2, 2.8, 2.9, 3.0
+            }, new GH_Path(1));
+
+            DataTree<double> exceptDataTree = new DataTree<double>();
+            exceptDataTree.AddRange(new List<double>()
+            {
+                1.0, 1.1, 1.2
+            }, new GH_Path(0, 0));
+            exceptDataTree.AddRange(new List<double>()
+            {
+                1.8, 1.9, 2.0
+            }, new GH_Path(0, 1));
+            exceptDataTree.AddRange(new List<double>()
+            {
+                2.0, 2.1, 2.2
+            }, new GH_Path(1, 0));
+            exceptDataTree.AddRange(new List<double>()
+            {
+                2.8, 2.9, 3.0
+            }, new GH_Path(1, 1));
+
+            DataTree<double> actualDataTree = SortCalculator.NumberTolerancePartitionSort(testDatas, 0.2, out _);
+
+            bool flag = TestsHelper.AreDataTreeEqual(exceptDataTree, actualDataTree, (x, y) => x == y);
+
+            Assert.IsTrue(flag);
+        }
+
         #region Converter Test
         [TestMethod]
         public void GetSortableItemsTest()
@@ -29,7 +69,7 @@ namespace RadiWind.Tests
 
             List<SortableItem<int>> actualResult = SortCalculator.GetSortableItems(testValue);
 
-            bool flag = IsListEqual(expectResult, actualResult, (x, y) =>
+            bool flag = TestsHelper.IsListEqual(expectResult, actualResult, (x, y) =>
             {
                 return x.Index == y.Index && x.Value == y.Value;
             });
@@ -73,8 +113,8 @@ namespace RadiWind.Tests
             List<List<int>> actualValue = SortCalculator.DispatchIt(testDoubleList, out actualIndex);
             #endregion
 
-            bool flag = IsDoubleListEqual(expectValue, actualValue, (x, y) => x == y) 
-                && IsDoubleListEqual(expectIndex, actualIndex, (x, y) => x == y);
+            bool flag = TestsHelper.IsDoubleListEqual(expectValue, actualValue, (x, y) => x == y) 
+                && TestsHelper.IsDoubleListEqual(expectIndex, actualIndex, (x, y) => x == y);
 
             Assert.IsTrue(flag);
 
@@ -97,54 +137,14 @@ namespace RadiWind.Tests
             List<int> actualValue = SortCalculator.DispatchIt(testList, out actualIndex);
             #endregion
 
-            bool flag = IsListEqual(expectValue, actualValue, (x, y) => x == y) 
-                && IsListEqual(expectIndex, actualIndex, (x, y) => x == y);
+            bool flag = TestsHelper.IsListEqual(expectValue, actualValue, (x, y) => x == y) 
+                && TestsHelper.IsListEqual(expectIndex, actualIndex, (x, y) => x == y);
 
             Assert.IsTrue(flag);
 
         }
         #endregion
         #endregion
-        #region Is List Equal
-        /// <summary>
-        /// Find out is List equal
-        /// </summary>
-        /// <param name="expectList">list a</param>
-        /// <param name="actualList">list b</param>
-        /// <returns>is equal</returns>
-        private bool IsListEqual<T>(List<T> expectList, List<T> actualList, Func<T, T, bool> equalFunc)
-        {
-            if (expectList.Count != actualList.Count)
-                return false;
 
-            for (int i = 0; i < expectList.Count; i++)
-            {
-                if (! equalFunc.Invoke( expectList[i], actualList[i]))
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Find out is DoubleList equal
-        /// </summary>
-        /// <param name="expectList">double list a</param>
-        /// <param name="actualList">double list b</param>
-        /// <returns>is equal</returns>
-        private bool IsDoubleListEqual<T>(List<List<T>> expectList, List<List<T>> actualList, Func<T, T, bool> equalFunc)
-        {
-            if (expectList.Count != actualList.Count)
-                return false;
-
-            for (int i = 0; i < expectList.Count; i++)
-            {
-                if (!IsListEqual( expectList[i], actualList[i], equalFunc))
-                    return false;
-            }
-
-            return true;
-        }
-        #endregion
     }
 }
