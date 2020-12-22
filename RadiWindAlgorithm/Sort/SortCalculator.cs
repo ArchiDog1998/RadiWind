@@ -213,7 +213,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="index">first point's index.</param>
         /// <returns>sorted sortable items.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<SortableItem<Point3d>> NearlestPointSortByIndex(List<SortableItem<Point3d>> inpuSortableItems, int index)
+        internal static List<SortableItem<Point3d>> NearlestPointSortByIndex(List<SortableItem<Point3d>> inpuSortableItems, int index)
         {
             List<SortableItem<Point3d>> outItems = new List<SortableItem<Point3d>>() { inpuSortableItems[index] };
             inpuSortableItems.RemoveAt(index);

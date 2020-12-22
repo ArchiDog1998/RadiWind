@@ -37,7 +37,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the NumberTolenrancePartionSortComponent class.
         /// </summary>
         public NumberTolerancePartionSortComponent()
-          : base("数字容差分组", "数字容差分组",
+          : base("NumberTolerancePartionSortComponent", "数字容差分组",
               "Description",
               "RadiWind", "Sort")
         {

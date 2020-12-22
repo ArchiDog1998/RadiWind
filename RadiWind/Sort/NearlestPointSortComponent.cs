@@ -34,7 +34,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the NearlestPointSortComponent class.
         /// </summary>
         public NearlestPointSortComponent()
-          : base("最近点排序", "最近点排序",
+          : base("NearlestPointSortComponent", "最近点排序",
               "最近点排序",
               "RadiWind", "Sort")
         {
@@ -71,7 +71,6 @@ namespace RadiWind.Sort
 
             List<int> indexes = new List<int>();
             List<Point3d> points = SortCalculator.NearlestPointSortByIndex(inputPts, index, out indexes);
-
 
             DA.SetDataList(0, points);
             DA.SetDataList(1, indexes);

@@ -39,7 +39,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the SortPointInAxisWithToleranceComponent class.
         /// </summary>
         public SortPointInAxisWithToleranceComponent()
-          : base("点但坐标容差排序", "点但坐标容差排序",
+          : base("SortPointInAxisWithToleranceComponent", "点但坐标容差排序",
               "点但坐标容差排序",
               "RadiWind", "Sort")
         {

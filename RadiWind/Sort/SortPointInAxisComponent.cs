@@ -41,7 +41,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the SortPointInAxis class.
         /// </summary>
         public SortPointInAxisComponent()
-          : base("点单坐标排序", "点单坐标排序",
+          : base("SortPointInAxisComponent", "点单坐标排序",
               "点单坐标排序",
               "RadiWind", "Sort")
         {

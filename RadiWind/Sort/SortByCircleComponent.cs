@@ -41,7 +41,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the SortByCircle class.
         /// </summary>
         public SortByCircleComponent()
-            : base("环绕排序", "环绕排序",
+            : base("SortByCircleComponent", "环绕排序",
                     "环绕排序",
                     "RadiWind", "Sort")
         {
