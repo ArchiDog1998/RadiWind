@@ -70,7 +70,7 @@ namespace RadiWind.Sort
             DA.GetData(1, ref index);
 
             List<int> indexes = new List<int>();
-            List<Point3d> points = SortCalculator.NearlestPointSortForPython(inputPts, index, out indexes);
+            List<Point3d> points = SortCalculator.NearlestPointSortByIndex(inputPts, index, out indexes);
 
 
             DA.SetDataList(0, points);

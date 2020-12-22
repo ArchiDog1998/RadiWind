@@ -91,7 +91,7 @@ namespace RadiWind.Sort
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须在0-2之间！");
 
             List<int> indexes = new List<int>();
-            List<Point3d> result = SortCalculator.SortPointInAxisForPython(inputPts, type, basePlane, out indexes);
+            List<Point3d> result = SortCalculator.SortPointInAxis(inputPts, type, basePlane, out indexes);
 
             DA.SetDataList(0, result);
             DA.SetDataList(1, indexes);
