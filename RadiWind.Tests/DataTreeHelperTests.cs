@@ -1,4 +1,4 @@
-﻿/*  Copyright 2020 Radino 秋水. All Rights Reserved.
+﻿/*  Copyright 2020 RadiRhino-秋水, 笑里追风. All Rights Reserved.
 
     Distributed under MIT license.
 

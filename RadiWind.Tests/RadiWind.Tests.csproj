@@ -61,6 +61,7 @@
     <Compile Include="DataTreeHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlaneServerTests.cs" />
+    <Compile Include="SortCalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
