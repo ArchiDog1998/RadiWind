@@ -41,15 +41,12 @@ namespace RadiWindAlgorithm
         /// <returns>added DataTree in grasshopper.</returns>
         public static DataTree<T> SetDataIntoDataTree<T> (List<List<T>> datas, int runCount = 0, DataTree<T> beforeTree = null)
         {
-            beforeTree = beforeTree ?? new DataTree<T>();
+            DataTree<T> newTree = beforeTree ?? new DataTree<T>();
             for (int i = 0; i < datas.Count; i++)
             {
-                foreach (var item in datas[i])
-                {
-                    beforeTree.Add(item, new Grasshopper.Kernel.Data.GH_Path(runCount, i));
-                }
+                newTree.AddRange(datas[i], new Grasshopper.Kernel.Data.GH_Path(runCount, i));
             }
-            return beforeTree;
+            return newTree;
 
         }
         #endregion
