@@ -15,6 +15,87 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
+        #region PointCurveSort
+
+        /// <summary>
+        /// Sort point along curve and group it with the closest curve.
+        /// </summary>
+        /// <param name="points">points waited to sort</param>
+        /// <param name="curves">all curves</param>
+        /// <param name="indexes">indexes</param>
+        /// <returns>sorted points</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<List<Point3d>> PointCurveSort(List<Point3d> points, List<Curve> curves, out List<List<int>> indexes)
+        {
+            List<SortableItem<Point3d>> sortableItems = GetSortableItems(points);
+            List<int> curveIndexes = GetClosestCurveIndex(points, curves);
+
+            //Participate them into different list.
+            List<List<SortableItem<Point3d>>> ParticipateePoints = new List<List<SortableItem<Point3d>>>();
+            for (int i = 0; i < curves.Count; i++)
+            {
+                ParticipateePoints.Add(new List<SortableItem<Point3d>>());
+            }
+
+            for (int j = 0; j < curveIndexes.Count; j++)
+            {
+                ParticipateePoints[curveIndexes[j]].Add(sortableItems[j]);
+            }
+
+            //Sort it.
+            List<List<SortableItem<Point3d>>> sortedPoints = new List<List<SortableItem<Point3d>>>();
+            for (int k = 0; k < curves.Count; k++)
+            {
+                SortPtAlongCurve(ParticipateePoints[k], curves[k]);
+            }
+
+            return DispatchIt(sortedPoints, out indexes);
+        }
+
+        /// <summary>
+        /// Get the Closest Curve's Index.
+        /// </summary>
+        /// <param name="points">the point list</param>
+        /// <param name="curves">all curves</param>
+        /// <returns>the indexes of curves</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<int> GetClosestCurveIndex(List<Point3d> points, List<Curve> curves)
+        {
+            List<int> indexes = new List<int>();
+            foreach (Point3d point in points)
+            {
+                indexes.Add(GetClosestCurveIndex(point, curves));
+            }
+            return indexes;
+        }
+
+        /// <summary>
+        /// Get the Closest Curve's Index.
+        /// </summary>
+        /// <param name="point">the point</param>
+        /// <param name="curves">all curves</param>
+        /// <returns>the index of curves.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static int GetClosestCurveIndex(Point3d point, List<Curve> curves)
+        {
+            int index = 0;
+            double minDistance;
+            if (!curves[0].ClosestPoint(point, out minDistance))
+                throw new Exception("ClosestPoint failed to calculate!");
+
+            for (int i = 1; i < curves.Count; i++)
+            {
+                double distance;
+                if (!curves[i].ClosestPoint(point, out distance))
+                    throw new Exception("ClosestPoint failed to calculate!");
+                if (distance < minDistance)
+                    minDistance = distance;
+            }
+            return index;
+        }
+
+        #endregion
+
         #region PointsPartitionPlaneSort
 
         /// <summary>
@@ -27,15 +108,18 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">sorted indexes</param>
         /// <returns>sorted points DataTree</returns>
         [Pythonable]
-        public static DataTree<Point3d> XYPartitionSortedByX(DataTree<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out DataTree<int> indexes)
+        public static DataTree<Point3d> XYPartitionSortedByX(DataTree<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out DataTree<int> indexes, out DataTree<Rectangle3d> showRect)
         {
             DataTree<Point3d> outTree = new DataTree<Point3d>();
             indexes = new DataTree<int>();
+            showRect = new DataTree<Rectangle3d>();
             for (int i = 0; i < inputPoints.BranchCount; i++)
             {
                 List<List<int>> resultindexes;
-                List<List<Point3d>> resultTree = XYPartitionSortedByX(inputPoints.Branches[i], basePlane, xTol, yTol, out resultindexes);
+                List<List<Rectangle3d>> resultRect;
+                List<List<Point3d>> resultTree = XYPartitionSortedByX(inputPoints.Branches[i], basePlane, xTol, yTol, out resultindexes, out resultRect);
                 outTree.SetDataIntoDataTree(resultTree, i);
+                showRect.SetDataIntoDataTree(resultRect, i);
                 indexes.SetDataIntoDataTree(resultindexes, i);
             }
             return outTree;
@@ -51,12 +135,26 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">sorted indexes</param>
         /// <returns>sorted points</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<List<Point3d>> XYPartitionSortedByX(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes)
+        public static List<List<Point3d>> XYPartitionSortedByX(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes, out List<List<Rectangle3d>> showRect)
         {
             List<Point3d> relativePts = PlaneServer.PlaneCoordinate(basePlane, inputPoints);
             List<List<SortableItem<Point3d>>> result = XYPartitionSortedByX(relativePts, xTol, yTol);
             //Maybe some bugs in this transform.
-            return DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
+            List<List<Point3d>> resultPoints = DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
+
+            //Get the ShowRects.
+            showRect = new List<List<Rectangle3d>>();
+            foreach (List<Point3d> point3Ds in resultPoints)
+            {
+                List<Rectangle3d> relayRects = new List<Rectangle3d>();
+                foreach (Point3d point in point3Ds)
+                {
+                    relayRects.Add(new Rectangle3d(new Plane(point, basePlane.XAxis, basePlane.YAxis),
+                        new Interval(-xTol / 4, xTol / 4), new Interval(-yTol / 4, yTol / 4)));
+                }
+                showRect.Add(relayRects);
+            }
+            return resultPoints;
         }
 
 
@@ -74,6 +172,7 @@ namespace RadiWindAlgorithm.Sort
             List<List<SortableItem<Point3d>>> xPartitions = NumberTolerancePartitionSort(inputPoints, (x) => x.X, xTol);
 
             List<List<SortableItem<Point3d>>> result = new List<List<SortableItem<Point3d>>>();
+
             //Make every xPartition parted by y Dierction.
             foreach (List<SortableItem<Point3d>> xPartition in xPartitions)
             {
@@ -86,6 +185,8 @@ namespace RadiWindAlgorithm.Sort
             }
             return result;
         }
+
+
         #endregion
 
         #region SortByCircle
