@@ -18,17 +18,18 @@ namespace RadiWind.Tests
     [TestClass]
     public class SortCalculatorTests
     {
+        public static List<Point3d> TestPt => new List<Point3d>()
+        {
+            new Point3d(41, -52, 0),
+            new Point3d(64, -22, 0),
+            new Point3d(49, 67, 0),
+            new Point3d(14, -56, 0),
+            new Point3d(-30, -3, 0),
+        };
+
         [TestMethod]
         public void SortPointInAxisWithToleranceTest()
         {
-            List<Point3d> testPts = new List<Point3d>()
-            {
-                new Point3d(41, -52, 0),
-                new Point3d(64, -22, 0),
-                new Point3d(49, 67, 0),
-                new Point3d(14, -56, 0),
-                new Point3d(-30, -3, 0),
-            };
             List<List<int>> exceptedList = new List<List<int>>()
             {
                 new List<int>(){3, 0},
@@ -37,7 +38,7 @@ namespace RadiWind.Tests
             };
 
             List<List<int>> actualList;
-            SortCalculator.SortPointInAxisWithTolerance(testPts, 0, Plane.WorldYZ, 20, out actualList);
+            SortCalculator.SortPointInAxisWithTolerance(TestPt, 0, Plane.WorldYZ, 20, out actualList);
 
             bool flag = TestsHelper.IsDoubleListEqual(exceptedList, actualList, (x, y) => x == y);
 
@@ -48,18 +49,10 @@ namespace RadiWind.Tests
         [TestMethod]
         public void SortPointInAxisTest()
         {
-            List<Point3d> testPts = new List<Point3d>()
-            {
-                new Point3d(41, -52, 0),
-                new Point3d(64, -22, 0),
-                new Point3d(49, 67, 0),
-                new Point3d(14, -56, 0),
-                new Point3d(-30, -3, 0),
-            };
             List<int> exceptIndex = new List<int>() { 3, 0, 1, 4, 2 };
 
             List<int> actualIndex;
-            SortCalculator.SortPointInAxis(testPts, 0, Plane.WorldYZ, out actualIndex);
+            SortCalculator.SortPointInAxis(TestPt, 0, Plane.WorldYZ, out actualIndex);
 
             bool flag = TestsHelper.IsListEqual(exceptIndex, actualIndex, (x, y) => x == y);
 
@@ -71,18 +64,10 @@ namespace RadiWind.Tests
         [TestMethod]
         public void NearlestPointSortByIndexTest()
         {
-            List<Point3d> testPts = new List<Point3d>()
-            {
-                new Point3d(41, -52, 0),
-                new Point3d(64, -22, 0),
-                new Point3d(49, 67, 0),
-                new Point3d(14, -56, 0),
-                new Point3d(-30, -3, 0),
-            };
             List<int> exceptIndex = new List<int>() { 0, 3, 1, 2, 4 };
 
             List<int> actualIndex;
-            SortCalculator.NearlestPointSortByIndex(testPts, 0, out actualIndex);
+            SortCalculator.NearlestPointSortByIndex(TestPt, 0, out actualIndex);
 
             bool flag = TestsHelper.IsListEqual(exceptIndex, actualIndex, (x, y) => x == y);
 
