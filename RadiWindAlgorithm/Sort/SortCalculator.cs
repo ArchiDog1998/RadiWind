@@ -18,6 +18,78 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
+        #region PointsPartitionPlaneSort
+
+        /// <summary>
+        /// Partition the points in X, Y two direcitons and then Sort them with Z Direction.
+        /// </summary>
+        /// <param name="inputPoints">input pointDataTree</param>
+        /// <param name="basePlane"></param>
+        /// <param name="xTol">x tolerance</param>
+        /// <param name="yTol">y tolerance</param>
+        /// <param name="indexes">sorted indexes</param>
+        /// <returns>sorted points DataTree</returns>
+        [Pythonable]
+        public static DataTree<Point3d> XYPartitionSortedByZ(DataTree<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out DataTree<int> indexes)
+        {
+            DataTree<Point3d> outTree = new DataTree<Point3d>();
+            indexes = new DataTree<int>();
+            for (int i = 0; i < inputPoints.BranchCount; i++)
+            {
+                List<List<int>> resultindexes;
+                List<List<Point3d>> resultTree = XYPartitionSortedByZ(inputPoints.Branches[i], basePlane, xTol, yTol, out resultindexes);
+                outTree.SetDataIntoDataTree(resultTree, i);
+                indexes.SetDataIntoDataTree(resultindexes, i);
+            }
+            return outTree;
+        }
+
+        /// <summary>
+        /// Partition the points in X, Y two direcitons and then Sort them with Z Direction.
+        /// </summary>
+        /// <param name="inputPoints">input pointList</param>
+        /// <param name="basePlane"></param>
+        /// <param name="xTol">x tolerance</param>
+        /// <param name="yTol">y tolerance</param>
+        /// <param name="indexes">sorted indexes</param>
+        /// <returns>sorted points</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<List<Point3d>> XYPartitionSortedByZ(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes)
+        {
+            List<Point3d> relativePts = PlaneServer.PlaneCoordinate(basePlane, inputPoints);
+            List<List<SortableItem<Point3d>>> result = XYPartitionSortedByZ(relativePts, xTol, yTol);
+            return DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
+        }
+
+
+        /// <summary>
+        /// Partition the points in X, Y two direcitons and then Sort them with Z Direction.
+        /// </summary>
+        /// <param name="inputPoints">input pointList</param>
+        /// <param name="xTol">x tolerance</param>
+        /// <param name="yTol">y tolerance</param>
+        /// <returns>Participated and sorted sortable Points.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<List<SortableItem<Point3d>>> XYPartitionSortedByZ(List<Point3d> inputPoints, double xTol, double yTol)
+        {
+            //Get the Partition about x Direction
+            List<List<SortableItem<Point3d>>> xPartitions = NumberTolerancePartitionSort(inputPoints, (x) => x.X, xTol);
+
+            List<List<SortableItem<Point3d>>> result = new List<List<SortableItem<Point3d>>>();
+            //Make every xPartition parted by y Dierction.
+            foreach (List<SortableItem<Point3d>> xPartition in xPartitions)
+            {
+                foreach (List<SortableItem<Point3d>> partition in NumberTolerancePartitionSort<Point3d>(xPartition, (x) => x.Y, yTol))
+                {
+                    //Sort in Z direction.
+                    partition.Sort((x, y) => x.Value.Z.CompareTo(y.Value.Z));
+                    result.Add(partition);
+                }
+            }
+            return result;
+        }
+        #endregion
+
         #region SortByCircle
 
         /// <summary>
@@ -367,8 +439,10 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">out Index.</param>
         /// <returns>values' double list.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexes)
+        public static List<List<T>> DispatchIt<T>(List<List<SortableItem<T>>> sortableTree, out List<List<int>> indexes, Func<T, T> converter = null)
         {
+            converter = converter ?? ((x) => x);
+
             List<List<T>> outList = new List<List<T>>();
             indexes = new List<List<int>>();
 
@@ -379,7 +453,7 @@ namespace RadiWindAlgorithm.Sort
 
                 foreach (var item in sortableList)
                 {
-                    valueList.Add(item.Value);
+                    valueList.Add(converter.Invoke(item.Value));
                     indexList.Add(item.Index);
                 }
 
@@ -398,14 +472,16 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">dispatched indexes.</param>
         /// <returns>dispatched values.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<T> DispatchIt<T>(List<SortableItem<T>> sortableList, out List<int> indexes)
+        public static List<T> DispatchIt<T>(List<SortableItem<T>> sortableList, out List<int> indexes, Func<T, T> converter = null)
         {
+
+            converter = converter ?? ((x) => x);
             indexes = new List<int>();
             List<T> values = new List<T>();
             foreach (var item in sortableList)
             {
+                values.Add(converter.Invoke(item.Value));
                 indexes.Add(item.Index);
-                values.Add(item.Value);
             }
             return values;
         }

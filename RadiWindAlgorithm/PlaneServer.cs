@@ -16,6 +16,12 @@ namespace RadiWindAlgorithm
 {
     public static class PlaneServer
     {
+        /// <summary>
+        /// Ger relative coordinate of the right Plane
+        /// </summary>
+        /// <param name="basePlane">plane</param>
+        /// <param name="ptsInWorld">points in world</param>
+        /// <returns>relative points</returns>
         public static List<Point3d> PlaneCoordinate(Plane basePlane, List<Point3d> ptsInWorld)
         {
             List<Point3d> outPts = new List<Point3d>();
