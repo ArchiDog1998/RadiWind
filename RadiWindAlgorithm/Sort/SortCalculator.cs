@@ -10,9 +10,6 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadiWindAlgorithm.Sort
 {
@@ -30,14 +27,14 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">sorted indexes</param>
         /// <returns>sorted points DataTree</returns>
         [Pythonable]
-        public static DataTree<Point3d> XYPartitionSortedByZ(DataTree<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out DataTree<int> indexes)
+        public static DataTree<Point3d> XYPartitionSortedByX(DataTree<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out DataTree<int> indexes)
         {
             DataTree<Point3d> outTree = new DataTree<Point3d>();
             indexes = new DataTree<int>();
             for (int i = 0; i < inputPoints.BranchCount; i++)
             {
                 List<List<int>> resultindexes;
-                List<List<Point3d>> resultTree = XYPartitionSortedByZ(inputPoints.Branches[i], basePlane, xTol, yTol, out resultindexes);
+                List<List<Point3d>> resultTree = XYPartitionSortedByX(inputPoints.Branches[i], basePlane, xTol, yTol, out resultindexes);
                 outTree.SetDataIntoDataTree(resultTree, i);
                 indexes.SetDataIntoDataTree(resultindexes, i);
             }
@@ -54,10 +51,10 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">sorted indexes</param>
         /// <returns>sorted points</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<List<Point3d>> XYPartitionSortedByZ(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes)
+        public static List<List<Point3d>> XYPartitionSortedByX(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes)
         {
             List<Point3d> relativePts = PlaneServer.PlaneCoordinate(basePlane, inputPoints);
-            List<List<SortableItem<Point3d>>> result = XYPartitionSortedByZ(relativePts, xTol, yTol);
+            List<List<SortableItem<Point3d>>> result = XYPartitionSortedByX(relativePts, xTol, yTol);
             //Maybe some bugs in this transform.
             return DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
         }
@@ -71,7 +68,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="yTol">y tolerance</param>
         /// <returns>Participated and sorted sortable Points.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<List<SortableItem<Point3d>>> XYPartitionSortedByZ(List<Point3d> inputPoints, double xTol, double yTol)
+        public static List<List<SortableItem<Point3d>>> XYPartitionSortedByX(List<Point3d> inputPoints, double xTol, double yTol)
         {
             //Get the Partition about x Direction
             List<List<SortableItem<Point3d>>> xPartitions = NumberTolerancePartitionSort(inputPoints, (x) => x.X, xTol);

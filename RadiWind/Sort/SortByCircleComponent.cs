@@ -55,7 +55,11 @@ namespace RadiWind.Sort
         {
             pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
             pManager.AddPlaneParameter("坐标面", "坐标面", "坐标面", GH_ParamAccess.item, Plane.WorldXY);
-            pManager.AddAngleParameter("旋转角度", "旋转角度", "旋转角度", GH_ParamAccess.item, 0);
+            pManager.AddAngleParameter("旋转角度", "旋转角度", "旋转角度", GH_ParamAccess.item, -180);
+
+            //Make the default is use degree.
+            Param_Number param = pManager[2] as Param_Number;
+            param.UseDegrees = true;
         }
 
         /// <summary>
