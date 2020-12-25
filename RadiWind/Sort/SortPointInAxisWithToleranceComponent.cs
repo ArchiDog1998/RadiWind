@@ -96,8 +96,8 @@ namespace RadiWind.Sort
             List<List<int>> indexes;
             List<List<Point3d>> outDatas = SortCalculator.SortPointInAxisWithTolerance(inputPts, axisType, basePlane, tolerance, out indexes);
 
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(outDatas, this.RunCount));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int >(indexes, this.RunCount));
+            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(outDatas, this.RunCount - 1));
+            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int >(indexes, this.RunCount - 1));
 
         }
 
