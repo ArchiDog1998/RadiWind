@@ -58,6 +58,7 @@ namespace RadiWindAlgorithm.Sort
         {
             List<Point3d> relativePts = PlaneServer.PlaneCoordinate(basePlane, inputPoints);
             List<List<SortableItem<Point3d>>> result = XYPartitionSortedByZ(relativePts, xTol, yTol);
+            //Maybe some bugs in this transform.
             return DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
         }
 
@@ -81,8 +82,8 @@ namespace RadiWindAlgorithm.Sort
             {
                 foreach (List<SortableItem<Point3d>> partition in NumberTolerancePartitionSort<Point3d>(xPartition, (x) => x.Y, yTol))
                 {
-                    //Sort in Z direction.
-                    partition.Sort((x, y) => x.Value.Z.CompareTo(y.Value.Z));
+                    //Sort in X direction.
+                    partition.Sort((x, y) => x.Value.X.CompareTo(y.Value.X));
                     result.Add(partition);
                 }
             }
