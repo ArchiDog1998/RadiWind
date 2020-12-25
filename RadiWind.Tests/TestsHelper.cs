@@ -63,7 +63,7 @@ namespace RadiWind.Tests
         /// <param name="expectTree">expectTree</param>
         /// <param name="actualTree">actualTree</param>
         /// <returns>is Equal</returns>
-        public static bool AreDataTreeEqual<T>(DataTree<T> expectTree, DataTree<T> actualTree, Func<T, T, bool> equalFunc)
+        public static bool IsDataTreeEqual<T>(DataTree<T> expectTree, DataTree<T> actualTree, Func<T, T, bool> equalFunc)
         {
             //Check Path Count
             if (expectTree.BranchCount != actualTree.BranchCount)

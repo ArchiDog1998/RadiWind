@@ -18,6 +18,104 @@ namespace RadiWindAlgorithm.Sort
 {
     public static class SortCalculator
     {
+        #region SortByCircle
+
+        /// <summary>
+        /// Sort the points by Circle
+        /// </summary>
+        /// <param name="inputList">input Points</param>
+        /// <param name="basePlane">base Plane</param>
+        /// <param name="rotate">rotate in radius</param>
+        /// <param name="showCircle">the circle that should show</param>
+        /// <param name="showPlane">the plane that should show</param>
+        /// <param name="indexes">sorted indexes.</param>
+        /// <returns>sorted points.</returns>
+        [Pythonable]
+        public static List<Point3d> SortByCircle(List<Point3d> inputList, Plane basePlane, double rotate, out Line showLine, out Plane showPlane, out List<int> indexes)
+        {
+            if (rotate != 0)
+                basePlane.Rotate(rotate, basePlane.ZAxis, basePlane.Origin);
+
+            Point3d origin;
+            Circle alignCir = GetFlagCurve(basePlane, inputList, out showLine, out origin);
+            showPlane = new Plane(origin, basePlane.XAxis, basePlane.YAxis);
+
+            List<SortableItem<Point3d>> result = SortPtAlongCurve(GetSortableItems(inputList), alignCir.ToNurbsCurve());
+
+            return DispatchIt(result, out indexes);
+        }
+
+        /// <summary>
+        /// Sort Points along Curve.
+        /// </summary>
+        /// <param name="inputSortablePts">input pointSortableList</param>
+        /// <param name="alineCurve">aline Curve</param>
+        /// <returns>Sorted pointSortableList</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static List<SortableItem<Point3d>> SortPtAlongCurve(List< SortableItem<Point3d>> inputSortablePts, Curve alineCurve)
+        {
+            inputSortablePts.Sort((x, y) =>
+            {
+                double tX;
+                alineCurve.ClosestPoint(x.Value, out tX);
+                double tY;
+                alineCurve.ClosestPoint(y.Value, out tY);
+                return tX.CompareTo(tY);
+            });
+            return inputSortablePts;
+        }
+
+        /// <summary>
+        /// Get the right Aline Circle
+        /// </summary>
+        /// <param name="basePlane">reference plane</param>
+        /// <param name="inputList">input pointList</param>
+        /// <returns>the circle that should be along.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Circle GetFlagCurve(Plane basePlane, List<Point3d> inputList, out Line showLine, out Point3d origin)
+        {
+            origin = AverangePoint(inputList);
+            double radius = PointAverangeDistance(origin, inputList);
+            Plane drawPlane = new Plane(origin, basePlane.XAxis, basePlane.YAxis);
+            showLine = new Line(origin, drawPlane.XAxis, radius);
+            return new Circle(drawPlane, radius);
+        }
+
+        /// <summary>
+        /// Get the averange of poinstList's distance to the anchor.
+        /// </summary>
+        /// <param name="anchor">the base point</param>
+        /// <param name="inputList">input pointList</param>
+        /// <returns>averange Distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PointAverangeDistance(Point3d anchor, List<Point3d> inputList)
+        {
+            double wholeDistance = 0;
+            foreach (Point3d pt in inputList)
+            {
+                wholeDistance += anchor.DistanceTo(pt);
+            }
+            return wholeDistance / inputList.Count;
+        }
+
+        /// <summary>
+        /// Get pointsList's averange point
+        /// </summary>
+        /// <param name="inputList">input pointList</param>
+        /// <returns>the averange point</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Point3d AverangePoint (List<Point3d> inputList)
+        {
+            Point3d addedPt = new Point3d(0, 0, 0);
+            foreach (Point3d pt in inputList)
+            {
+                addedPt += pt;
+            }
+            return addedPt / inputList.Count;
+        }
+
+        #endregion
+
         #region  SortPointInAxisWithTolerance
         /// <summary>
         /// Sort the point in one axis and group it with tolerance.

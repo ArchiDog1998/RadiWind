@@ -31,7 +31,7 @@ namespace RadiWind.Tests
 
             actualTree.SetDataIntoDataTree(addedList, 1);
 
-            Assert.IsTrue(TestsHelper.AreDataTreeEqual(expectTree, actualTree, (x, y) => x==y));
+            Assert.IsTrue(TestsHelper.IsDataTreeEqual(expectTree, actualTree, (x, y) => x==y));
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace RadiWind.Tests
 
             actualTree.SetDataIntoDataTree(addedList, 0);
 
-            Assert.IsTrue(TestsHelper.AreDataTreeEqual(expectTree, actualTree, (x, y) => x == y));
+            Assert.IsTrue(TestsHelper.IsDataTreeEqual(expectTree, actualTree, (x, y) => x == y));
         }
 
         #region Check DataTree helper.

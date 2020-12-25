@@ -11,6 +11,7 @@ using Rhino;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
+using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
@@ -76,7 +77,12 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            List<Point3d> inputPts = new List<Point3d>();
+            Plane basePlane = Plane.WorldXY;
             double radius = 0;
+
+            DA.GetDataList(0, inputPts);
+            DA.GetData(1, ref basePlane);
             DA.GetData(2, ref radius);
 
             //Change Degree.
@@ -84,6 +90,16 @@ namespace RadiWind.Sort
             {
                 radius = RhinoMath.ToRadians(radius);
             }
+
+            Line showLine;
+            Plane showPlane;
+            List<int> indexes;
+            List<Point3d> outPts = SortCalculator.SortByCircle(inputPts, basePlane, radius, out showLine, out showPlane, out indexes);
+
+            DA.SetDataList(0, outPts);
+            DA.SetDataList(1, indexes);
+            DA.SetData(2, showLine);
+            DA.SetData(3, showPlane);
         }
         #endregion
     }
