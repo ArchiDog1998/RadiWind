@@ -54,6 +54,7 @@
     </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\RhinoCommon.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlaneServerTests.cs" />
     <Compile Include="SortCalculatorTests.cs" />
+    <Compile Include="TestInit.cs" />
     <Compile Include="TestsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
