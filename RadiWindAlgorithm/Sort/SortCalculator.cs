@@ -46,7 +46,7 @@ namespace RadiWindAlgorithm.Sort
             List<List<SortableItem<Point3d>>> sortedPoints = new List<List<SortableItem<Point3d>>>();
             for (int k = 0; k < curves.Count; k++)
             {
-                SortPtAlongCurve(ParticipateePoints[k], curves[k]);
+                sortedPoints.Add(SortPtAlongCurve(ParticipateePoints[k], curves[k]));
             }
 
             return DispatchIt(sortedPoints, out indexes);
@@ -70,7 +70,7 @@ namespace RadiWindAlgorithm.Sort
         }
 
         /// <summary>
-        /// Get the Closest Curve's Index.
+        /// Get the Point's Closest Curve's Index.
         /// </summary>
         /// <param name="point">the point</param>
         /// <param name="curves">all curves</param>
@@ -79,19 +79,35 @@ namespace RadiWindAlgorithm.Sort
         public static int GetClosestCurveIndex(Point3d point, List<Curve> curves)
         {
             int index = 0;
-            double minDistance;
-            if (!curves[0].ClosestPoint(point, out minDistance))
-                throw new Exception("ClosestPoint failed to calculate!");
+            double minDistance = GetCurveDistance(curves[0], point);
 
             for (int i = 1; i < curves.Count; i++)
             {
-                double distance;
-                if (!curves[i].ClosestPoint(point, out distance))
-                    throw new Exception("ClosestPoint failed to calculate!");
+                double distance = GetCurveDistance(curves[i], point);
+
                 if (distance < minDistance)
+                {
                     minDistance = distance;
+                    index = i;
+                }
             }
             return index;
+        }
+
+        /// <summary>
+        /// Get the point to curve distance.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="point"></param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double GetCurveDistance(Curve curve, Point3d point)
+        {
+            double t;
+            if (!curve.ClosestPoint(point, out t))
+                throw new Exception("ClosestPoint failed to calculate!");
+
+            return curve.PointAt(t).DistanceTo(point);
         }
 
         #endregion
@@ -223,7 +239,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="alineCurve">aline Curve</param>
         /// <returns>Sorted pointSortableList</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<SortableItem<Point3d>> SortPtAlongCurve(List< SortableItem<Point3d>> inputSortablePts, Curve alineCurve)
+        internal static List<SortableItem<Point3d>> SortPtAlongCurve(List< SortableItem<Point3d>> inputSortablePts, Curve alineCurve)
         {
             inputSortablePts.Sort((x, y) =>
             {

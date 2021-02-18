@@ -27,20 +27,17 @@ namespace RadiWind.Tests
             new Point3d(-30, -3, 0),
         };
 
-        /// <summary>
-        /// 我吐了~居然不可以调用！！
-        /// </summary>
-        //[TestMethod]
-        //public void SortByCircleTest()
-        //{
-        //    List<int> expectIndex = new List<int>() { 2, 4, 3, 0, 1, };
-        //    List<int> actualIndex;
-        //    SortCalculator.SortByCircle(TestPts, Plane.WorldXY, 0, out _, out _, out actualIndex);
+        [TestMethod]
+        public void SortByCircleTest()
+        {
+            List<int> expectIndex = new List<int>() { 2, 4, 3, 0, 1, };
+            List<int> actualIndex;
+            SortCalculator.SortByCircle(TestPts, Plane.WorldXY, 0, out _, out _, out actualIndex);
 
-        //    bool flag = TestsHelper.IsListEqual(expectIndex, actualIndex, (x, y) => x == y);
+            bool flag = TestsHelper.IsListEqual(expectIndex, actualIndex, (x, y) => x == y);
 
-        //    Assert.IsTrue(flag);
-        //}
+            Assert.IsTrue(flag);
+        }
 
         [TestMethod]
         public void PointAverangeDistanceTest()
@@ -110,7 +107,7 @@ namespace RadiWind.Tests
         }
 
         [TestMethod]
-        public void NumberTolerancePartitionSort()
+        public void NumberTolerancePartitionSortTest()
         {
             DataTree<double> testDatas = new DataTree<double>();
             testDatas.AddRange(new List<double>()
@@ -144,6 +141,45 @@ namespace RadiWind.Tests
 
             bool flag = TestsHelper.IsDataTreeEqual(exceptDataTree, actualDataTree, (x, y) => x == y);
 
+            Assert.IsTrue(flag);
+        }
+
+        [TestMethod]
+        public void PointCurveSortTest()
+        {
+            //set the exceptIndex
+            List<List<int>> exceptIndex = new List<List<int>>()
+            {
+                new List<int>(),
+                new List<int>(){ 2, 4, 3, 0, 1, },
+            };
+
+            List<List<int>> actualIndex = new List<List<int>>();
+            SortCalculator.PointCurveSort(TestPts, new List<Curve>()
+            {
+                new Circle(1).ToNurbsCurve(), new Circle(2).ToNurbsCurve(),
+            }, out actualIndex);
+
+            bool flag = TestsHelper.IsDoubleListEqual(exceptIndex, actualIndex, (x, y) => x == y);
+            Assert.IsTrue(flag);
+        }
+
+        [TestMethod]
+        public void XYPartitionSortedByXTest()
+        {
+            List<List<int>> exceptIndex = new List<List<int>>()
+            {
+                new List<int>(){ 3 },
+                new List<int>(){ 0 },
+                new List<int>(){ 1 },
+                new List<int>(){ 4 },
+                new List<int>(){ 2 },
+            };
+
+            List<List<int>> actualIndex;
+            var actualSortableItems = SortCalculator.XYPartitionSortedByX(TestPts, Plane.WorldYZ,1, 1, out actualIndex, out _);
+
+            bool flag = TestsHelper.IsDoubleListEqual(exceptIndex, actualIndex, (x, y) => x == y);
             Assert.IsTrue(flag);
         }
 
