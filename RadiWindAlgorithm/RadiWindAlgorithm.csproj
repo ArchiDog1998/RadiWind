@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTreeHelper.cs" />
+    <Compile Include="Measure\MeasureCalculator.cs" />
     <Compile Include="PlaneServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PythonableAttribute.cs" />

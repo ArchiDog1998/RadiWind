@@ -28,7 +28,7 @@ namespace RadiWind.Sort
         ///You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon => Properties.Resources._02PointsAxisSort;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources._02PointsAxisSort1;
 
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
