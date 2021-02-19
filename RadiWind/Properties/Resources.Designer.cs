@@ -179,5 +179,115 @@ namespace RadiWind.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量_03两点水平距离 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量_03两点水平距离", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量_03两点距离 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量_03两点距离", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量_03点标高 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量_03点标高", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量_04线得距离 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量_04线得距离", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量3 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量33线线最近距离 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量33线线最近距离", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量41实体长度 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量41实体长度", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量43盒子数据 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量43盒子数据", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量51线最近点切线夹角 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量51线最近点切线夹角", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量52面面夹角 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量52面面夹角", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Zp_测量61面积测量 {
+            get {
+                object obj = ResourceManager.GetObject("Zp_测量61面积测量", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -50,6 +50,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Measure\HDistanceComponent.cs" />
     <Compile Include="Measure\NumberDecimalsComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -115,7 +116,39 @@
   <ItemGroup>
     <None Include="Resources\NumberDecimal.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Zp_测量_03点标高.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量_03两点距离.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量_03两点水平距离.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量_04线得距离.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量33线线最近距离.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量41实体长度.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量43盒子数据.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量51线最近点切线夹角.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量52面面夹角.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zp_测量61面积测量.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
