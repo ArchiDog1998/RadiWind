@@ -69,7 +69,14 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RadiWindAlgorithm\RadiWindAlgorithm.csproj">
+      <Project>{2c275d47-a51e-40b3-b353-c36fb6da8c3a}</Project>
+      <Name>RadiWindAlgorithm</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\00 Sort_Core.png" />
@@ -103,12 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\10 CurvesSortByPlane.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RadiWindAlgorithm\RadiWindAlgorithm.csproj">
-      <Project>{2c275d47-a51e-40b3-b353-c36fb6da8c3a}</Project>
-      <Name>RadiWindAlgorithm</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

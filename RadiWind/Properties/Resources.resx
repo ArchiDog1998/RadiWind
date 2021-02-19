@@ -118,37 +118,37 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="_00_Sort_Core" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_00_Sort_Core1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\00 Sort_Core.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_01_NumberTolerancePrationSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_01_NumberTolerancePrationSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\01 NumberTolerancePrationSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_02PointsAxisSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_02PointsAxisSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\02PointsAxisSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_03PointsPartionAxisSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_03PointsPartionAxisSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\03PointsPartionAxisSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_04PointsPartionThreeAxisSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_04PointsPartionThreeAxisSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\04PointsPartionThreeAxisSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_05PointsPartionPlaneSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_05PointsPartionPlaneSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\05PointsPartionPlaneSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_06PointsCircleSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_06PointsCircleSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\06PointsCircleSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_07PointsCloseSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_07PointsCloseSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\07PointsCloseSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_08PointsCurvesSort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_08PointsCurvesSort1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\08PointsCurvesSort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_09_CurveUnintDirectionByPlane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_09_CurveUnintDirectionByPlane1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\09 CurveUnintDirectionByPlane.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_10_CurvesSortByPlane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="_10_CurvesSortByPlane1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\10 CurvesSortByPlane.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

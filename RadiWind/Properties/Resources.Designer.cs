@@ -63,9 +63,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _00_Sort_Core {
+        internal static System.Drawing.Bitmap _00_Sort_Core1 {
             get {
-                object obj = ResourceManager.GetObject("_00_Sort_Core", resourceCulture);
+                object obj = ResourceManager.GetObject("_00_Sort_Core1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _01_NumberTolerancePrationSort {
+        internal static System.Drawing.Bitmap _01_NumberTolerancePrationSort1 {
             get {
-                object obj = ResourceManager.GetObject("_01_NumberTolerancePrationSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_01_NumberTolerancePrationSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _02PointsAxisSort {
+        internal static System.Drawing.Bitmap _02PointsAxisSort1 {
             get {
-                object obj = ResourceManager.GetObject("_02PointsAxisSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_02PointsAxisSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _03PointsPartionAxisSort {
+        internal static System.Drawing.Bitmap _03PointsPartionAxisSort1 {
             get {
-                object obj = ResourceManager.GetObject("_03PointsPartionAxisSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_03PointsPartionAxisSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _04PointsPartionThreeAxisSort {
+        internal static System.Drawing.Bitmap _04PointsPartionThreeAxisSort1 {
             get {
-                object obj = ResourceManager.GetObject("_04PointsPartionThreeAxisSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_04PointsPartionThreeAxisSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _05PointsPartionPlaneSort {
+        internal static System.Drawing.Bitmap _05PointsPartionPlaneSort1 {
             get {
-                object obj = ResourceManager.GetObject("_05PointsPartionPlaneSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_05PointsPartionPlaneSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _06PointsCircleSort {
+        internal static System.Drawing.Bitmap _06PointsCircleSort1 {
             get {
-                object obj = ResourceManager.GetObject("_06PointsCircleSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_06PointsCircleSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _07PointsCloseSort {
+        internal static System.Drawing.Bitmap _07PointsCloseSort1 {
             get {
-                object obj = ResourceManager.GetObject("_07PointsCloseSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_07PointsCloseSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _08PointsCurvesSort {
+        internal static System.Drawing.Bitmap _08PointsCurvesSort1 {
             get {
-                object obj = ResourceManager.GetObject("_08PointsCurvesSort", resourceCulture);
+                object obj = ResourceManager.GetObject("_08PointsCurvesSort1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _09_CurveUnintDirectionByPlane {
+        internal static System.Drawing.Bitmap _09_CurveUnintDirectionByPlane1 {
             get {
-                object obj = ResourceManager.GetObject("_09_CurveUnintDirectionByPlane", resourceCulture);
+                object obj = ResourceManager.GetObject("_09_CurveUnintDirectionByPlane1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _10_CurvesSortByPlane {
+        internal static System.Drawing.Bitmap _10_CurvesSortByPlane1 {
             get {
-                object obj = ResourceManager.GetObject("_10_CurvesSortByPlane", resourceCulture);
+                object obj = ResourceManager.GetObject("_10_CurvesSortByPlane1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
