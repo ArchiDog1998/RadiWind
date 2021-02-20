@@ -86,5 +86,36 @@ namespace RadiWindAlgorithm.Measure
             return pointA.DistanceTo(pointB);
         }
         #endregion
+
+        #region PVDistance
+        /// <summary>
+        /// Get the distance between plane and point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="plane"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string PVDistance(Point3d point, Plane plane, int decimals, out Line displayLine)
+        {
+            double distance = PVDistance(point, plane, out displayLine);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get the distance between plane and point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="plane"></param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PVDistance(Point3d point, Plane plane, out Line displayLine)
+        {
+            displayLine = new Line(plane.ClosestPoint(point), point);
+            return plane.DistanceTo(point);
+        }
+        #endregion
     }
 }

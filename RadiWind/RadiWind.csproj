@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Measure\HDistanceComponent.cs" />
     <Compile Include="Measure\NumberDecimalsComponent.cs" />
+    <Compile Include="Measure\PVDistanceComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

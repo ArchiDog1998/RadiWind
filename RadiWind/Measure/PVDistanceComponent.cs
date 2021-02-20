@@ -1,4 +1,4 @@
-﻿/*  Copyright 2021 RadiRhino-秋水, 笑里追风. All Rights Reserved.
+﻿/*  Copyright 2021 RadiRhino-秋水. All Rights Reserved.
 
     Distributed under MIT license.
 
@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class HDistanceComponent : GH_Component
+    public class PVDistanceComponent : GH_Component
     {
         #region Values
         #region Basic Component info
@@ -24,21 +24,21 @@ namespace RadiWind.Measure
         /// <summary>
         /// Provides an Icon for the component.
         /// </summary>
-        protected override Bitmap Icon => Properties.Resources.Zp_测量_03两点水平距离;
+        protected override Bitmap Icon => Properties.Resources.Zp_测量_03点标高;
 
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("bd6b91d7-c1cc-446f-8238-800e3618f923");
+        public override Guid ComponentGuid => new Guid("adb981e0-a65d-4c8b-be5b-e7ca9f675a72");
 
         #endregion
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the HDistanceComponent class.
+        /// Initializes a new instance of the PVDistanceComponent class.
         /// </summary>
-        public HDistanceComponent()
-          : base("HDistanceComponent", "HDistance",
+        public PVDistanceComponent()
+          : base("PVDistanceComponent", "High",
               "Description",
               "RadiWind", "Measure")
         {
@@ -50,12 +50,9 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Point A", "A", "Point A", GH_ParamAccess.item);
-            pManager.AddPointParameter("Point B", "B", "Point B", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "Pl", "Plane", GH_ParamAccess.item);
-            pManager[2].Optional = true;
+            pManager.AddPointParameter("Point", "P", "Point", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "Pl", "Plane", GH_ParamAccess.item, Plane.WorldXY);
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
-
         }
 
         /// <summary>
@@ -73,19 +70,16 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Point3d point1 = Point3d.Origin;
-            Point3d point2 = Point3d.Origin;
+            Point3d point = Point3d.Origin;
             Plane plane = Plane.WorldXY;
             int decimals = 0;
 
-            DA.GetData(0, ref point1);
-            DA.GetData(1, ref point2);
-            DA.GetData(2, ref plane);
-            DA.GetData(3, ref decimals);
+            DA.GetData(0, ref point);
+            DA.GetData(1, ref plane);
+            DA.GetData(2, ref decimals);
 
             Line displayLine = new Line();
-
-            DA.SetData(1, MeasureCalculator.HDistance(point1, point2, plane, decimals, out displayLine));
+            DA.SetData(1, MeasureCalculator.PVDistance(point, plane, decimals, out displayLine));
             DA.SetData(0, displayLine);
         }
         #endregion
