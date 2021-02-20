@@ -57,5 +57,17 @@ namespace RadiWind.Tests
 
             Assert.AreEqual(exceptDistance, actualDistance);
         }
+
+        [TestMethod]
+        public void DistanceTest()
+        {
+            Point3d point1 = new Point3d(4, 5, 6);
+            Point3d point2 = new Point3d(1, 1, 6);
+
+            double actualDistance = MeasureCalculator.Distance(point1, point2, out _);
+            double exceptDistance = 5;
+
+            Assert.AreEqual(exceptDistance, actualDistance);
+        }
     }
 }

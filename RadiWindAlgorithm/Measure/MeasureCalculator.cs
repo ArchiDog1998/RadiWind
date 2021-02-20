@@ -80,10 +80,7 @@ namespace RadiWindAlgorithm.Measure
             Point3d pointA = plane.ClosestPoint(point1);
             Point3d pointB = plane.ClosestPoint(poitn2);
 
-
-            displayLine = new Line(pointA, pointB);
-
-            return pointA.DistanceTo(pointB);
+            return Distance(pointA, pointB, out displayLine);
         }
         #endregion
 
@@ -115,6 +112,38 @@ namespace RadiWindAlgorithm.Measure
         {
             displayLine = new Line(plane.ClosestPoint(point), point);
             return plane.DistanceTo(point);
+        }
+        #endregion
+
+        #region Distance
+
+        /// <summary>
+        /// Get two points' distance.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string Distance(Point3d point1, Point3d point2, int decimals, out Line displayLine)
+        {
+            double distance = Distance(point1, point2, out displayLine);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get two points' distance.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double Distance(Point3d point1, Point3d point2, out Line displayLine)
+        {
+            displayLine = new Line(point1, point2);
+            return point1.DistanceTo(point2);
         }
         #endregion
     }
