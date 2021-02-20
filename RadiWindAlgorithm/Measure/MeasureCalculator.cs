@@ -147,6 +147,7 @@ namespace RadiWindAlgorithm.Measure
         }
         #endregion
 
+        //This method doesn't have a test.
         #region CCDistance
         /// <summary>
         /// Get two curves' distance.
@@ -178,6 +179,40 @@ namespace RadiWindAlgorithm.Measure
             curve1.ClosestPoints(curve2, out point1, out point2);
 
             return Distance(point1, point2, out displayLine);
+        }
+        #endregion
+
+        //I don't think such easy function needs a test.
+        #region GetLength
+
+        /// <summary>
+        /// Get curve's length and end points.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="startPt"></param>
+        /// <param name="endPt"></param>
+        /// <returns>length.</returns>
+        [Pythonable]
+        public static string GetLength(Curve curve, int decimals, out Point3d startPt, out Point3d endPt)
+        {
+            double distance = GetLength(curve, out startPt, out endPt);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get curve's length and end points.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="startPt"></param>
+        /// <param name="endPt"></param>
+        /// <returns>length.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double GetLength(Curve curve, out Point3d startPt, out Point3d endPt)
+        {
+            startPt = curve.PointAtStart;
+            endPt = curve.PointAtEnd;
+            return curve.GetLength();
         }
         #endregion
     }

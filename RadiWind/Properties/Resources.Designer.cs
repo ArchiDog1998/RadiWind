@@ -173,6 +173,16 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GetLength {
+            get {
+                object obj = ResourceManager.GetObject("GetLength", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap NumberDecimal {
             get {
                 object obj = ResourceManager.GetObject("NumberDecimal", resourceCulture);

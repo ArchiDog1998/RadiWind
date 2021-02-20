@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Measure\CCDistanceComponent.cs" />
     <Compile Include="Measure\DistanceComponent.cs" />
+    <Compile Include="Measure\GetLengthComponent.cs" />
     <Compile Include="Measure\HDistanceComponent.cs" />
     <Compile Include="Measure\NumberDecimalsComponent.cs" />
     <Compile Include="Measure\PVDistanceComponent.cs" />
@@ -151,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Zp_测量61面积测量.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GetLength.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
