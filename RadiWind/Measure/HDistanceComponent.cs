@@ -10,6 +10,7 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
@@ -51,7 +52,8 @@ namespace RadiWind.Measure
         {
             pManager.AddPointParameter("Point A", "A", "Point A", GH_ParamAccess.item);
             pManager.AddPointParameter("Point B", "B", "Point B", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "P", "Plane", GH_ParamAccess.item, Plane.WorldXY);
+            pManager.AddPlaneParameter("Plane", "P", "Plane", GH_ParamAccess.item);
+            pManager[2].Optional = true;
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
 
         }
@@ -71,6 +73,20 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            Point3d point1 = Point3d.Origin;
+            Point3d point2 = Point3d.Origin;
+            Plane plane = Plane.WorldXY;
+            int decimals = 0;
+
+            DA.GetData(0, ref point1);
+            DA.GetData(1, ref point2);
+            DA.GetData(2, ref plane);
+            DA.GetData(3, ref decimals);
+
+            Line displayLine = new Line();
+
+            DA.SetData(1, MeasureCalculator.HDistance(point1, point2, plane, decimals, out displayLine));
+            DA.SetData(0, displayLine);
         }
         #endregion
     }

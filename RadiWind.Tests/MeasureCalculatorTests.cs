@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Rhino.Geometry;
 using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Tests
@@ -30,6 +31,19 @@ namespace RadiWind.Tests
             string except = "1200";
 
             Assert.AreEqual(except, MeasureCalculator.NumberDecimal(input, -2));
+        }
+
+        [TestMethod]
+        public void HDistanceTest()
+        {
+            Point3d point1 = new Point3d(4, 5, 6);
+            Point3d point2 = new Point3d(1, 1, 1);
+            Plane testPlane = Plane.WorldXY;
+
+            double actualDistance = MeasureCalculator.HDistance(point1, point2, testPlane, out _);
+            double exceptDistance = 5;
+
+            Assert.AreEqual(exceptDistance, actualDistance);
         }
     }
 }
