@@ -30,8 +30,8 @@ namespace RadiWindAlgorithm.Measure
             decimal result;
             if (!decimal.TryParse(number, out result))
                 throw new ArgumentOutOfRangeException(nameof(number), nameof(number) + "must be in a formular of number!");
-            
-            if(decimals >= 0)
+
+            if (decimals >= 0)
             {
                 return result.ToString("F" + decimals);
             }
@@ -72,7 +72,7 @@ namespace RadiWindAlgorithm.Measure
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static double HDistance(Point3d point1, Point3d poitn2, Plane plane, out Line displayLine)
         {
-            if(plane == null)
+            if (plane == null)
             {
                 plane = new Plane(point1, Vector3d.ZAxis);
             }
@@ -144,6 +144,40 @@ namespace RadiWindAlgorithm.Measure
         {
             displayLine = new Line(point1, point2);
             return point1.DistanceTo(point2);
+        }
+        #endregion
+
+        #region CCDistance
+        /// <summary>
+        /// Get two curves' distance.
+        /// </summary>
+        /// <param name="curve1"></param>
+        /// <param name="curve2"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string CCDistance(Curve curve1, Curve curve2, int decimals, out Line displayLine)
+        {
+            double distance = CCDistance(curve1, curve2, out displayLine);
+            return NumberDecimal(displayLine.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get two curves' distance.
+        /// </summary>
+        /// <param name="curve1"></param>
+        /// <param name="curve2"></param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double CCDistance(Curve curve1, Curve curve2, out Line displayLine)
+        {
+            Point3d point1 = new Point3d();
+            Point3d point2 = new Point3d();
+            curve1.ClosestPoints(curve2, out point1, out point2);
+
+            return Distance(point1, point2, out displayLine);
         }
         #endregion
     }

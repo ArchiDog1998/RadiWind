@@ -53,6 +53,8 @@ namespace RadiWind.Measure
             pManager.AddPointParameter("Point", "P", "Point", GH_ParamAccess.item);
             pManager.AddPlaneParameter("Plane", "Pl", "Plane", GH_ParamAccess.item, Plane.WorldXY);
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+
+            this.Message = "点到坐标面的垂距";
         }
 
         /// <summary>

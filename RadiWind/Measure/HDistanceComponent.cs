@@ -56,6 +56,7 @@ namespace RadiWind.Measure
             pManager[2].Optional = true;
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
 
+            this.Message = "两点水平距离";
         }
 
         /// <summary>
