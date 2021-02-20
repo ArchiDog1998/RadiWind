@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class GetLengthComponent : GH_Component
+    public class PCDistanceComponent : GH_Component
     {
         #region Values
         #region Basic Component info
@@ -24,21 +24,21 @@ namespace RadiWind.Measure
         /// <summary>
         /// Provides an Icon for the component.
         /// </summary>
-        protected override Bitmap Icon => Properties.Resources.GetLength;
+        protected override Bitmap Icon => Properties.Resources.Zp_测量3;
 
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("c473cb9e-497a-4020-8987-b25fb90e0332");
+        public override Guid ComponentGuid => new Guid("01c83803-7c2b-4add-b38b-56794b8fc487");
 
         #endregion
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the GetLengthComponent class.
+        /// Initializes a new instance of the PCDistanceComponent class.
         /// </summary>
-        public GetLengthComponent()
-          : base("GetLengthComponent", "GetLength",
+        public PCDistanceComponent()
+          : base("PCDistanceComponent", "PCDistance",
               "Description",
               "RadiWind", "Measure")
         {
@@ -50,10 +50,11 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Cureve", GH_ParamAccess.item);
+            pManager.AddPointParameter("Point", "P", "Point", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
 
-            this.Message = "线长度及两端点";
+            this.Message = "点到线的垂距";
         }
 
         /// <summary>
@@ -61,10 +62,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("Start Point", "S", "Start Point", GH_ParamAccess.item);
-            pManager.AddPointParameter("End Point", "E", "End Point", GH_ParamAccess.item);
-            pManager.AddTextParameter("Length", "L", "Length", GH_ParamAccess.item);
-
+            pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.item);
+            pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -73,17 +72,17 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            Point3d point = new Point3d();
             Curve curve = null;
             int decimals = 0;
 
-            DA.GetData(0, ref curve);
-            DA.GetData(1, ref decimals);
+            DA.GetData(0, ref point);
+            DA.GetData(1, ref curve);
+            DA.GetData(2, ref decimals);
 
-            Point3d startPt = new Point3d();
-            Point3d endPt = new Point3d();
-            DA.SetData(2, MeasureCalculator.GetLength(curve, decimals, out startPt, out endPt));
-            DA.SetData(0, startPt);
-            DA.SetData(1, endPt);
+            Line displayLine = new Line();
+            DA.SetData(1, MeasureCalculator.PCDistance(curve, point, decimals, out displayLine));
+            DA.SetData(0, displayLine);
         }
         #endregion
     }

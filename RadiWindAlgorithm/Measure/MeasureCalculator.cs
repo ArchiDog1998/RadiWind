@@ -215,5 +215,42 @@ namespace RadiWindAlgorithm.Measure
             return curve.GetLength();
         }
         #endregion
+
+        //This method doesn't have a test.
+        #region PCDistance
+
+        /// <summary>
+        /// Get the distance between curve and point.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="point"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string PCDistance(Curve curve, Point3d point, int decimals, out Line displayLine)
+        {
+            double distance = PCDistance(curve, point, out displayLine);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get the distance between curve and point.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="point"></param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PCDistance(Curve curve, Point3d point, out Line displayLine)
+        {
+            //Get the closest point.
+            double t = 0;
+            curve.ClosestPoint(point, out t);
+            Point3d closetPt = curve.PointAt(t);
+
+            return Distance(point, closetPt, out displayLine);
+        }
+        #endregion
     }
 }
