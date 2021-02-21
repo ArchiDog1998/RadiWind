@@ -338,7 +338,7 @@ namespace RadiWindAlgorithm.Measure
         /// <param name="closestPt"></param>
         /// <returns></returns>
         [Pythonable]
-        public static string PBDistance(Point3d point, Point3d[] pts, ref Brep brep, int decimals, 
+        public static string PBDistance(Point3d point, Point3d[] pts, ref Brep brep, int decimals,
             out Line displayLine, out Point3d closestPt)
         {
             double distance = PBDistance(point, pts, ref brep, out displayLine, out closestPt);
@@ -358,7 +358,7 @@ namespace RadiWindAlgorithm.Measure
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static double PBDistance(Point3d point, Point3d[] pts, ref Brep brep, out Line displayLine, out Point3d closestPt)
         {
-            if(pts.Length > 0)
+            if (pts.Length > 0)
             {
                 Point3d averagePoint = AveragePoints(pts);
 
@@ -401,6 +401,74 @@ namespace RadiWindAlgorithm.Measure
                 result += point;
             }
             return result / points.Length;
+        }
+        #endregion
+
+        //This method doesn't have a test.
+        #region CCAngle
+
+        /// <summary>
+        /// Get Curves' angle.
+        /// </summary>
+        /// <param name="curve1"></param>
+        /// <param name="curve2"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="vec1"></param>
+        /// <param name="vec2"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static string CCAngle(Curve curve1, Curve curve2, int decimals, out Point3d point1, out Point3d point2, out Vector3d vec1, out Vector3d vec2)
+        {
+            double angle = CCAngle(curve1, curve2, out point1, out point2, out vec1, out vec2);
+            return NumberDecimal(angle.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get Curves' angle.
+        /// </summary>
+        /// <param name="curve1"></param>
+        /// <param name="curve2"></param>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="vec1"></param>
+        /// <param name="vec2"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double CCAngle(Curve curve1, Curve curve2, out Point3d point1, out Point3d point2, out Vector3d vec1, out Vector3d vec2)
+        {
+            curve1.ClosestPoints(curve2, out point1, out point2);
+
+            vec1 = curve1.GetVecOnCurve(point1);
+            vec2 = curve2.GetVecOnCurve(point2);
+            
+            //Get angle in degree.
+            double angle = Math.Acos(Math.Max(Math.Min(vec1 * vec2, 1.0), -1.0));
+            return Rhino.RhinoMath.ToDegrees(angle);
+        }
+
+        /// <summary>
+        /// Get vector on point.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private static Vector3d GetVecOnCurve(this Curve curve, Point3d point)
+        {
+            //Check for reverse.
+            if (curve.PointAtStart.DistanceTo(point) > curve.PointAtEnd.DistanceTo(point)) curve.Reverse();
+
+            //Get t
+            double t;
+            curve.ClosestPoint(point, out t);
+
+            //Get vec and unitize it.
+            Vector3d result = curve.DerivativeAt(t, 1, CurveEvaluationSide.Below)[1];
+            result.Unitize();
+
+            return result;
         }
         #endregion
     }
