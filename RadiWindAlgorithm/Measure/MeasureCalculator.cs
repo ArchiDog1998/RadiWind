@@ -565,6 +565,7 @@ namespace RadiWindAlgorithm.Measure
         }
         #endregion
 
+        //This method doesn't have a test.
         #region BrepArea
         public static Dictionary<int, UnitSet> Unit { get; } = new Dictionary<int, UnitSet>()
         {
@@ -575,7 +576,7 @@ namespace RadiWindAlgorithm.Measure
         public struct UnitSet
         {
             public string Name { get; }
-            public double Data { get; set; }
+            public double Data { get; }
             public UnitSet(string name, double data)
             {
                 this.Name = name;

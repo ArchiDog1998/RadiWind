@@ -87,7 +87,7 @@ namespace RadiWind.Measure
             Vector3d vec1, vec2;
             string ang;
 
-            DA.SetData(4, MeasureCalculator.CCAngle(curve1, curve2, out pt1, out pt2, out vec1, out vec2));
+            DA.SetData(4, MeasureCalculator.CCAngle(curve1, curve2, decimals, out pt1, out pt2, out vec1, out vec2));
             DA.SetData(0, pt1);
             DA.SetData(1, pt2);
             DA.SetData(2, vec1);
