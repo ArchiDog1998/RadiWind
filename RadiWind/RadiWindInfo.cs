@@ -25,7 +25,7 @@ namespace RadiWind
             get
             {
                 //Return a 24x24 pixel bitmap to represent this GHA library.
-                return null;
+                return Properties.Resources.RadiWind;
             }
         }
         public override string Description
@@ -59,6 +59,17 @@ namespace RadiWind
                 //Return a string representing your preferred contact details.
                 return "1123993881@qq.com";
             }
+        }
+    }
+
+    public class RadiWindIcon : GH_AssemblyPriority
+    {
+        public override GH_LoadingInstruction PriorityLoad()
+        {
+            Grasshopper.Instances.ComponentServer.AddCategoryIcon("RadiWind", Properties.Resources.RadiWind);
+            Grasshopper.Instances.ComponentServer.AddCategoryShortName("RadiWind", "RW");
+            Grasshopper.Instances.ComponentServer.AddCategorySymbolName("RadiWind", 'W');
+            return GH_LoadingInstruction.Proceed;
         }
     }
 }

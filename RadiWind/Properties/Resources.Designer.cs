@@ -193,6 +193,16 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RadiWind {
+            get {
+                object obj = ResourceManager.GetObject("RadiWind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Zp_测量_03两点水平距离 {
             get {
                 object obj = ResourceManager.GetObject("Zp_测量_03两点水平距离", resourceCulture);
