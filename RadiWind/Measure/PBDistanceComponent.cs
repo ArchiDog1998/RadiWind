@@ -14,31 +14,31 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class PVDistanceComponent : GH_Component
+    public class PBDistanceComponent : GH_Component
     {
         #region Values
         #region Basic Component info
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary;
+        public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
         /// <summary>
         /// Provides an Icon for the component.
         /// </summary>
-        protected override Bitmap Icon => Properties.Resources.Zp_测量_03点标高;
+        protected override Bitmap Icon => Properties.Resources.PBDistance;
 
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("adb981e0-a65d-4c8b-be5b-e7ca9f675a72");
+        public override Guid ComponentGuid => new Guid("7cea430e-c67b-4c03-9b23-d6d37ce3b319");
 
         #endregion
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the PVDistanceComponent class.
+        /// Initializes a new instance of the PBDistanceComponent class.
         /// </summary>
-        public PVDistanceComponent()
-          : base("PVDistanceComponent", "High",
+        public PBDistanceComponent()
+          : base("PBDistanceComponent", "PBDistance",
               "Description",
               "RadiWind", "Measure")
         {
@@ -51,10 +51,12 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("Point", "P", "Point", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "Pl", "Plane", GH_ParamAccess.item, Plane.WorldXY);
+            pManager.AddPointParameter("Points", "Ps", "Points", GH_ParamAccess.list);
+            pManager[1].Optional = true;
+            pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
 
-            this.Message = "点到坐标面的垂距";
+            this.Message = "点到多重曲面的距离";
         }
 
         /// <summary>
@@ -64,6 +66,7 @@ namespace RadiWind.Measure
         {
             pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.item);
             pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.item);
+            pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -72,17 +75,20 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Point3d point = Point3d.Origin;
-            Plane plane = Plane.WorldXY;
+            Point3d point = new Point3d();
+            List<Point3d> points = new List<Point3d>();
+            Brep brep = null;
             int decimals = 0;
 
             DA.GetData(0, ref point);
-            DA.GetData(1, ref plane);
-            DA.GetData(2, ref decimals);
+            DA.GetDataList(1, points);
+            DA.GetData(2, ref brep);
+            DA.GetData(3, ref decimals);
 
             Line displayLine = new Line();
-            DA.SetData(1, MeasureCalculator.PPDistance(point, plane, decimals, out displayLine));
+            DA.SetData(1, MeasureCalculator.PBDistance(point, points.ToArray(), ref brep, decimals, out displayLine, out _));
             DA.SetData(0, displayLine);
+            DA.SetData(2, brep);
         }
         #endregion
     }

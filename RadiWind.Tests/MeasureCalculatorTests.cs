@@ -52,7 +52,7 @@ namespace RadiWind.Tests
             Point3d point = new Point3d(4, 5, 6);
             Plane testPlane = Plane.WorldYZ;
 
-            double actualDistance = MeasureCalculator.PVDistance(point, testPlane, out _);
+            double actualDistance = MeasureCalculator.PPDistance(point, testPlane, out _);
             double exceptDistance = 4;
 
             Assert.AreEqual(exceptDistance, actualDistance);

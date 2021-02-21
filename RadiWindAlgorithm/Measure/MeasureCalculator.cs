@@ -84,7 +84,7 @@ namespace RadiWindAlgorithm.Measure
         }
         #endregion
 
-        #region PVDistance
+        #region PPDistance
         /// <summary>
         /// Get the distance between plane and point
         /// </summary>
@@ -94,9 +94,9 @@ namespace RadiWindAlgorithm.Measure
         /// <param name="displayLine">a line to display</param>
         /// <returns>distance</returns>
         [Pythonable]
-        public static string PVDistance(Point3d point, Plane plane, int decimals, out Line displayLine)
+        public static string PPDistance(Point3d point, Plane plane, int decimals, out Line displayLine)
         {
-            double distance = PVDistance(point, plane, out displayLine);
+            double distance = PPDistance(point, plane, out displayLine);
             return NumberDecimal(distance.ToString(), decimals);
         }
 
@@ -108,7 +108,7 @@ namespace RadiWindAlgorithm.Measure
         /// <param name="displayLine">a line to display</param>
         /// <returns>distance</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static double PVDistance(Point3d point, Plane plane, out Line displayLine)
+        public static double PPDistance(Point3d point, Plane plane, out Line displayLine)
         {
             displayLine = new Line(plane.ClosestPoint(point), point);
             return plane.DistanceTo(point);
@@ -293,7 +293,8 @@ namespace RadiWindAlgorithm.Measure
 
             //get boundingbox
             Transform transform = Transform.ChangeBasis(Plane.WorldXY, plane);
-            boundingBox = new Box(brep.GetBoundingBox(transform));
+            BoundingBox box = brep.GetBoundingBox(transform);
+            boundingBox = new Box(plane, box);
 
             if (usebox)
             {
@@ -321,6 +322,85 @@ namespace RadiWindAlgorithm.Measure
 
             //return.
             return result;
+        }
+        #endregion
+
+        //This method doesn't have a test.
+        #region PBDistance
+        /// <summary>
+        /// Get distance between brep and point.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="pts"></param>
+        /// <param name="brep"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine"></param>
+        /// <param name="closestPt"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static string PBDistance(Point3d point, Point3d[] pts, ref Brep brep, int decimals, 
+            out Line displayLine, out Point3d closestPt)
+        {
+            double distance = PBDistance(point, pts, ref brep, out displayLine, out closestPt);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+
+        /// <summary>
+        /// Get distance between brep and point.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="pts">a lot of test points.</param>
+        /// <param name="brep"></param>
+        /// <param name="displayLine"></param>
+        /// <param name="closestPt"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PBDistance(Point3d point, Point3d[] pts, ref Brep brep, out Line displayLine, out Point3d closestPt)
+        {
+            if(pts.Length > 0)
+            {
+                Point3d averagePoint = AveragePoints(pts);
+
+                //find the face who is closest to the averagePoint.
+                List<Brep> breps = brep.Faces.Select((face) => face.DuplicateFace(false)).ToList();
+                breps.Sort((x, y) => x.ClosestPoint(averagePoint).DistanceTo(averagePoint).CompareTo(
+                    y.ClosestPoint(averagePoint).DistanceTo(averagePoint)));
+                brep = breps[0];
+            }
+            return PBDistance(point, brep, out displayLine, out closestPt);
+        }
+
+
+        /// <summary>
+        /// Get distance between brep and point.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="brep"></param>
+        /// <param name="displayLine"></param>
+        /// <param name="closestPt"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PBDistance(Point3d point, Brep brep, out Line displayLine, out Point3d closestPt)
+        {
+            closestPt = brep.ClosestPoint(point);
+            return Distance(point, closestPt, out displayLine);
+        }
+
+        /// <summary>
+        /// Get average point.
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Point3d AveragePoints(Point3d[] points)
+        {
+            Point3d result = new Point3d();
+            foreach (Point3d point in points)
+            {
+                result += point;
+            }
+            return result / points.Length;
         }
         #endregion
     }
