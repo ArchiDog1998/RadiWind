@@ -474,6 +474,33 @@ namespace RadiWindAlgorithm.Measure
         #endregion
 
         #region SSAngle
+        /// <summary>
+        /// get the surfaces' angle.
+        /// </summary>
+        /// <param name="srf1"></param>
+        /// <param name="srf2"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="showPlane"></param>
+        /// <param name="plane1"></param>
+        /// <param name="plane2"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static string SSAngle(Surface srf1, Surface srf2, int decimals, out Plane showPlane, out Plane plane1, out Plane plane2)
+        {
+            double angle = SSAngle(srf1, srf2, out showPlane, out plane1, out plane2);
+            return NumberDecimal(angle.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// get the surfaces' angle.
+        /// </summary>
+        /// <param name="srf1"></param>
+        /// <param name="srf2"></param>
+        /// <param name="showPlane"></param>
+        /// <param name="plane1"></param>
+        /// <param name="plane2"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static double SSAngle(Surface srf1, Surface srf2, out Plane showPlane, out Plane plane1, out Plane plane2)
         {
             //Get surface's center infomation.
