@@ -50,6 +50,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Measure\BrepLengthComponent.cs" />
     <Compile Include="Measure\CCDistanceComponent.cs" />
     <Compile Include="Measure\DistanceComponent.cs" />
     <Compile Include="Measure\GetLengthComponent.cs" />

@@ -49,7 +49,7 @@ namespace RadiWind
             get
             {
                 //Return a string identifying you or your company.
-                return "秋水 笑里追风";
+                return "秋水, 笑里追风";
             }
         }
         public override string AuthorContact

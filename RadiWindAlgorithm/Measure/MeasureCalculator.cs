@@ -252,5 +252,76 @@ namespace RadiWindAlgorithm.Measure
             return Distance(point, closetPt, out displayLine);
         }
         #endregion
+
+        //This method doesn't have a test.
+        #region BrepLength
+        /// <summary>
+        /// Get the brep's longest edge's length and its params.
+        /// </summary>
+        /// <param name="brep"></param>
+        /// <param name="usebox">whether use boundingbox to find longest edge.</param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="longestCurve">longest edge itself.</param>
+        /// <param name="boundingBox">brep's bounding box.</param>
+        /// <param name="plane">edge's plane.</param>
+        /// <returns>longest edge's length.</returns>
+        [Pythonable]
+        public static string BrepLength(Brep brep, bool usebox, int decimals, out Curve longestCurve, out Box boundingBox, out Plane plane)
+        {
+            double distance = BrepLength(brep, usebox, out longestCurve, out boundingBox, out plane);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get the brep's longest edge's length and its params.
+        /// </summary>
+        /// <param name="brep"></param>
+        /// <param name="usebox">whether use boundingbox to find longest edge.</param>
+        /// <param name="longestCurve">longest edge itself.</param>
+        /// <param name="boundingBox">brep's bounding box.</param>
+        /// <param name="plane">edge's plane.</param>
+        /// <returns>longest edge's length.</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double BrepLength(Brep brep, bool usebox, out Curve longestCurve, out Box boundingBox, out Plane plane)
+        {
+            longestCurve = BrepLongestEdge(brep);
+
+            //get base plane.
+            if (!longestCurve.FrameAt(0, out plane))
+                throw new Exception(nameof(longestCurve) + "failed to get frame.");
+            plane = new Plane(plane.Origin, plane.YAxis, plane.ZAxis);
+
+            //get boundingbox
+            Transform transform = Transform.ChangeBasis(Plane.WorldXY, plane);
+            boundingBox = new Box(brep.GetBoundingBox(transform));
+
+            if (usebox)
+            {
+                longestCurve = BrepLongestEdge(boundingBox.ToBrep());
+            }
+
+            return longestCurve.GetLength();
+        }
+
+        /// <summary>
+        /// Get brep's longest edge and reparemeterize it.
+        /// </summary>
+        /// <param name="brep">brep to calculate.</param>
+        /// <returns>longest edge</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Curve BrepLongestEdge(Brep brep)
+        {
+            //get edges and sort it.
+            List<Curve> curves = brep.DuplicateEdgeCurves().ToList();
+            curves.Sort((x, y) => y.GetLength().CompareTo(x.GetLength()));
+
+            //get longest edge and reparameterize it.
+            Curve result = curves[0];
+            result.Domain = new Interval(0, 1);
+
+            //return.
+            return result;
+        }
+        #endregion
     }
 }
