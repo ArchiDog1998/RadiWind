@@ -443,7 +443,7 @@ namespace RadiWindAlgorithm.Measure
 
             vec1 = curve1.GetVecOnCurve(point1);
             vec2 = curve2.GetVecOnCurve(point2);
-            
+
             //Get angle in degree.
             double angle = Math.Acos(Math.Max(Math.Min(vec1 * vec2, 1.0), -1.0));
             return Rhino.RhinoMath.ToDegrees(angle);
@@ -473,6 +473,7 @@ namespace RadiWindAlgorithm.Measure
         }
         #endregion
 
+        //This method doesn't have a test.
         #region SSAngle
         /// <summary>
         /// get the surfaces' angle.
@@ -561,6 +562,53 @@ namespace RadiWindAlgorithm.Measure
             Vector3d[] der;
             srf.Evaluate(u, v, 1, out pt, out der);
             return new Plane(pt, der[0], der[1]);
+        }
+        #endregion
+
+        #region BrepArea
+        public static Dictionary<int, UnitSet> Unit { get; } = new Dictionary<int, UnitSet>()
+        {
+            {0, new UnitSet( "平方毫米", 1000) },
+            {1, new UnitSet( "平方米", 1) },
+        };
+
+        public struct UnitSet
+        {
+            public string Name { get; }
+            public double Data { get; set; }
+            public UnitSet(string name, double data)
+            {
+                this.Name = name;
+                this.Data = data;
+            }
+        }
+
+        /// <summary>
+        /// Get the brep's area.
+        /// </summary>
+        /// <param name="brep"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <returns>area</returns>
+        [Pythonable]
+        public static string BrepArea(Brep brep, int decimals, int unit)
+        {
+            if (!Unit.ContainsKey(unit)) throw new ArgumentOutOfRangeException(nameof(unit) + "is out of range!");
+
+            double mult = Unit[unit].Data;
+            switch (Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem)
+            {
+                case Rhino.UnitSystem.Millimeters:
+                    mult /= 1000;
+                    break;
+                case Rhino.UnitSystem.Centimeters:
+                    mult /= 100;
+                    break;
+                case Rhino.UnitSystem.Meters:
+                    break;
+                default:
+                    break;
+            }
+            return NumberDecimal((brep.GetArea() * Math.Pow(mult, 2)).ToString(), decimals);
         }
         #endregion
     }

@@ -50,6 +50,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Measure\BrepAreaComponent.cs" />
     <Compile Include="Measure\BrepLengthComponent.cs" />
     <Compile Include="Measure\CCAngleComponent.cs" />
     <Compile Include="Measure\CCDistanceComponent.cs" />
