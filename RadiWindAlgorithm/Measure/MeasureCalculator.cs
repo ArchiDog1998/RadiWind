@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rhino.Geometry;
+using Rhino.Geometry.Intersect;
 
 namespace RadiWindAlgorithm.Measure
 {
@@ -469,6 +470,70 @@ namespace RadiWindAlgorithm.Measure
             result.Unitize();
 
             return result;
+        }
+        #endregion
+
+        #region SSAngle
+        public static double SSAngle(Surface srf1, Surface srf2, out Plane showPlane, out Plane plane1, out Plane plane2)
+        {
+            //Get surface's center infomation.
+            Plane pl1 = srf1.GetBrepClosestPt();
+            Plane pl2 = srf2.GetBrepClosestPt();
+
+            double angleInDegree = PPAngle(ref pl1, ref pl2, out showPlane);
+            plane1 = pl1;
+            plane2 = pl2;
+            return angleInDegree;
+        }
+
+        /// <summary>
+        /// calculate the planes' angle.
+        /// </summary>
+        /// <param name="pl1"></param>
+        /// <param name="pl2"></param>
+        /// <param name="point"></param>
+        /// <param name="showPlane"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double PPAngle(ref Plane pl1, ref Plane pl2, out Plane showPlane)
+        {
+            //get the show Plane.
+            Line interSectLine;
+            Intersection.PlanePlane(pl1, pl2, out interSectLine);
+            Point3d point = AveragePoints(new Point3d[] { pl1.Origin, pl2.Origin });
+            showPlane = new Plane(interSectLine.ClosestPoint(point, true), interSectLine.Direction);
+
+            //update the Plane.
+            pl1 = new Plane(showPlane.ClosestPoint(pl1.Origin), pl1.XAxis, pl1.YAxis);
+            pl2 = new Plane(showPlane.ClosestPoint(pl2.Origin), pl2.XAxis, pl2.YAxis);
+
+            //calculate the angle
+            double angle = Vector3d.VectorAngle(pl1.ZAxis, pl2.ZAxis);
+            return Rhino.RhinoMath.ToDegrees(angle);
+        }
+
+        /// <summary>
+        /// Get CenterPoint's location, direction, plane.
+        /// </summary>
+        /// <param name="srf"></param>
+        /// <param name="vecMid"></param>
+        /// <param name="plMid"></param>
+        /// <returns></returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Plane GetBrepClosestPt(this Surface srf)
+        {
+            //get centerPoint
+            Point3d centerPoint = AveragePoints(srf.ToBrep().DuplicateVertices());
+
+            //Get u v.
+            double u, v;
+            srf.ClosestPoint(centerPoint, out u, out v);
+
+            //Get plane.
+            Point3d pt;
+            Vector3d[] der;
+            srf.Evaluate(u, v, 1, out pt, out der);
+            return new Plane(pt, der[0], der[1]);
         }
         #endregion
     }
