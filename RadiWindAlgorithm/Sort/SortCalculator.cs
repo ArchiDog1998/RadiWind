@@ -8,6 +8,7 @@
 using Grasshopper;
 using Rhino.Geometry;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -373,7 +374,169 @@ namespace RadiWindAlgorithm.Sort
 
         #endregion
 
-        #region NumberTolerancePartion
+        #region PointTolerancePartition
+        [Pythonable]
+        public static List<Point3d> PointTolerancePartition(List<Point3d> pointList, double tolerance, AverageFunction function)
+        {
+            return PointTolerancePartition(pointList, tolerance, GetAverageFunction(function));
+        }
+
+        private static List<Point3d> PointTolerancePartition(List<Point3d> pointList, double tolerance, Func<List<double>, double> averageFunc)
+        {
+            List<double> X, Y, Z;
+            GetPointXYZList(pointList, out X, out Y, out Z);
+            X = TolerancePartition(X, tolerance, averageFunc);
+            Y = TolerancePartition(Y, tolerance, averageFunc);
+            Z = TolerancePartition(Z, tolerance, averageFunc);
+
+            return ConstrustPointList(X, Y, Z);
+        }
+
+        private static Func<List<double>, double> GetAverageFunction(AverageFunction function)
+        {
+            switch (function)
+            {
+                default:
+                    throw new Exception($"Can't get the {function.ToString()}.");
+
+                case AverageFunction.Min:
+                    return (numList) =>
+                    {
+                        double min = numList[0];
+                        for (int i = 1; i < numList.Count; i++)
+                        {
+                            if (numList[i] < min)
+                                min = numList[i];
+                        }
+                        return min;
+                    };
+
+                case AverageFunction.Max:
+                    return (numList) =>
+                    {
+                        double max = numList[0];
+                        for (int i = 1; i < numList.Count; i++)
+                        {
+                            if (numList[i] > max)
+                                max = numList[i];
+                        }
+                        return max;
+                    };
+
+                case AverageFunction.Major:
+                    return (numList) =>
+                    {
+                        Dictionary<double, int> dict = new Dictionary<double, int>();
+                        foreach (var num in numList)
+                        {
+                            if (dict.Keys.Contains(num))
+                                dict[num]++;
+                            else
+                                dict[num] = 1;
+                        }
+
+                        double maxNum = dict.Keys.First();
+                        int count = 0;
+                        foreach (var keyValuePair in dict)
+                        {
+                            if (keyValuePair.Value > count)
+                                maxNum = keyValuePair.Key;
+                        }
+
+                        return maxNum;
+                    };
+
+                case AverageFunction.Average:
+                    return (numList) =>
+                    {
+                        double sum = 0;
+                        foreach (var num in numList)
+                        {
+                            sum += num;
+                        }
+                        return sum / numList.Count;
+                    };
+            }
+        }
+
+        /// <summary>
+        /// Decontruct point3d to three list.
+        /// </summary>
+        /// <param name="pointList"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        private static void GetPointXYZList(List<Point3d> pointList, out List<double> X, out List<double> Y, out List<double> Z)
+        {
+            X = new List<double>();
+            Y = new List<double>();
+            Z = new List<double>();
+
+            foreach (var pt in pointList)
+            {
+                X.Add(pt.X);
+                Y.Add(pt.Y);
+                Z.Add(pt.Z);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="Z"></param>
+        /// <returns></returns>
+        private static List<Point3d> ConstrustPointList(List<double> X, List<double> Y, List<double> Z)
+        {
+            if (X.Count != Y.Count || Y.Count != Z.Count)
+                throw new ArgumentException("Parameter X, Y, Z must have the same length.");
+
+            List<Point3d> outPt = new List<Point3d>();
+            for (int i = 0; i < X.Count; i++)
+            {
+                outPt.Add(new Point3d(X[i], Y[i], Z[i]));
+            }
+            return outPt;
+        }
+
+        /// <summary>
+        /// Modify numbers with tolerance.
+        /// </summary>
+        /// <param name="numberList"></param>
+        /// <param name="tolerance"></param>
+        /// <param name="averageFunc"></param>
+        /// <returns></returns>
+        private static List<double> TolerancePartition(List<double> numberList, double tolerance, Func<List<double>, double> averageFunc)
+        {
+            //NumberTolerancePartitionSort. Get a double list.
+            List<List<int>> indexs;
+            List<List<double>> partitionNumbers = NumberTolerancePartitionSort(numberList, tolerance, out indexs);
+
+            //Average the numbers.
+            double[] averagedNumber = partitionNumbers.Select(averageFunc).ToArray();
+
+            //Create sortableItems.
+            List<SortableItem<double>> numbersZip = new List<SortableItem<double>>();
+            for (int i = 0; i < partitionNumbers.Count; i++)
+            {
+                for (int j = 0; j < partitionNumbers[i].Count; j++)
+                {
+                    numbersZip.Add(new SortableItem<double>(indexs[i][j], averagedNumber[i]));
+                }
+            }
+
+            //Sort with the index.
+            numbersZip.Sort((x, y) => x.Index.CompareTo(y.Index));
+
+            //Unzip the numbers
+            return numbersZip.Select((x) => x.Value).ToList();
+        }
+
+        #endregion
+
+
+        #region NumberTolerancePartition
         /// <summary>
         /// Sort number and partition them with Tolerance.
         /// </summary>
@@ -406,7 +569,7 @@ namespace RadiWindAlgorithm.Sort
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<double>> NumberTolerancePartitionSort(List<double> numberList, double tolerance, out List<List<int>> indexes)
         {
-            return NumberTolerancePartitionSort<double>(numberList, (x) => x, tolerance, out indexes);
+            return NumberTolerancePartitionSort(numberList, (x) => x, tolerance, out indexes);
         }
 
         /// <summary>

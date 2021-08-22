@@ -73,6 +73,7 @@
     <Compile Include="Sort\NumberTolerancePartionSortComponent.cs" />
     <Compile Include="Sort\PointCurveSortComponent.cs" />
     <Compile Include="Sort\PointsPartitionPlaneSortComponent.cs" />
+    <Compile Include="Sort\PointTolerancePartitionComponent.cs" />
     <Compile Include="Sort\SortByCircleComponent.cs" />
     <Compile Include="Sort\SortPointInAxisComponent.cs" />
     <Compile Include="Sort\SortPointInAxisWithToleranceComponent.cs" />

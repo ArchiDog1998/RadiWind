@@ -34,7 +34,7 @@ namespace RadiWind.Sort
         /// Initializes a new instance of the NearlestPointSortComponent class.
         /// </summary>
         public NearlestPointSortComponent()
-          : base("NearlestPointSortComponent", "最近点排序",
+          : base("Nearlest Point Sort", "最近点排序",
               "最近点排序",
               "RadiWind", "Sort")
         {

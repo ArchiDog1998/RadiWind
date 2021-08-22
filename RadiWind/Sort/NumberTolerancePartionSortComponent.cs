@@ -49,7 +49,7 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("数组", "数组", "数组", GH_ParamAccess.list);
-            pManager.AddNumberParameter("容差", "容差", "容差", GH_ParamAccess.item);
+            pManager.AddNumberParameter("容差", "容差", "容差", GH_ParamAccess.item, 0.01);
         }
 
         /// <summary>
