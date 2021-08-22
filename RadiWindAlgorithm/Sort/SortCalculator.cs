@@ -662,6 +662,45 @@ namespace RadiWindAlgorithm.Sort
         #endregion
 
         #region NearlestPointSortByIndex
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputPoints"></param>
+        /// <param name="basePoint"></param>
+        /// <returns></returns>
+        private static int NearlestPointIndex(List<Point3d> inputPoints, Point3d basePoint)
+        {
+            double minDistance = basePoint.DistanceTo(inputPoints[0]);
+            int minIndex = 0;
+
+            for (int i = 1; i < inputPoints.Count; i++)
+            {
+                double distance = basePoint.DistanceTo(inputPoints[i]);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    minIndex = i;
+                }
+            }
+
+            return minIndex;
+        }
+
+        /// <summary>
+        /// Sort the nearlest point.the first point is selected by index.
+        /// </summary>
+        /// <param name="inputPoints">points list</param>
+        /// <param name="index">first point's index.</param>
+        /// <param name="indexes">sorted points' indexes.</param>
+        /// <returns>sorted points</returns>
+        [Pythonable]
+        public static List<Point3d> NearlestPointSortByIndex(List<Point3d> inputPoints, Point3d basePoint, out List<int> indexes)
+        {
+            List<SortableItem<Point3d>> result = NearlestPointSortByIndex(GetSortableItems(inputPoints), NearlestPointIndex(inputPoints, basePoint));
+            return DispatchIt<Point3d>(result, out indexes);
+        }
+
         /// <summary>
         /// Sort the nearlest point.the first point is selected by index.
         /// </summary>

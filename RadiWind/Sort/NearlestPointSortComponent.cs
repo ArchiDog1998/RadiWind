@@ -46,7 +46,10 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("起点Index", "起点Index", "起点Index", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("起点Index", "起点Index", "起点Index", GH_ParamAccess.item, 0);
+            pManager.AddPointParameter("采样点", "点", "采样点", GH_ParamAccess.item);
+
+            pManager[2].Optional = true;
         }
 
         /// <summary>
@@ -66,11 +69,21 @@ namespace RadiWind.Sort
         {
             List<Point3d> inputPts = new List<Point3d>();
             int index = 0;
+            Point3d basePt = default(Point3d);
+            
             DA.GetDataList(0, inputPts);
             DA.GetData(1, ref index);
 
             List<int> indexes = new List<int>();
-            List<Point3d> points = SortCalculator.NearlestPointSortByIndex(inputPts, index, out indexes);
+            List<Point3d> points;
+            if (DA.GetData(2, ref basePt))
+            {
+                points = SortCalculator.NearlestPointSortByIndex(inputPts, basePt, out indexes);
+            }
+            else
+            {
+                points = SortCalculator.NearlestPointSortByIndex(inputPts, index, out indexes);
+            }
 
             DA.SetDataList(0, points);
             DA.SetDataList(1, indexes);
