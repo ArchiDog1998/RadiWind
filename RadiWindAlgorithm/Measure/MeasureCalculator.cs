@@ -29,6 +29,7 @@ namespace RadiWindAlgorithm.Measure
         public static string NumberDecimal(string number, int decimals)
         {
             decimal result;
+
             if (!decimal.TryParse(number, out result))
                 throw new ArgumentOutOfRangeException(nameof(number), nameof(number) + "must be in a formular of number!");
 
@@ -117,6 +118,30 @@ namespace RadiWindAlgorithm.Measure
         #endregion
 
         #region Distance
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="decimals"></param>
+        /// <param name="loop"></param>
+        /// <param name="displayLines"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static List<string> Distance(List<Point3d> points, int decimals, bool loop, out List<Line> displayLines)
+        {
+            List<string> distances = new List<string>();
+            displayLines = new List<Line>();
+            int count = points.Count;
+
+            int loopCount = loop ? count : count - 1;
+            for (int i = 0; i < loopCount; i++)
+            {
+                Line line;
+                distances.Add(Distance(points[i], points[(i + 1) % count], decimals, out line));
+                displayLines.Add(line);
+            }
+            return distances;
+        }
 
         /// <summary>
         /// Get two points' distance.
