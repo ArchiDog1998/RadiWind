@@ -51,8 +51,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve A", "A", "Curve A", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Curve B", "B", "Curve B", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves", GH_ParamAccess.list);
+            pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
 
             this.Message = "线线最近距离";
@@ -63,8 +63,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.item);
-            pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.item);
+            pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.list);
+            pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -73,17 +73,17 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Curve curve1 = null;
-            Curve curve2 = null;
+            List<Curve> curves = new List<Curve>();
+            bool loop = false;
             int decimals = 0;
 
-            DA.GetData(0, ref curve1);
-            DA.GetData(1, ref curve2);
+            DA.GetDataList(0, curves);
+            DA.GetData(1, ref loop);
             DA.GetData(2, ref decimals);
 
-            Line displayLine = new Line();
-            DA.SetData(1, MeasureCalculator.CCDistance(curve1, curve2, out displayLine));
-            DA.SetData(0, displayLine);
+            List<Line> displayLines = new List<Line>();
+            DA.SetDataList(1, MeasureCalculator.CCDistance(curves, decimals, loop, out displayLines));
+            DA.SetDataList(0, displayLines);
         }
         #endregion
     }

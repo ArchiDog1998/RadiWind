@@ -216,6 +216,24 @@ namespace RadiWindAlgorithm.Measure
 
         //This method doesn't have a test.
         #region CCDistance
+
+        public static List<string> CCDistance(List<Curve> points, int decimals, bool loop, out List<Line> displayLines)
+        {
+            List<string> distances = new List<string>();
+            List<Line> displayLinesRelay = new List<Line>();
+
+            ListCalculate(points, (crv1, crv2) =>
+            {
+                Line line;
+                distances.Add(CCDistance(crv1, crv2, decimals, out line));
+                displayLinesRelay.Add(line);
+            }, loop);
+            displayLines = displayLinesRelay;
+
+            return distances;
+        }
+
+
         /// <summary>
         /// Get two curves' distance.
         /// </summary>
@@ -228,7 +246,7 @@ namespace RadiWindAlgorithm.Measure
         public static string CCDistance(Curve curve1, Curve curve2, int decimals, out Line displayLine)
         {
             double distance = CCDistance(curve1, curve2, out displayLine);
-            return NumberDecimal(displayLine.ToString(), decimals);
+            return NumberDecimal(displayLine.Length.ToString(), decimals);
         }
 
         /// <summary>
