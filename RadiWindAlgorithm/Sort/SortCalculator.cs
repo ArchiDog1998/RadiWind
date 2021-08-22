@@ -166,8 +166,7 @@ namespace RadiWindAlgorithm.Sort
                 List<Rectangle3d> relayRects = new List<Rectangle3d>();
                 foreach (Point3d point in point3Ds)
                 {
-                    relayRects.Add(new Rectangle3d(new Plane(point, basePlane.XAxis, basePlane.YAxis),
-                        new Interval(-xTol / 4, xTol / 4), new Interval(-yTol / 4, yTol / 4)));
+                    relayRects.Add(ShowRectangel(point, basePlane, xTol, yTol));
                 }
                 showRect.Add(relayRects);
             }
@@ -315,7 +314,7 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">the participated indexs</param>
         /// <returns>particiapted points</returns>
         [Pythonable]
-        public static List<List<Point3d>> SortPointInAxisWithTolerance(List<Point3d> inputPts, int axisType, Plane basePlane, double tolerance, out List<List<int>> indexes)
+        public static List<List<Point3d>> SortPointInAxisWithTolerance(List<Point3d> inputPts, int axisType, Plane basePlane, double tolerance, out List<List<int>> indexes, out List<List<Rectangle3d>> showRect)
         {
             List<SortableItem<Point3d>> sortedItems = SortCalculator.SortPointInAxis(inputPts, axisType);
             List<List<SortableItem<Point3d>>> participatedItems = SortCalculator.NumberTolerancePartitionSort<Point3d>(sortedItems, (x) =>
@@ -323,7 +322,30 @@ namespace RadiWindAlgorithm.Sort
                 return PlaneServer.PlaneCoordinate(basePlane, x)[axisType];
             }, tolerance);
 
-            return SortCalculator.DispatchIt(participatedItems, out indexes);
+
+            List<List<Point3d>> resultPts = SortCalculator.DispatchIt(participatedItems, out indexes);
+
+
+            #region GetShowRectangle
+            double max = double.MinValue;
+            double min = double.MaxValue;
+            foreach (var coorPoint in PlaneServer.PlaneCoordinate(basePlane, inputPts))
+            {
+                double y = coorPoint.Y;
+                if (y > max)
+                    max = y;
+                else if (y < min)
+                    min = y;
+            }
+            double yTol = max - min;
+            showRect = new List<List<Rectangle3d>>();
+            foreach (var ptLt in resultPts)
+            {
+                showRect.Add(ptLt.Select((pt) => ShowRectangel(pt, basePlane, tolerance, yTol)).ToList());
+            }
+            #endregion
+
+            return resultPts;
         }
         #endregion
 
@@ -762,6 +784,14 @@ namespace RadiWindAlgorithm.Sort
                 indexes.Add(item.Index);
             }
             return values;
+        }
+        #endregion
+
+        #region ShowRectangle
+        private static Rectangle3d ShowRectangel(Point3d point, Plane plane, double x, double y)
+        {
+            return new Rectangle3d(new Plane(point, plane.XAxis, plane.YAxis),
+                new Interval(-x / 2, x / 2), new Interval(-y / 2, y / 2));
         }
         #endregion
     }

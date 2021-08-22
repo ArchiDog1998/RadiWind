@@ -68,7 +68,7 @@ namespace RadiWind.Sort
         {
             pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
             pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
-            //pManager.AddCurveParameter("容差可视线", "容差可视线", "容差可视线", GH_ParamAccess.list);
+            pManager.AddCurveParameter("容差可视线", "容差可视线", "容差可视线", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -94,10 +94,12 @@ namespace RadiWind.Sort
             }
 
             List<List<int>> indexes;
-            List<List<Point3d>> outDatas = SortCalculator.SortPointInAxisWithTolerance(inputPts, axisType, basePlane, tolerance, out indexes);
+            List<List<Rectangle3d>> showRects;
+            List<List<Point3d>> outDatas = SortCalculator.SortPointInAxisWithTolerance(inputPts, axisType, basePlane, tolerance, out indexes,out showRects);
 
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(outDatas, this.RunCount - 1));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int >(indexes, this.RunCount - 1));
+            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree(outDatas, this.RunCount - 1));
+            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree(indexes, this.RunCount - 1));
+            DA.SetDataTree(2, DataTreeHelper.SetDataIntoDataTree(showRects, this.RunCount - 1));
 
         }
 

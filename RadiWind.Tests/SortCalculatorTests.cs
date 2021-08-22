@@ -70,7 +70,7 @@ namespace RadiWind.Tests
             };
 
             List<List<int>> actualList;
-            SortCalculator.SortPointInAxisWithTolerance(TestPts, 0, Plane.WorldYZ, 20, out actualList);
+            SortCalculator.SortPointInAxisWithTolerance(TestPts, 0, Plane.WorldYZ, 20, out actualList, out _);
 
             bool flag = TestsHelper.IsDoubleListEqual(exceptedList, actualList, (x, y) => x == y);
 
