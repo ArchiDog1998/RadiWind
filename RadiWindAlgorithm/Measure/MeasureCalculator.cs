@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Geometry.Intersect;
+using Grasshopper.Kernel;
 
 namespace RadiWindAlgorithm.Measure
 {
@@ -39,13 +40,10 @@ namespace RadiWindAlgorithm.Measure
         [Pythonable]
         public static string NumberDecimal(string number, int decimals)
         {
-            double result;
-            //StringParserSettings setting = new StringParserSettings();
+            double result = double.NaN;
 
-            //if (StringParser.ParseNumber(number, 100, setting, ref setting, out result)!=0)
-            //    throw new ArgumentOutOfRangeException(nameof(number), nameof(number) + "must be in a formular of number!");
-            if (!double.TryParse(number, out result))
-                throw new Exception();
+            if (!GH_Convert.ToDouble_Secondary(number, ref result))
+                throw new ArgumentOutOfRangeException(nameof(number), $"\"{number.ToString()}\" must be in a formular of number!");
 
             if (decimals >= 0)
             {
