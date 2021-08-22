@@ -50,8 +50,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Point A", "A", "Point A", GH_ParamAccess.item);
-            pManager.AddPointParameter("Point B", "B", "Point B", GH_ParamAccess.item);
+            pManager.AddPointParameter("Points", "P", "Points", GH_ParamAccess.list);
+            pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
             pManager.AddPlaneParameter("Plane", "Pl", "Plane", GH_ParamAccess.item);
             pManager[2].Optional = true;
             pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
@@ -64,8 +64,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.item);
-            pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.item);
+            pManager.AddLineParameter("Display Line", "L", "Display Line", GH_ParamAccess.list);
+            pManager.AddTextParameter("Distance", "D", "Distance", GH_ParamAccess.list) ;
         }
 
         /// <summary>
@@ -74,20 +74,20 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Point3d point1 = Point3d.Origin;
-            Point3d point2 = Point3d.Origin;
+            List<Point3d> points = new List<Point3d>();
+            bool loop = false;
             Plane plane = Plane.WorldXY;
             int decimals = 0;
 
-            DA.GetData(0, ref point1);
-            DA.GetData(1, ref point2);
+            DA.GetDataList(0, points);
+            DA.GetData(1, ref loop);
             DA.GetData(2, ref plane);
             DA.GetData(3, ref decimals);
 
-            Line displayLine = new Line();
+            List<Line> displayLines = new List<Line>();
 
-            DA.SetData(1, MeasureCalculator.HDistance(point1, point2, plane, decimals, out displayLine));
-            DA.SetData(0, displayLine);
+            DA.SetDataList(1, MeasureCalculator.HDistance( points, decimals, loop, plane, out displayLines));
+            DA.SetDataList(0, displayLines);
         }
         #endregion
     }

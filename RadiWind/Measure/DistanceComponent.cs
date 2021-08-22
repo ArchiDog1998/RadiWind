@@ -51,8 +51,9 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("Points", "P", "Points", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
             pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
+            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+
 
             this.Message = "两点距离";
 
@@ -78,8 +79,8 @@ namespace RadiWind.Measure
             bool loop = false;
 
             DA.GetDataList(0, pts);
-            DA.GetData(1, ref decimals);
-            DA.GetData(2, ref loop);
+            DA.GetData(2, ref decimals);
+            DA.GetData(1, ref loop);
 
             List<Line> displayLine = new List<Line>();
             DA.SetDataList(1, MeasureCalculator.Distance(pts,decimals, loop, out displayLine));

@@ -12,12 +12,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rhino.Geometry;
+using Rhino.Input;
 using Rhino.Geometry.Intersect;
 
 namespace RadiWindAlgorithm.Measure
 {
     public static class MeasureCalculator
     {
+        private static void ListCalculate<T>(List<T> calculateObjects, Action<T, T> action, bool loop)
+        {
+            int count = calculateObjects.Count;
+            int loopCount = loop ? count : count - 1;
+            for (int i = 0; i < loopCount; i++)
+            {
+                action(calculateObjects[i], calculateObjects[(i + 1) % count]);
+            }
+        }
+
         #region NumberDecimal
         /// <summary>
         /// Convert a text into the right format.
@@ -28,10 +39,13 @@ namespace RadiWindAlgorithm.Measure
         [Pythonable]
         public static string NumberDecimal(string number, int decimals)
         {
-            decimal result;
+            double result;
+            //StringParserSettings setting = new StringParserSettings();
 
-            if (!decimal.TryParse(number, out result))
-                throw new ArgumentOutOfRangeException(nameof(number), nameof(number) + "must be in a formular of number!");
+            //if (StringParser.ParseNumber(number, 100, setting, ref setting, out result)!=0)
+            //    throw new ArgumentOutOfRangeException(nameof(number), nameof(number) + "must be in a formular of number!");
+            if (!double.TryParse(number, out result))
+                throw new Exception();
 
             if (decimals >= 0)
             {
@@ -39,9 +53,9 @@ namespace RadiWindAlgorithm.Measure
             }
             else
             {
-                decimal t = (decimal)Math.Pow(10, Math.Abs(decimals));
-                decimal multi = result / t;
-                return (decimal.Parse(multi.ToString("F0")) * t).ToString();
+                double t = (double)Math.Pow(10, Math.Abs(decimals));
+                double multi = result / t;
+                return (double.Parse(multi.ToString("F0")) * t).ToString();
             }
         }
         #endregion
@@ -61,6 +75,32 @@ namespace RadiWindAlgorithm.Measure
         {
             double distance = HDistance(point1, poitn2, plane, out displayLine);
             return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="decimals"></param>
+        /// <param name="loop"></param>
+        /// <param name="plane"></param>
+        /// <param name="displayLines"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static List<string> HDistance(List<Point3d> points, int decimals, bool loop,Plane plane, out List<Line> displayLines)
+        {
+            List<string> distances = new List<string>();
+            List<Line> displayLinesRelay = new List<Line>();
+
+            ListCalculate(points, (pt1, pt2) =>
+            {
+                Line line;
+                distances.Add(HDistance(pt1, pt2, plane, decimals, out line));
+                displayLinesRelay.Add(line);
+            }, loop);
+            displayLines = displayLinesRelay;
+
+            return distances;
         }
 
         /// <summary>
@@ -118,6 +158,7 @@ namespace RadiWindAlgorithm.Measure
         #endregion
 
         #region Distance
+
         /// <summary>
         /// 
         /// </summary>
@@ -130,16 +171,16 @@ namespace RadiWindAlgorithm.Measure
         public static List<string> Distance(List<Point3d> points, int decimals, bool loop, out List<Line> displayLines)
         {
             List<string> distances = new List<string>();
-            displayLines = new List<Line>();
-            int count = points.Count;
+            List<Line> displayLinesRelay = new List<Line>();
 
-            int loopCount = loop ? count : count - 1;
-            for (int i = 0; i < loopCount; i++)
+            ListCalculate(points, (pt1, pt2) =>
             {
-                Line line;
-                distances.Add(Distance(points[i], points[(i + 1) % count], decimals, out line));
-                displayLines.Add(line);
-            }
+                 Line line;
+                 distances.Add(Distance(pt1, pt2, decimals, out line));
+                 displayLinesRelay.Add(line);
+            }, loop);
+            displayLines = displayLinesRelay;
+
             return distances;
         }
 
