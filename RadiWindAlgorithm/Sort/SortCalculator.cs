@@ -462,7 +462,10 @@ namespace RadiWindAlgorithm.Sort
                         foreach (var keyValuePair in dict)
                         {
                             if (keyValuePair.Value > count)
+                            {
                                 maxNum = keyValuePair.Key;
+                                count = keyValuePair.Value;
+                            }
                         }
 
                         return maxNum;
