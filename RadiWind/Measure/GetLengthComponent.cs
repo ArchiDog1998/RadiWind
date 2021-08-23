@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class GetLengthComponent : GH_Component
+    public class GetLengthComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the GetLengthComponent class.
         /// </summary>
         public GetLengthComponent()
-          : base("GetLengthComponent", "GetLength",
-              "Description",
-              "RadiWind", "Measure")
+          : base("GetLengthComponent", "GetLength","Description")
         {
         }
 
@@ -51,7 +49,7 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Cureve", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
 
             this.Message = "线长度及两端点";
         }
@@ -74,14 +72,12 @@ namespace RadiWind.Measure
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             Curve curve = null;
-            int decimals = 0;
 
             DA.GetData(0, ref curve);
-            DA.GetData(1, ref decimals);
 
             Point3d startPt = new Point3d();
             Point3d endPt = new Point3d();
-            DA.SetData(2, MeasureCalculator.GetLength(curve, decimals, out startPt, out endPt));
+            DA.SetData(2, MeasureCalculator.GetLength(curve, Decimal, out startPt, out endPt));
             DA.SetData(0, startPt);
             DA.SetData(1, endPt);
         }

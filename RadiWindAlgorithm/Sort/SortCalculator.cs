@@ -532,19 +532,15 @@ namespace RadiWindAlgorithm.Sort
         private static List<double> TolerancePartition(List<double> numberList, double tolerance, Func<List<double>, double> averageFunc)
         {
             //NumberTolerancePartitionSort. Get a double list.
-            List<List<int>> indexs;
-            List<List<double>> partitionNumbers = NumberTolerancePartitionSort(numberList, tolerance, out indexs);
+            List<List<SortableItem<double>>> partitionNumberSet = NumberTolerancePartitionSort(numberList, (x)=> x, tolerance);
 
-            //Average the numbers.
-            double[] averagedNumber = partitionNumbers.Select(averageFunc).ToArray();
-
-            //Create sortableItems.
             List<SortableItem<double>> numbersZip = new List<SortableItem<double>>();
-            for (int i = 0; i < partitionNumbers.Count; i++)
+            foreach (var sortableLt in partitionNumberSet)
             {
-                for (int j = 0; j < partitionNumbers[i].Count; j++)
+                double value = averageFunc(sortableLt.Select((item) => item.Value).ToList());
+                foreach (var item in sortableLt)
                 {
-                    numbersZip.Add(new SortableItem<double>(indexs[i][j], averagedNumber[i]));
+                    numbersZip.Add(new SortableItem<double>(item.Index, value));
                 }
             }
 

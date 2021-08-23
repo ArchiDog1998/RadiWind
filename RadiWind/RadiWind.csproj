@@ -54,6 +54,8 @@
     <Compile Include="Measure\BrepLengthComponent.cs" />
     <Compile Include="Measure\CCAngleComponent.cs" />
     <Compile Include="Measure\CCDistanceComponent.cs" />
+    <Compile Include="Measure\BaseMeasureComponent.cs" />
+    <Compile Include="Measure\DefaultDecimalComponent.cs" />
     <Compile Include="Measure\DistanceComponent.cs" />
     <Compile Include="Measure\GetLengthComponent.cs" />
     <Compile Include="Measure\HDistanceComponent.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Measure\PCDistanceComponent.cs" />
     <Compile Include="Measure\PVDistanceComponent.cs" />
     <Compile Include="Measure\SSAngleComponent.cs" />
+    <Compile Include="RadiWindComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

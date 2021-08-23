@@ -43,7 +43,7 @@ namespace RadiWindAlgorithm.Measure
             double result = double.NaN;
 
             if (!GH_Convert.ToDouble_Secondary(number, ref result))
-                throw new ArgumentOutOfRangeException(nameof(number), $"\"{number.ToString()}\" must be in a formular of number!");
+                throw new ArgumentOutOfRangeException(nameof(number), $"\"{number}\" must be in a formular of number!");
 
             if (decimals >= 0)
             {
@@ -649,21 +649,11 @@ namespace RadiWindAlgorithm.Measure
 
         //This method doesn't have a test.
         #region BrepArea
-        public static Dictionary<int, UnitSet> Unit { get; } = new Dictionary<int, UnitSet>()
-        {
-            {0, new UnitSet( "平方毫米", 1000) },
-            {1, new UnitSet( "平方米", 1) },
-        };
 
-        public struct UnitSet
+        public enum Unit
         {
-            public string Name { get; }
-            public double Data { get; }
-            public UnitSet(string name, double data)
-            {
-                this.Name = name;
-                this.Data = data;
-            }
+            平方毫米 = 1000,
+            平方米 = 1,
         }
 
         /// <summary>
@@ -675,9 +665,7 @@ namespace RadiWindAlgorithm.Measure
         [Pythonable]
         public static string BrepArea(Brep brep, int decimals, int unit)
         {
-            if (!Unit.ContainsKey(unit)) throw new ArgumentOutOfRangeException(nameof(unit) + "is out of range!");
-
-            double mult = Unit[unit].Data;
+            double mult = unit;
             switch (Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem)
             {
                 case Rhino.UnitSystem.Millimeters:

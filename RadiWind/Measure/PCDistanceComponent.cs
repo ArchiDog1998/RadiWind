@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class PCDistanceComponent : GH_Component
+    public class PCDistanceComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the PCDistanceComponent class.
         /// </summary>
         public PCDistanceComponent()
-          : base("PCDistanceComponent", "PCDistance",
-              "Description",
-              "RadiWind", "Measure")
+          : base("PCDistanceComponent", "PCDistance", "Description")
         {
         }
 
@@ -52,7 +50,7 @@ namespace RadiWind.Measure
         {
             pManager.AddPointParameter("Point", "P", "Point", GH_ParamAccess.item);
             pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
 
             this.Message = "点到线的垂距";
         }
@@ -74,14 +72,12 @@ namespace RadiWind.Measure
         {
             Point3d point = new Point3d();
             Curve curve = null;
-            int decimals = 0;
 
             DA.GetData(0, ref point);
             DA.GetData(1, ref curve);
-            DA.GetData(2, ref decimals);
 
             Line displayLine = new Line();
-            DA.SetData(1, MeasureCalculator.PCDistance(curve, point, decimals, out displayLine));
+            DA.SetData(1, MeasureCalculator.PCDistance(curve, point, Decimal, out displayLine));
             DA.SetData(0, displayLine);
         }
         #endregion

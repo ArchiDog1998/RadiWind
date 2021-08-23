@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class NumberDecimalsComponent : GH_Component
+    public class NumberDecimalsComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the NumberDecimalsComponent class.
         /// </summary>
         public NumberDecimalsComponent()
-          : base("NumberDecimalsComponent", "NumberDecimals",
-              "Description",
-              "RadiWind", "Measure")
+          : base("NumberDecimalsComponent", "NumberDecimals", "Description")
         {
         }
 
@@ -51,7 +49,7 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Number", "N", "Number", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimal", "D", "Decimal", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
         }
 
         /// <summary>
@@ -68,12 +66,11 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            base.SolveInstance(DA);
             string input = "";
-            int dec = 0;
-            DA.GetData(0, ref input);
-            DA.GetData(1, ref dec);
 
-            DA.SetData(0, MeasureCalculator.NumberDecimal(input, dec));
+            DA.GetData(0, ref input);
+            DA.SetData(0, MeasureCalculator.NumberDecimal(input, Decimal));
         }
         #endregion
     }

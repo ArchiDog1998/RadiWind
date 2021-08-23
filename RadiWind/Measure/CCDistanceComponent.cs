@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class CCDistanceComponent : GH_Component
+    public class CCDistanceComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -39,9 +39,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the CCDistanceComponent class.
         /// </summary>
         public CCDistanceComponent()
-          : base("CCDistanceComponent", "CCDistance",
-              "Description",
-              "RadiWind", "Measure")
+          : base("CCDistanceComponent", "CCDistance", "Description")
         {
         }
 
@@ -53,7 +51,7 @@ namespace RadiWind.Measure
         {
             pManager.AddCurveParameter("Curves", "C", "Curves", GH_ParamAccess.list);
             pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
 
             this.Message = "线线最近距离";
         }
@@ -75,14 +73,12 @@ namespace RadiWind.Measure
         {
             List<Curve> curves = new List<Curve>();
             bool loop = false;
-            int decimals = 0;
 
             DA.GetDataList(0, curves);
             DA.GetData(1, ref loop);
-            DA.GetData(2, ref decimals);
 
             List<Line> displayLines = new List<Line>();
-            DA.SetDataList(1, MeasureCalculator.CCDistance(curves, decimals, loop, out displayLines));
+            DA.SetDataList(1, MeasureCalculator.CCDistance(curves, Decimal, loop, out displayLines));
             DA.SetDataList(0, displayLines);
         }
         #endregion

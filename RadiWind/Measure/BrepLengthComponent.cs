@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class BrepLengthComponent : GH_Component
+    public class BrepLengthComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the BrepLengthComponent class.
         /// </summary>
         public BrepLengthComponent()
-          : base("BrepLengthComponent", "BrepLength",
-              "Description",
-              "RadiWind", "Measure")
+          : base("BrepLengthComponent", "BrepLength","Description")
         {
         }
 
@@ -51,8 +49,8 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
             pManager.AddBooleanParameter("UseBox", "U", "UseBox", GH_ParamAccess.item, false);
+            base.RegisterInputParams(pManager);
 
             this.Message = "多重曲面的最长边";
         }
@@ -75,17 +73,15 @@ namespace RadiWind.Measure
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             Brep brep = null;
-            int decimals = 0;
             bool useBox = false;
 
             DA.GetData(0, ref brep);
-            DA.GetData(1, ref decimals);
-            DA.GetData(2, ref useBox);
+            DA.GetData(1, ref useBox);
 
             Curve displayCurve;
             Box boundingbox;
             Plane plane;
-            DA.SetData(1, MeasureCalculator.BrepLength(brep, useBox, out displayCurve, out boundingbox, out plane));
+            DA.SetData(1, MeasureCalculator.BrepLength(brep, useBox, Decimal, out displayCurve, out boundingbox, out plane));
             DA.SetData(0, displayCurve);
             DA.SetData(2, boundingbox);
             DA.SetData(3, plane);

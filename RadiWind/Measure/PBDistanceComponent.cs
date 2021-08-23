@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class PBDistanceComponent : GH_Component
+    public class PBDistanceComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the PBDistanceComponent class.
         /// </summary>
         public PBDistanceComponent()
-          : base("PBDistanceComponent", "PBDistance",
-              "Description",
-              "RadiWind", "Measure")
+          : base("PBDistanceComponent", "PBDistance", "Description")
         {
         }
 
@@ -54,7 +52,8 @@ namespace RadiWind.Measure
             pManager.AddPointParameter("Points", "Ps", "Points", GH_ParamAccess.list);
             pManager[1].Optional = true;
             pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+
+            base.RegisterInputParams(pManager);
 
             this.Message = "点到多重曲面的距离";
         }
@@ -78,15 +77,13 @@ namespace RadiWind.Measure
             Point3d point = new Point3d();
             List<Point3d> points = new List<Point3d>();
             Brep brep = null;
-            int decimals = 0;
 
             DA.GetData(0, ref point);
             DA.GetDataList(1, points);
             DA.GetData(2, ref brep);
-            DA.GetData(3, ref decimals);
 
             Line displayLine = new Line();
-            DA.SetData(1, MeasureCalculator.PBDistance(point, points.ToArray(), ref brep, decimals, out displayLine, out _));
+            DA.SetData(1, MeasureCalculator.PBDistance(point, points.ToArray(), ref brep, Decimal, out displayLine, out _));
             DA.SetData(0, displayLine);
             DA.SetData(2, brep);
         }

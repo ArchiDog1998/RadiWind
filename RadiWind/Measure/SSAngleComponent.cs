@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class SSAngleComponent : GH_Component
+    public class SSAngleComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -40,8 +40,7 @@ namespace RadiWind.Measure
         /// </summary>
         public SSAngleComponent()
           : base("SSAngleComponent", "SSAngle",
-              "Description",
-              "RadiWind", "Measure")
+              "Description")
         {
         }
 
@@ -53,7 +52,7 @@ namespace RadiWind.Measure
         {
             pManager.AddSurfaceParameter("Surface A", "A", "Surface A", GH_ParamAccess.item);
             pManager.AddSurfaceParameter("Surface B", "B", "Surface B", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
 
             this.Message = "面到面的夹角";
         }
@@ -77,14 +76,12 @@ namespace RadiWind.Measure
         {
             Surface srf1 = default(Surface);
             Surface srf2 = default(Surface);
-            int decimals = 0;
 
             DA.GetData(0, ref srf1);
             DA.GetData(1, ref srf2);
-            DA.GetData(2, ref decimals);
 
             Plane bpl, pl1, pl2;
-            DA.SetData(3, MeasureCalculator.SSAngle(srf1, srf2, out bpl, out pl1, out pl2));
+            DA.SetData(3, MeasureCalculator.SSAngle(srf1, srf2, Decimal, out bpl, out pl1, out pl2));
             DA.SetData(0, bpl);
             DA.SetData(1, pl1);
             DA.SetData(2, pl2);

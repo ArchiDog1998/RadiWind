@@ -16,7 +16,7 @@ using Grasshopper.Kernel.Types;
 
 namespace RadiWind.Measure
 {
-    public class BrepAreaComponent : GH_Component
+    public class BrepAreaComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -40,28 +40,21 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the BrepAreaComponent class.
         /// </summary>
         public BrepAreaComponent()
-          : base("BrepAreaComponent", "BrepArea",
-              "Description",
-              "RadiWind", "Measure")
+          : base("BrepAreaComponent", "BrepArea","Description")
         {
         }
 
         #region Calculate
+
+
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
-
-            Param_Integer param = new Param_Integer();
-            foreach (int key in MeasureCalculator.Unit.Keys)
-            {
-                param.AddNamedValue(MeasureCalculator.Unit[key].Name, key);
-            }
-            param.SetPersistentData(new GH_Integer(0));
-            pManager.AddParameter(param, "Unit", "U", "Unit", GH_ParamAccess.item);
+            AddIntegerParameter(pManager, "Unit", "U", "Unit", GH_ParamAccess.item, typeof(MeasureCalculator.Unit), 1);
+            base.RegisterInputParams(pManager);
 
             this.Message = "多重曲面面积";
         }
@@ -82,20 +75,12 @@ namespace RadiWind.Measure
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             Brep brep = null;
-            int decimals = 0;
             int unit = 0;
 
             DA.GetData(0, ref brep);
-            DA.GetData(1, ref decimals);
-            DA.GetData(2, ref unit);
-
-            if (!MeasureCalculator.Unit.ContainsKey(unit))
-            {
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unit 必须要在区间内！");
-                unit = 0;
-            }
-            DA.SetData(0, MeasureCalculator.BrepArea(brep, decimals, unit));
-            DA.SetData(1, MeasureCalculator.Unit[unit].Name);
+            DA.GetData(1, ref unit);
+            DA.SetData(0, MeasureCalculator.BrepArea(brep, Decimal, unit));
+            DA.SetData(1, ((MeasureCalculator.Unit)unit).ToString());
         }
         #endregion
     }

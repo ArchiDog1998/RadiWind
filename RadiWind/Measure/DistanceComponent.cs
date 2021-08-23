@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class DistanceComponent : GH_Component
+    public class DistanceComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the DistanceComponent class.
         /// </summary>
         public DistanceComponent()
-          : base("DistanceComponent", "Distance",
-              "Description",
-              "RadiWind", "Measure")
+          : base("DistanceComponent", "Distance", "Description")
         {
         }
 
@@ -52,8 +50,7 @@ namespace RadiWind.Measure
         {
             pManager.AddPointParameter("Points", "P", "Points", GH_ParamAccess.list);
             pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
-
+            base.RegisterInputParams(pManager);
 
             this.Message = "两点距离";
 
@@ -75,15 +72,13 @@ namespace RadiWind.Measure
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Point3d> pts = new List<Point3d>();
-            int decimals = 0;
             bool loop = false;
 
             DA.GetDataList(0, pts);
-            DA.GetData(2, ref decimals);
             DA.GetData(1, ref loop);
 
             List<Line> displayLine = new List<Line>();
-            DA.SetDataList(1, MeasureCalculator.Distance(pts,decimals, loop, out displayLine));
+            DA.SetDataList(1, MeasureCalculator.Distance(pts, Decimal, loop, out displayLine));
             DA.SetDataList(0, displayLine);
         }
         #endregion

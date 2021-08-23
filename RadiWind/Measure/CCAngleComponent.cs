@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Measure;
 
 namespace RadiWind.Measure
 {
-    public class CCAngleComponent : GH_Component
+    public class CCAngleComponent : BaseMeasureComponent
     {
         #region Values
         #region Basic Component info
@@ -38,9 +38,7 @@ namespace RadiWind.Measure
         /// Initializes a new instance of the CCAngleComponent class.
         /// </summary>
         public CCAngleComponent()
-          : base("CCAngleComponent", "CCAngle",
-              "Description",
-              "RadiWind", "Measure")
+          : base("CCAngleComponent", "CCAngle", "Description")
         {
         }
 
@@ -52,7 +50,7 @@ namespace RadiWind.Measure
         {
             pManager.AddCurveParameter("Curve A", "A", "Curve A", GH_ParamAccess.item);
             pManager.AddCurveParameter("Curve B", "B", "Curve B", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Decimals", "D", "Decimals", GH_ParamAccess.item, 0);
+            base.RegisterInputParams(pManager);
 
             this.Message = "线线切方向夹角";
         }
@@ -77,17 +75,15 @@ namespace RadiWind.Measure
         {
             Curve curve1 = null;
             Curve curve2 = null;
-            int decimals = 0;
 
             DA.GetData(0, ref curve1);
             DA.GetData(1, ref curve2);
-            DA.GetData(2, ref decimals);
 
             Point3d pt1, pt2;
             Vector3d vec1, vec2;
             //string ang;
 
-            DA.SetData(4, MeasureCalculator.CCAngle(curve1, curve2, decimals, out pt1, out pt2, out vec1, out vec2));
+            DA.SetData(4, MeasureCalculator.CCAngle(curve1, curve2, Decimal, out pt1, out pt2, out vec1, out vec2));
             DA.SetData(0, pt1);
             DA.SetData(1, pt2);
             DA.SetData(2, vec1);
