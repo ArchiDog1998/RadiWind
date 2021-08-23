@@ -16,7 +16,7 @@ using Grasshopper;
 
 namespace RadiWind.Sort
 {
-    public class SortPointInAxisWithToleranceComponent : GH_Component
+    public class SortPointInAxisWithToleranceComponent : BaseSortComponent
     {
         #region Basic Component Info
         /// <summary>
@@ -40,8 +40,7 @@ namespace RadiWind.Sort
         /// </summary>
         public SortPointInAxisWithToleranceComponent()
           : base("SortPointInAxisWithToleranceComponent", "点但坐标容差排序",
-              "点但坐标容差排序",
-              "RadiWind", "Sort")
+              "点但坐标容差排序")
         {
         }
 

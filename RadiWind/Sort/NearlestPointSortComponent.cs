@@ -13,7 +13,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class NearlestPointSortComponent : GH_Component
+    public class NearlestPointSortComponent : BaseSortComponent
     {
 
         /// <summary>
@@ -35,8 +35,7 @@ namespace RadiWind.Sort
         /// </summary>
         public NearlestPointSortComponent()
           : base("Nearlest Point Sort", "最近点排序",
-              "最近点排序",
-              "RadiWind", "Sort")
+              "最近点排序")
         {
         }
 

@@ -26,8 +26,8 @@ namespace RadiWind
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
-        protected RadiWindComponent(string name, string nickName, string descrption, SubCateName cateName)
-          : base(name, nickName, descrption, "RadiWind", cateName.ToString())
+        protected RadiWindComponent(string name, string nickName, string description, SubCateName cateName)
+          : base(name, nickName, description, "RadiWind", cateName.ToString())
         {
         }
 

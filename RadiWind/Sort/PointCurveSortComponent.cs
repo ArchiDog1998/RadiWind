@@ -14,7 +14,7 @@ using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
-    public class PointCurveSortComponent : GH_Component
+    public class PointCurveSortComponent : BaseSortComponent
     {
         #region Basic Component Info
 
@@ -42,8 +42,7 @@ namespace RadiWind.Sort
         /// </summary>
         public PointCurveSortComponent()
             : base("PointCurveSortComponent", "点多线排序",
-                    "点多线排序",
-                    "RadiWind", "Sort")
+                    "点多线排序")
         {
         }
 

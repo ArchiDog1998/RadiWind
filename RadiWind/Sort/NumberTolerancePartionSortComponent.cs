@@ -14,7 +14,7 @@ using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
-    public class NumberTolerancePartionSortComponent : GH_Component
+    public class NumberTolerancePartionSortComponent : BaseSortComponent
     {
         #region Basic Component Info
         public override GH_Exposure Exposure => GH_Exposure.primary;
@@ -38,8 +38,7 @@ namespace RadiWind.Sort
         /// </summary>
         public NumberTolerancePartionSortComponent()
           : base("NumberTolerancePartionSortComponent", "数字容差分组",
-              "Description",
-              "RadiWind", "Sort")
+              "Description")
         {
         }
 

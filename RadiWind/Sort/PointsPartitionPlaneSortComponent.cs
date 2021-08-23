@@ -14,7 +14,7 @@ using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
-    public class PointsPartitionPlaneSortComponent : GH_Component
+    public class PointsPartitionPlaneSortComponent : BaseSortComponent
     {
         #region Basic Component Info
 
@@ -42,8 +42,7 @@ namespace RadiWind.Sort
         /// </summary>
         public PointsPartitionPlaneSortComponent()
             : base("PointsPartitionPlaneSortComponent", "点平面容差分组排序",
-                    "点平面容差分组排序",
-                    "RadiWind", "Sort")
+                    "点平面容差分组排序")
         {
         }
 

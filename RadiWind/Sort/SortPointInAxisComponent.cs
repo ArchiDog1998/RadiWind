@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class SortPointInAxisComponent : GH_Component
+    public class SortPointInAxisComponent : BaseSortComponent
     {
         #region Basic Component Info
 
@@ -42,8 +42,7 @@ namespace RadiWind.Sort
         /// </summary>
         public SortPointInAxisComponent()
           : base("SortPointInAxisComponent", "点单坐标排序",
-              "点单坐标排序",
-              "RadiWind", "Sort")
+              "点单坐标排序")
         {
         }
 

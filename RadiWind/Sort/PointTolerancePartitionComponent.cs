@@ -8,15 +8,14 @@ using Grasshopper.Kernel.Parameters;
 
 namespace RadiWind.Sort
 {
-    public class PointTolerancePartitionComponent : GH_Component
+    public class PointTolerancePartitionComponent : BaseSortComponent
     {
         /// <summary>
         /// Initializes a new instance of the PointTolerancePartitionComponent class.
         /// </summary>
         public PointTolerancePartitionComponent()
           : base("Point Tolerance Partition", "点分组",
-              "点分组",
-              "RadiWind", "Sort")
+              "点分组")
         {
         }
 

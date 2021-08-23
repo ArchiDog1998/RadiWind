@@ -15,7 +15,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class SortByCircleComponent : GH_Component
+    public class SortByCircleComponent : BaseSortComponent
     {
         #region Basic Component Info
 
@@ -43,8 +43,7 @@ namespace RadiWind.Sort
         /// </summary>
         public SortByCircleComponent()
             : base("SortByCircleComponent", "环绕排序",
-                    "环绕排序",
-                    "RadiWind", "Sort")
+                    "环绕排序")
         {
         }
 
