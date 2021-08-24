@@ -73,6 +73,7 @@
     <Compile Include="RadiWindInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sort\BaseSortComponent.cs" />
+    <Compile Include="Sort\BasePointSortComponent.cs" />
     <Compile Include="Sort\NearlestPointSortComponent.cs" />
     <Compile Include="Sort\NumberTolerancePartionSortComponent.cs" />
     <Compile Include="Sort\PointCurveSortComponent.cs" />
@@ -96,6 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\00 Sort_Core.png" />
   </ItemGroup>
   <ItemGroup>

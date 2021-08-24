@@ -13,7 +13,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class NearlestPointSortComponent : BaseSortComponent
+    public class NearlestPointSortComponent : BasePointSortComponent
     {
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            RegisterPointsInput(pManager);
             pManager.AddIntegerParameter("起点Index", "起点Index", "起点Index", GH_ParamAccess.item, 0);
             pManager.AddPointParameter("采样点", "点", "采样点", GH_ParamAccess.item);
 
@@ -56,8 +56,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
+            RegisterPointsOutput(pManager, GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -66,22 +65,21 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
+            CollectPoints(DA);
+
             int index = 0;
             Point3d basePt = default(Point3d);
-            
-            DA.GetDataList(0, inputPts);
             DA.GetData(1, ref index);
 
             List<int> indexes = new List<int>();
             List<Point3d> points;
             if (DA.GetData(2, ref basePt))
             {
-                points = SortCalculator.NearlestPointSortByIndex(inputPts, basePt, out indexes);
+                points = SortCalculator.NearlestPointSortByIndex(InputPoints, basePt, out indexes);
             }
             else
             {
-                points = SortCalculator.NearlestPointSortByIndex(inputPts, index, out indexes);
+                points = SortCalculator.NearlestPointSortByIndex(InputPoints, index, out indexes);
             }
 
             DA.SetDataList(0, points);

@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="RadiWind.Measure.BaseMeasureComponent">
+    <Position X="29.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\BaseMeasureComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.BrepAreaComponent" Collapsed="true">
+    <Position X="23.5" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\BrepAreaComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.BrepLengthComponent" Collapsed="true">
+    <Position X="30" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\BrepLengthComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.CCAngleComponent" Collapsed="true">
+    <Position X="34.5" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\CCAngleComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.CCDistanceComponent" Collapsed="true">
+    <Position X="39" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\CCDistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.DefaultDecimalComponent">
+    <Position X="29.25" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAgAAAAAAAAAAEAABAAAAAEAIAAAAEgAAA=</HashCode>
+      <FileName>Measure\DefaultDecimalComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.DistanceComponent" Collapsed="true">
+    <Position X="19" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\DistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.GetLengthComponent" Collapsed="true">
+    <Position X="25.5" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\GetLengthComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.HDistanceComponent" Collapsed="true">
+    <Position X="32.25" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\HDistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.NumberDecimalsComponent" Collapsed="true">
+    <Position X="36.75" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\NumberDecimalsComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.PBDistanceComponent" Collapsed="true">
+    <Position X="41.25" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\PBDistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.PCDistanceComponent" Collapsed="true">
+    <Position X="43.75" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\PCDistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.PVDistanceComponent" Collapsed="true">
+    <Position X="21.25" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\PVDistanceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Measure.SSAngleComponent" Collapsed="true">
+    <Position X="27.75" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Measure\SSAngleComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Properties.Resources" Collapsed="true">
+    <Position X="45.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEEAAAAgABAAAICABAABUBAGAQJAAAAEACAAMwOYQIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.RadiWindComponent">
+    <Position X="21.75" Y="0.75" Width="2" />
+    <NestedTypes>
+      <Enum Name="RadiWind.RadiWindComponent.SubCateName" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>RadiWindComponent.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAADAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RadiWindComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.RadiWindInfo" Collapsed="true">
+    <Position X="47.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAACAAAEAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>RadiWindInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.RadiWindIcon" Collapsed="true">
+    <Position X="45.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RadiWindInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.BasePointSortComponent" Collapsed="true">
+    <Position X="2" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABgAAAAAQAAAAAAAAAgAAAAAAAAAAIAAAAAGAAAA=</HashCode>
+      <FileName>Sort\BasePointSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.BaseSortComponent">
+    <Position X="8.75" Y="0.5" Width="3" />
+    <NestedTypes>
+      <Enum Name="RadiWind.Sort.BaseSortComponent.AxisType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Sort\BaseSortComponent.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AEACBAACAQCCAAAAIAAAAgAAAQQAAAAAAEAAAAEgAAA=</HashCode>
+      <FileName>Sort\BaseSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.NearlestPointSortComponent" Collapsed="true">
+    <Position X="0.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\NearlestPointSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.NumberTolerancePartionSortComponent" Collapsed="true">
+    <Position X="12.75" Y="5.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\NumberTolerancePartionSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.PointCurveSortComponent" Collapsed="true">
+    <Position X="3" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\PointCurveSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.PointsPartitionPlaneSortComponent" Collapsed="true">
+    <Position X="17.5" Y="7" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\PointsPartitionPlaneSortComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.PointTolerancePartitionComponent" Collapsed="true">
+    <Position X="5.25" Y="7" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\PointTolerancePartitionComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.SortByCircleComponent" Collapsed="true">
+    <Position X="7.5" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\SortByCircleComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.SortPointInAxisComponent" Collapsed="true">
+    <Position X="9.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\SortPointInAxisComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RadiWind.Sort.SortPointInAxisWithToleranceComponent" Collapsed="true">
+    <Position X="14.25" Y="7" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Sort\SortPointInAxisWithToleranceComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -28,6 +28,11 @@ namespace RadiWindAlgorithm.Sort
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<Point3d>> PointCurveSort(List<Point3d> points, List<Curve> curves, out List<List<int>> indexes)
         {
+            return DispatchIt(PointCurveSort(points, curves), out indexes);
+        }
+
+        public static List<List<SortableItem<Point3d>>> PointCurveSort(List<Point3d> points, List<Curve> curves)
+        {
             List<SortableItem<Point3d>> sortableItems = GetSortableItems(points);
             List<int> curveIndexes = GetClosestCurveIndex(points, curves);
 
@@ -49,8 +54,8 @@ namespace RadiWindAlgorithm.Sort
             {
                 sortedPoints.Add(SortPtAlongCurve(ParticipateePoints[k], curves[k]));
             }
-
-            return DispatchIt(sortedPoints, out indexes);
+            return sortedPoints;
+            
         }
 
         /// <summary>

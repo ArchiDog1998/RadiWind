@@ -14,7 +14,7 @@ using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
-    public class PointCurveSortComponent : BaseSortComponent
+    public class PointCurveSortComponent : BasePointSortComponent
     {
         #region Basic Component Info
 
@@ -51,7 +51,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            RegisterPointsInput(pManager);
             pManager.AddCurveParameter("群线", "群线", "群线", GH_ParamAccess.list);
         }
 
@@ -60,9 +60,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
-            //pManager.AddPointParameter("线起点", "线起点", "线起点", GH_ParamAccess.list);
+            RegisterPointsOutput(pManager, GH_ParamAccess.list);
         }
         #endregion
 
@@ -73,18 +71,11 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
+            CollectPoints(DA);
             List<Curve> inputCrvs = new List<Curve>();
-
-            DA.GetDataList(0, inputPts);
             DA.GetDataList(1, inputCrvs);
 
-            List<List<int>> indexes = new List<List<int>>();
-            List<List<Point3d>> resultPt = SortCalculator.PointCurveSort(inputPts, inputCrvs, out indexes);
-
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(resultPt, this.RunCount - 1));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int>(indexes, this.RunCount - 1));
-        }
+            SetSortedPoints(DA, SortCalculator.PointCurveSort(InputPoints, inputCrvs));        }
         #endregion
     }
 }

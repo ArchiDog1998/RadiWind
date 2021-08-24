@@ -18,10 +18,10 @@ namespace RadiWind.Sort
     {
         #region Params Layout
         private static string[] _toleranceDesc = { "Tolerance", "t", "Tolerance", };
-        private static string[] _basePlaneDesc = { "Base Plane", "P", "Base Plane", }; 
+        private static string[] _basePlaneDesc = { "Base Plane", "p", "Base Plane", }; 
         private static string[] _axisTypeDesc = { "", "T", "AxisType", };
         private static string[] _displayRectDesc = { "Show Rect", "R", "Show Rectangle", };
-
+        private static string[] _sortIndexDesc = { "Sort Index", "I", "SortIndex" };
 
 
 
@@ -72,6 +72,20 @@ namespace RadiWind.Sort
         protected void SetDisplayRectParameter(IGH_DataAccess DA, DataTree<Rectangle3d> rects)
         {
             DA.SetDataTree(this.Params.IndexOfOutputParam(_displayRectDesc[0]), rects);
+        }
+        #endregion
+        #region Sort Index
+        protected void AddSortIndexParameter(GH_OutputParamManager pManager, GH_ParamAccess access)
+        {
+            pManager.AddIntegerParameter(_sortIndexDesc[0], _sortIndexDesc[1], _sortIndexDesc[2], access);
+        }
+        protected void AddSortIndexParameter(IGH_DataAccess DA, IEnumerable<int> index)
+        {
+            DA.SetDataList(_sortIndexDesc[0], index);
+        }
+        protected void AddSortIndexParameter(IGH_DataAccess DA, DataTree<int> index)
+        {
+            DA.SetDataTree(this.Params.IndexOfOutputParam(_sortIndexDesc[0]), index);
         }
         #endregion
 
