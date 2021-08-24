@@ -7,14 +7,76 @@
 
 using System;
 using System.Collections.Generic;
-
+using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
 using Rhino.Geometry;
 
 namespace RadiWind.Sort
 {
     public abstract class BaseSortComponent : RadiWindComponent
     {
+        #region Params Layout
+        private static string[] _toleranceDesc = { "Tolerance", "t", "Tolerance", };
+        private static string[] _basePlaneDesc = { "Base Plane", "P", "Base Plane", }; 
+        private static string[] _axisTypeDesc = { "", "T", "AxisType", };
+        private static string[] _displayRectDesc = { "Show Rect", "R", "Show Rectangle", };
+
+
+
+
+        #region Tolerance Parameter
+        protected void AddTolerParameter(GH_InputParamManager pManager)
+        {
+            pManager.AddNumberParameter(_toleranceDesc[0], _toleranceDesc[1], _toleranceDesc[2], GH_ParamAccess.item, 0.01);
+        }
+
+        protected double GetTolerance(IGH_DataAccess DA) => GetParameterValue<double>(DA, _toleranceDesc[0]);
+        #endregion
+
+        #region BasePlane Parameter
+        protected void AddBasePlaneParameter(GH_InputParamManager pManager)
+        {
+            pManager.AddPlaneParameter(_basePlaneDesc[0], _basePlaneDesc[1], _basePlaneDesc[2], GH_ParamAccess.item, Plane.WorldXY);
+            ((Param_Plane)pManager[pManager.ParamCount - 1]).Hidden = true;
+        }
+
+        protected Plane GetBasePlane(IGH_DataAccess DA) => GetParameterValue<Plane>(DA, _basePlaneDesc[0]);
+        #endregion
+
+        #region Axis Type Parameter
+        private enum AxisType
+        {
+            X,
+            Y,
+            Z,
+        }
+
+        protected void AddAxisTypeParameter(GH_InputParamManager pManager)
+        {
+            AddEnumParameter(pManager, _axisTypeDesc[1], _axisTypeDesc[2], AxisType.X);
+        }
+
+        protected int GetAxisTypeParameter(IGH_DataAccess DA)=> GetEnumParameter<AxisType>(DA);
+        #endregion
+
+        #region Display Rectangle
+        protected void AddDisplayRectParameter(GH_OutputParamManager pManager, GH_ParamAccess access)
+        {
+            pManager.AddRectangleParameter(_displayRectDesc[0], _displayRectDesc[1], _displayRectDesc[2], access);
+        }
+        protected void SetDisplayRectParameter(IGH_DataAccess DA, IEnumerable<Rectangle3d> rects)
+        {
+            DA.SetDataList(_displayRectDesc[0], rects);
+        }
+        protected void SetDisplayRectParameter(IGH_DataAccess DA, DataTree<Rectangle3d> rects)
+        {
+            DA.SetDataTree(this.Params.IndexOfOutputParam(_displayRectDesc[0]), rects);
+        }
+        #endregion
+
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of the BaseSortComponent class.
         /// </summary>
@@ -22,6 +84,8 @@ namespace RadiWind.Sort
           : base(name, nickName, description, SubCateName.Sort)
         {
         }
+
+
 
         /// <summary>
         /// Provides an Icon for the component.

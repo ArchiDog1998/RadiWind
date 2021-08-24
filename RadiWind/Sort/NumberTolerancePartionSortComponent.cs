@@ -48,7 +48,7 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("数组", "数组", "数组", GH_ParamAccess.list);
-            pManager.AddNumberParameter("容差", "容差", "容差", GH_ParamAccess.item, 0.01);
+            AddTolerParameter(pManager);
         }
 
         /// <summary>
@@ -67,16 +67,15 @@ namespace RadiWind.Sort
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<double> values = new List<double>();
-            double tol = 0;
+            double tol = GetTolerance(DA);
             DA.GetDataList(0, values);
-            DA.GetData(1,ref tol);
 
             List<List<int>> indexs = new List<List<int>>();
             List<List<double>> result = SortCalculator.NumberTolerancePartitionSort(values, tol, out indexs);
 
             //Transform it!
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<double>(result, this.RunCount - 1));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int>(indexs, this.RunCount - 1));
+            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree(result, this.RunCount - 1));
+            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree(indexs, this.RunCount - 1));
         }
 
 

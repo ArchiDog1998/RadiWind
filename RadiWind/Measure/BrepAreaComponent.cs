@@ -53,7 +53,7 @@ namespace RadiWind.Measure
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
-            AddIntegerParameter(pManager, "Unit", "U", "Unit", GH_ParamAccess.item, typeof(MeasureCalculator.Unit), 1);
+            AddEnumParameter(pManager, "U", "Unit", MeasureCalculator.Unit.平方米);
             base.RegisterInputParams(pManager);
 
             this.Message = "多重曲面面积";

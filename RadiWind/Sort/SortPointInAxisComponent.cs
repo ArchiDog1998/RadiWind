@@ -52,8 +52,8 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
-            pManager.AddPlaneParameter("坐标面", "坐标面", "坐标面", GH_ParamAccess.item, Plane.WorldXY);
-            pManager.AddIntegerParameter("轴线选择", "轴线选择", "轴线选择", GH_ParamAccess.item, 0);
+            AddBasePlaneParameter(pManager);
+            AddAxisTypeParameter(pManager);
 
             Param_Integer param = pManager[2] as Param_Integer;
             param.AddNamedValue("X", 0);
@@ -79,12 +79,10 @@ namespace RadiWind.Sort
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = Plane.WorldXY;
-            int type = 0;
+            Plane basePlane = GetBasePlane(DA);
+            int type = GetAxisTypeParameter(DA);
 
             DA.GetDataList(0, inputPts);
-            DA.GetData(1, ref basePlane);
-            DA.GetData(2, ref type);
 
             if (type < 0 || type > 2)
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须在0-2之间！");

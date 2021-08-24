@@ -29,12 +29,7 @@ namespace RadiWind.Sort
             pManager.AddPointParameter("Points", "P", "P", GH_ParamAccess.list);
             pManager.AddNumberParameter("Tolerance", "t", "Tolerance", GH_ParamAccess.item, 0.01);
 
-            pManager.AddIntegerParameter("Type", "T", "Type", GH_ParamAccess.item, 3);
-            Param_Integer param = pManager[2] as Param_Integer;
-            param.AddNamedValue(nameof(AverageFunction.Average), (int)AverageFunction.Average);
-            param.AddNamedValue(nameof(AverageFunction.Major), (int)AverageFunction.Major);
-            param.AddNamedValue(nameof(AverageFunction.Min), (int)AverageFunction.Min);
-            param.AddNamedValue(nameof(AverageFunction.Max), (int)AverageFunction.Max);
+            AddEnumParameter(pManager, "T", "Type", AverageFunction.Major);
         }
 
         /// <summary>
@@ -53,13 +48,13 @@ namespace RadiWind.Sort
         {
             List<Point3d> inputPts = new List<Point3d>();
             double tol = 0;
-            int type = 0;
+            AverageFunction type = (AverageFunction)GetEnumParameter<AverageFunction>(DA);
 
-            DA.GetDataList(0, inputPts);
+
             DA.GetData(1, ref tol);
             DA.GetData(2, ref type);
 
-            DA.SetDataList(0, SortCalculator.PointTolerancePartition(inputPts, tol, (AverageFunction)type));
+            DA.SetDataList(0, SortCalculator.PointTolerancePartition(inputPts, tol, type));
         }
 
         /// <summary>

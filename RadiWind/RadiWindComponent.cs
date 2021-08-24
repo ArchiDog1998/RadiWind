@@ -31,23 +31,37 @@ namespace RadiWind
         {
         }
 
-        protected void AddIntegerParameter(GH_Component.GH_InputParamManager pManager, string name, string nickName, string descrption, GH_ParamAccess access, Type enumType, int? defaultValue = null)
+        protected T GetParameterValue<T>(IGH_DataAccess DA, string name)
         {
-            if (!typeof(Enum).IsAssignableFrom(enumType)) throw new ArgumentOutOfRangeException(nameof(enumType), "It must be a Enum Type!");
+            T value = default(T);
+            if (!DA.GetData(name, ref value)) throw new ArgumentNullException(name, $"{name} Parameter can NOT be a null value.");
+            return value;
+        }
+        #region EnumParameter
+        protected void AddEnumParameter<T>(GH_Component.GH_InputParamManager pManager, string nickName, string descrption, T defaultValue) where T:Enum
+        {
+            // Check if T is a Enum.
+            if (!typeof(Enum).IsAssignableFrom(typeof(T))) throw new ArgumentOutOfRangeException(typeof(T).ToString(), "It must be a Enum Type!");
 
-            if (defaultValue.HasValue)
-                pManager.AddIntegerParameter(name, nickName, descrption, access, defaultValue.Value);
-            else
-                pManager.AddIntegerParameter(name, nickName, descrption, access);
+            //Add to Input Param.
+            pManager.AddIntegerParameter(typeof(T).ToString(), nickName, descrption, GH_ParamAccess.item, (int)(object)defaultValue);
 
-
+            //Add Description and NamedValue.
             Param_Integer param = pManager[pManager.ParamCount - 1] as Param_Integer;
-            foreach (var item in Enum.GetValues(enumType))
+            foreach (var item in Enum.GetValues(typeof(T)))
             {
                 param.AddNamedValue(item.ToString(), (int)item);
                 param.Description += $"\n{item} = {(int)item},";
             }
         }
+
+        protected int GetEnumParameter<T>(IGH_DataAccess DA)where T:Enum
+        {
+            int value = GetParameterValue<int>(DA, typeof(T).ToString());
+            if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException(typeof(T).ToString());
+            return value;
+        }
+        #endregion
 
         /// <summary>
         /// Gets the unique ID for this component. Do not change this ID after release.

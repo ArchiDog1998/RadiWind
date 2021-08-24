@@ -53,7 +53,7 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
-            pManager.AddPlaneParameter("坐标面", "坐标面", "坐标面", GH_ParamAccess.item, Plane.WorldXY);
+            AddBasePlaneParameter(pManager);
             pManager.AddAngleParameter("旋转角度", "旋转角度", "旋转角度", GH_ParamAccess.item, -180);
 
             //Make the default is use degree.
@@ -81,11 +81,10 @@ namespace RadiWind.Sort
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = Plane.WorldXY;
+            Plane basePlane = GetBasePlane(DA);
             double radius = 0;
 
             DA.GetDataList(0, inputPts);
-            DA.GetData(1, ref basePlane);
             DA.GetData(2, ref radius);
 
             //Change Degree.

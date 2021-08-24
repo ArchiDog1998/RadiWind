@@ -50,14 +50,9 @@ namespace RadiWind.Sort
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
-            pManager.AddPlaneParameter("坐标面", "坐标面", "坐标面", GH_ParamAccess.item, Plane.WorldXY);
-            pManager.AddIntegerParameter("轴线选择", "轴线选择", "轴线选择", GH_ParamAccess.item, 0);
-            pManager.AddNumberParameter("容差", "容差", "容差", GH_ParamAccess.item);
-
-            Param_Integer param = pManager[2] as Param_Integer;
-            param.AddNamedValue("X", 0);
-            param.AddNamedValue("Y", 1);
-            param.AddNamedValue("Z", 2);
+            AddBasePlaneParameter(pManager);
+            AddTolerParameter(pManager);
+            AddAxisTypeParameter(pManager);
         }
 
         /// <summary>
@@ -65,9 +60,9 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
-            pManager.AddCurveParameter("容差可视线", "容差可视线", "容差可视线", GH_ParamAccess.list);
+            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.tree);
+            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.tree);
+            AddDisplayRectParameter(pManager, GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -77,20 +72,11 @@ namespace RadiWind.Sort
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = Plane.WorldXY;
-            int axisType = 0;
-            double tolerance = 0;
+            Plane basePlane = GetBasePlane(DA);
+            int axisType = GetAxisTypeParameter(DA);
+            double tolerance = GetTolerance(DA);
 
             DA.GetDataList(0, inputPts);
-            DA.GetData(1, ref basePlane);
-            DA.GetData(2, ref axisType);
-            DA.GetData(3, ref tolerance);
-
-            if(axisType < 0 || axisType > 2)
-            {
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须为0-2！");
-                axisType = 0;
-            }
 
             List<List<int>> indexes;
             List<List<Rectangle3d>> showRects;
@@ -98,7 +84,7 @@ namespace RadiWind.Sort
 
             DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree(outDatas, this.RunCount - 1));
             DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree(indexes, this.RunCount - 1));
-            DA.SetDataTree(2, DataTreeHelper.SetDataIntoDataTree(showRects, this.RunCount - 1));
+            SetDisplayRectParameter(DA, DataTreeHelper.SetDataIntoDataTree(showRects, this.RunCount - 1));
 
         }
 
