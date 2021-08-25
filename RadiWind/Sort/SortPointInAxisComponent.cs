@@ -14,7 +14,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class SortPointInAxisComponent : BaseSortComponent
+    public class SortPointInAxisComponent : BasePointSortComponent
     {
         #region Basic Component Info
 
@@ -51,7 +51,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            base.RegisterInputParams(pManager);
             AddBasePlaneParameter(pManager);
             AddAxisTypeParameter(pManager);
 
@@ -66,8 +66,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
+            RegisterPointsOutput(pManager, GH_ParamAccess.list);
         }
         #endregion
 
@@ -78,20 +77,8 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = GetBasePlane(DA);
-            int type = GetAxisTypeParameter(DA);
-
-            DA.GetDataList(0, inputPts);
-
-            if (type < 0 || type > 2)
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "轴线选择必须在0-2之间！");
-
-            List<int> indexes = new List<int>();
-            List<Point3d> result = SortCalculator.SortPointInAxis(inputPts, type, basePlane, out indexes);
-
-            DA.SetDataList(0, result);
-            DA.SetDataList(1, indexes);
+            CollectPoints(DA);
+            SetSortedPoints(DA, SortCalculator.SortPointInAxis(InputPoints, GetAxisTypeParameter(DA), GetBasePlane(DA)));
         }
         #endregion
 

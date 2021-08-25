@@ -16,7 +16,7 @@ using Grasshopper;
 
 namespace RadiWind.Sort
 {
-    public class SortPointInAxisWithToleranceComponent : BaseSortComponent
+    public class SortPointInAxisWithToleranceComponent : BasePointSortComponent
     {
         #region Basic Component Info
         /// <summary>
@@ -49,7 +49,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            base.RegisterInputParams(pManager);
             AddBasePlaneParameter(pManager);
             AddTolerParameter(pManager);
             AddAxisTypeParameter(pManager);
@@ -60,8 +60,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.tree);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.tree);
+            RegisterPointsOutput(pManager, GH_ParamAccess.tree);
             AddDisplayRectParameter(pManager, GH_ParamAccess.tree);
         }
 
@@ -71,19 +70,9 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = GetBasePlane(DA);
-            int axisType = GetAxisTypeParameter(DA);
-            double tolerance = GetTolerance(DA);
-
-            DA.GetDataList(0, inputPts);
-
-            List<List<int>> indexes;
+            CollectPoints(DA);
             List<List<Rectangle3d>> showRects;
-            List<List<Point3d>> outDatas = SortCalculator.SortPointInAxisWithTolerance(inputPts, axisType, basePlane, tolerance, out indexes,out showRects);
-
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree(outDatas, this.RunCount - 1));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree(indexes, this.RunCount - 1));
+            SetSortedPoints(DA, SortCalculator.SortPointInAxisWithTolerance(InputPoints, GetAxisTypeParameter(DA), GetBasePlane(DA), GetTolerance(DA), out showRects));
             SetDisplayRectParameter(DA, DataTreeHelper.SetDataIntoDataTree(showRects, this.RunCount - 1));
 
         }

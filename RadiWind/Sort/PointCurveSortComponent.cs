@@ -51,7 +51,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            RegisterPointsInput(pManager);
+            base.RegisterInputParams(pManager);
             pManager.AddCurveParameter("群线", "群线", "群线", GH_ParamAccess.list);
         }
 

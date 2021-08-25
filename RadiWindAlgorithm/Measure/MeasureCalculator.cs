@@ -59,21 +59,7 @@ namespace RadiWindAlgorithm.Measure
         #endregion
 
         #region HDistance
-        /// <summary>
-        /// Get the horizonal distance between two points based on one plane.
-        /// </summary>
-        /// <param name="point1"></param>
-        /// <param name="poitn2"></param>
-        /// <param name="plane"></param>
-        /// <param name="decimals">decimals count.</param>
-        /// <param name="displayLine">a line to display</param>
-        /// <returns>distance</returns>
-        [Pythonable]
-        public static string HDistance(Point3d point1, Point3d poitn2, Plane plane, int decimals, out Line displayLine)
-        {
-            double distance = HDistance(point1, poitn2, plane, out displayLine);
-            return NumberDecimal(distance.ToString(), decimals);
-        }
+
 
         /// <summary>
         /// 
@@ -107,6 +93,22 @@ namespace RadiWindAlgorithm.Measure
         /// <param name="point1"></param>
         /// <param name="poitn2"></param>
         /// <param name="plane"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string HDistance(Point3d point1, Point3d poitn2, Plane plane, int decimals, out Line displayLine)
+        {
+            double distance = HDistance(point1, poitn2, plane, out displayLine);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+        /// <summary>
+        /// Get the horizonal distance between two points based on one plane.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="poitn2"></param>
+        /// <param name="plane"></param>
         /// <param name="displayLine">a line to display</param>
         /// <returns>distance</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -121,6 +123,71 @@ namespace RadiWindAlgorithm.Measure
             Point3d pointB = plane.ClosestPoint(poitn2);
 
             return Distance(pointA, pointB, out displayLine);
+        }
+        #endregion
+
+        #region VDistance
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points"></param>
+        /// <param name="decimals"></param>
+        /// <param name="loop"></param>
+        /// <param name="plane"></param>
+        /// <param name="displayLines"></param>
+        /// <returns></returns>
+        [Pythonable]
+        public static List<string> VDistance(List<Point3d> points, int decimals, bool loop, Plane plane, out List<Line> displayLines)
+        {
+            List<string> distances = new List<string>();
+            List<Line> displayLinesRelay = new List<Line>();
+
+            ListCalculate(points, (pt1, pt2) =>
+            {
+                Line line;
+                distances.Add(VDistance(pt1, pt2, plane, decimals, out line));
+                displayLinesRelay.Add(line);
+            }, loop);
+            displayLines = displayLinesRelay;
+
+            return distances;
+        }
+
+        /// <summary>
+        /// Get the horizonal distance between two points based on one plane.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="poitn2"></param>
+        /// <param name="plane"></param>
+        /// <param name="decimals">decimals count.</param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [Pythonable]
+        public static string VDistance(Point3d point1, Point3d poitn2, Plane plane, int decimals, out Line displayLine)
+        {
+            double distance = VDistance(point1, poitn2, plane, out displayLine);
+            return NumberDecimal(distance.ToString(), decimals);
+        }
+
+
+        /// <summary>
+        /// Get the horizonal distance between two points based on one plane.
+        /// </summary>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="plane"></param>
+        /// <param name="displayLine">a line to display</param>
+        /// <returns>distance</returns>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static double VDistance(Point3d point1, Point3d point2, Plane plane, out Line displayLine)
+        {
+            plane = new Plane(point1, plane.ZAxis);
+
+            double Z = PlaneServer.PlaneCoordinate(plane, point2).Z;
+
+            Point3d pointB = plane.PointAt(0, 0, Z);
+            displayLine = new Line(point1, pointB);
+            return Z;
         }
         #endregion
 

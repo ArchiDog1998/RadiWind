@@ -14,7 +14,7 @@ using RadiWindAlgorithm;
 
 namespace RadiWind.Sort
 {
-    public class PointsPartitionPlaneSortComponent : BaseSortComponent
+    public class PointsPartitionPlaneSortComponent : BasePointSortComponent
     {
         #region Basic Component Info
 
@@ -51,7 +51,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            base.RegisterInputParams(pManager);
             AddBasePlaneParameter(pManager);
             pManager.AddNumberParameter("x容差", "x容差", "x容差", GH_ParamAccess.item, 0.01);
             pManager.AddNumberParameter("y容差", "y容差", "y容差", GH_ParamAccess.item, 0.01);
@@ -62,8 +62,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.tree);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.tree);
+            RegisterPointsOutput(pManager, GH_ParamAccess.tree);
             AddDisplayRectParameter(pManager, GH_ParamAccess.tree);
         }
         #endregion
@@ -75,21 +74,17 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
+            CollectPoints(DA);
+
             Plane basePlane = GetBasePlane(DA);
             double xTol = 0;
             double yTol = 0;
 
-            DA.GetDataList(0, inputPts);
             DA.GetData(2, ref xTol);
             DA.GetData(3, ref yTol);
 
-            List<List<int>> indexes = new List<List<int>>();
             List<List<Rectangle3d>> showRect = new List<List<Rectangle3d>>();
-            List<List<Point3d>> sortedPts = SortCalculator.XYPartitionSortedByX(inputPts, basePlane, xTol, yTol, out indexes, out showRect);
-
-            DA.SetDataTree(0, DataTreeHelper.SetDataIntoDataTree<Point3d>(sortedPts, this.RunCount - 1));
-            DA.SetDataTree(1, DataTreeHelper.SetDataIntoDataTree<int>(indexes, this.RunCount - 1));
+            SetSortedPoints(DA, SortCalculator.XYPartitionSortedByX(InputPoints, basePlane, xTol, yTol, out showRect));
             SetDisplayRectParameter(DA, DataTreeHelper.SetDataIntoDataTree<Rectangle3d>(showRect, this.RunCount - 1));
         }
         #endregion

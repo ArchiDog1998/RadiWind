@@ -15,7 +15,7 @@ using RadiWindAlgorithm.Sort;
 
 namespace RadiWind.Sort
 {
-    public class SortByCircleComponent : BaseSortComponent
+    public class SortByCircleComponent : BasePointSortComponent
     {
         #region Basic Component Info
 
@@ -52,7 +52,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("群点", "群点", "群点", GH_ParamAccess.list);
+            base.RegisterInputParams(pManager);
             AddBasePlaneParameter(pManager);
             pManager.AddAngleParameter("旋转角度", "旋转角度", "旋转角度", GH_ParamAccess.item, -180);
 
@@ -66,8 +66,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("排序点", "排序点", "排序点", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("排序Index", "排序Index", "排序Index", GH_ParamAccess.list);
+            RegisterPointsOutput(pManager, GH_ParamAccess.list);
             pManager.AddLineParameter("起止线", "起止线", "起止线", GH_ParamAccess.item);
             pManager.AddPlaneParameter("坐标平面", "坐标平面", "坐标平面", GH_ParamAccess.item);
         }
@@ -80,13 +79,10 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
-            Plane basePlane = GetBasePlane(DA);
+            CollectPoints(DA);
+
             double radius = 0;
-
-            DA.GetDataList(0, inputPts);
             DA.GetData(2, ref radius);
-
             //Change Degree.
             if (((Param_Number)this.Params.Input[2]).UseDegrees)
             {
@@ -95,11 +91,7 @@ namespace RadiWind.Sort
 
             Line showLine;
             Plane showPlane;
-            List<int> indexes;
-            List<Point3d> outPts = SortCalculator.SortByCircle(inputPts, basePlane, radius, out showLine, out showPlane, out indexes);
-
-            DA.SetDataList(0, outPts);
-            DA.SetDataList(1, indexes);
+            SetSortedPoints(DA, SortCalculator.SortByCircle(InputPoints, GetBasePlane(DA), radius, out showLine, out showPlane));
             DA.SetData(2, showLine);
             DA.SetData(3, showPlane);
         }

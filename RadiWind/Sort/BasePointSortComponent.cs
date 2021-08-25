@@ -20,11 +20,12 @@ namespace RadiWind.Sort
         {
         }
 
-        /// <summary>
-        /// Add one Input Parameter.
-        /// </summary>
-        /// <param name="pManager"></param>
-        protected void RegisterPointsInput(GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
+        {
+            pManager.AddPointParameter("Points", "P", "Points", GH_ParamAccess.list);
+        }
+
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddPointParameter("Points", "P", "Points", GH_ParamAccess.list);
         }

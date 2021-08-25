@@ -8,14 +8,13 @@ using Grasshopper.Kernel.Parameters;
 
 namespace RadiWind.Sort
 {
-    public class PointTolerancePartitionComponent : BaseSortComponent
+    public class PointTolerancePartitionComponent : BasePointSortComponent
     {
         /// <summary>
         /// Initializes a new instance of the PointTolerancePartitionComponent class.
         /// </summary>
         public PointTolerancePartitionComponent()
-          : base("Point Tolerance Partition", "点分组",
-              "点分组")
+          : base("Point Tolerance Partition", "点分组", "点分组")
         {
         }
 
@@ -26,18 +25,10 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Points", "P", "P", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Tolerance", "t", "Tolerance", GH_ParamAccess.item, 0.01);
+            base.RegisterInputParams(pManager);
+            AddTolerParameter(pManager);
 
             AddEnumParameter(pManager, "T", "Type", AverageFunction.Major);
-        }
-
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
-        {
-            pManager.AddPointParameter("Points", "P", "P", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -46,15 +37,11 @@ namespace RadiWind.Sort
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Point3d> inputPts = new List<Point3d>();
+            CollectPoints(DA);
+
             double tol = 0;
             AverageFunction type = (AverageFunction)GetEnumParameter<AverageFunction>(DA);
-
-
-            DA.GetData(1, ref tol);
-            DA.GetData(2, ref type);
-
-            DA.SetDataList(0, SortCalculator.PointTolerancePartition(inputPts, tol, type));
+            DA.SetDataList(0, SortCalculator.PointTolerancePartition(InputPoints, tol, type));
         }
 
         /// <summary>

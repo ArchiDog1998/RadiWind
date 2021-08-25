@@ -159,25 +159,30 @@ namespace RadiWindAlgorithm.Sort
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static List<List<Point3d>> XYPartitionSortedByX(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<int>> indexes, out List<List<Rectangle3d>> showRect)
         {
+            return DispatchIt(XYPartitionSortedByX(inputPoints, basePlane, xTol, yTol, out showRect), out indexes);
+        }
+
+        public static List<List<SortableItem<Point3d>>> XYPartitionSortedByX(List<Point3d> inputPoints, Plane basePlane, double xTol, double yTol, out List<List<Rectangle3d>> showRect)
+        {
             List<Point3d> relativePts = PlaneServer.PlaneCoordinate(basePlane, inputPoints);
             List<List<SortableItem<Point3d>>> result = XYPartitionSortedByX(relativePts, xTol, yTol);
-            //Maybe some bugs in this transform.
-            List<List<Point3d>> resultPoints = DispatchIt(result, out indexes, (x) => basePlane.PointAt(x.X, x.Y, x.Z));
 
             //Get the ShowRects.
             showRect = new List<List<Rectangle3d>>();
-            foreach (List<Point3d> point3Ds in resultPoints)
+            for (int i = 0; i < result.Count; i++)
             {
                 List<Rectangle3d> relayRects = new List<Rectangle3d>();
-                foreach (Point3d point in point3Ds)
+                for (int j = 0; j < result[i].Count; j++)
                 {
-                    relayRects.Add(ShowRectangel(point, basePlane, xTol, yTol));
+                    SortableItem<Point3d> pointItem = result[i][j];
+                    Point3d rightPoint = basePlane.PointAt(pointItem.Value.X, pointItem.Value.Y, pointItem.Value.Z);
+                    relayRects.Add(ShowRectangel(rightPoint, basePlane, xTol, yTol));
+                    pointItem.Value = rightPoint;
                 }
                 showRect.Add(relayRects);
             }
-            return resultPoints;
+            return result;
         }
-
 
         /// <summary>
         /// Partition the points in X, Y two direcitons and then Sort them with Z Direction.
@@ -197,7 +202,7 @@ namespace RadiWindAlgorithm.Sort
             //Make every xPartition parted by y Dierction.
             foreach (List<SortableItem<Point3d>> xPartition in xPartitions)
             {
-                foreach (List<SortableItem<Point3d>> partition in NumberTolerancePartitionSort<Point3d>(xPartition, (x) => x.Y, yTol))
+                foreach (List<SortableItem<Point3d>> partition in NumberTolerancePartitionSort(xPartition, (x) => x.Y, yTol))
                 {
                     //Sort in X direction.
                     partition.Sort((x, y) => x.Value.X.CompareTo(y.Value.X));
@@ -225,6 +230,11 @@ namespace RadiWindAlgorithm.Sort
         [Pythonable]
         public static List<Point3d> SortByCircle(List<Point3d> inputList, Plane basePlane, double rotate, out Line showLine, out Plane showPlane, out List<int> indexes)
         {
+            return DispatchIt(SortByCircle(inputList, basePlane, rotate, out showLine, out showPlane), out indexes);
+        }
+
+        public static List<SortableItem<Point3d>> SortByCircle(List<Point3d> inputList, Plane basePlane, double rotate, out Line showLine, out Plane showPlane)
+        {
             if (rotate != 0)
                 basePlane.Rotate(rotate, basePlane.ZAxis, basePlane.Origin);
 
@@ -232,9 +242,7 @@ namespace RadiWindAlgorithm.Sort
             Circle alignCir = GetFlagCurve(basePlane, inputList, out showLine, out origin);
             showPlane = new Plane(origin, basePlane.XAxis, basePlane.YAxis);
 
-            List<SortableItem<Point3d>> result = SortPtAlongCurve(GetSortableItems(inputList), alignCir.ToNurbsCurve());
-
-            return DispatchIt(result, out indexes);
+            return SortPtAlongCurve(inputList, alignCir.ToNurbsCurve());
         }
 
         /// <summary>
@@ -244,8 +252,14 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="alineCurve">aline Curve</param>
         /// <returns>Sorted pointSortableList</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal static List<SortableItem<Point3d>> SortPtAlongCurve(List< SortableItem<Point3d>> inputSortablePts, Curve alineCurve)
+        internal static List<SortableItem<Point3d>> SortPtAlongCurve(List<Point3d> inputList, Curve alineCurve)
         {
+            return SortPtAlongCurve(GetSortableItems(inputList), alineCurve);
+        }
+
+        internal static List<SortableItem<Point3d>> SortPtAlongCurve(List<SortableItem<Point3d>> inputSortablePts, Curve alineCurve)
+        {
+
             inputSortablePts.Sort((x, y) =>
             {
                 double tX;
@@ -321,14 +335,18 @@ namespace RadiWindAlgorithm.Sort
         [Pythonable]
         public static List<List<Point3d>> SortPointInAxisWithTolerance(List<Point3d> inputPts, int axisType, Plane basePlane, double tolerance, out List<List<int>> indexes, out List<List<Rectangle3d>> showRect)
         {
+
+            return SortCalculator.DispatchIt(SortPointInAxisWithTolerance(inputPts, axisType,basePlane, tolerance, out showRect), out indexes);
+
+        }
+
+        public static List<List<SortableItem< Point3d>>> SortPointInAxisWithTolerance(List<Point3d> inputPts, int axisType, Plane basePlane, double tolerance, out List<List<Rectangle3d>> showRect)
+        {
             List<SortableItem<Point3d>> sortedItems = SortCalculator.SortPointInAxis(inputPts, axisType);
             List<List<SortableItem<Point3d>>> participatedItems = SortCalculator.NumberTolerancePartitionSort<Point3d>(sortedItems, (x) =>
             {
                 return PlaneServer.PlaneCoordinate(basePlane, x)[axisType];
             }, tolerance);
-
-
-            List<List<Point3d>> resultPts = SortCalculator.DispatchIt(participatedItems, out indexes);
 
 
             #region GetShowRectangle
@@ -344,14 +362,15 @@ namespace RadiWindAlgorithm.Sort
             }
             double yTol = max - min;
             showRect = new List<List<Rectangle3d>>();
-            foreach (var ptLt in resultPts)
+            foreach (var ptLt in participatedItems)
             {
-                showRect.Add(ptLt.Select((pt) => ShowRectangel(pt, basePlane, tolerance, yTol)).ToList());
+                showRect.Add(ptLt.Select((pt) => ShowRectangel(pt.Value, basePlane, tolerance, yTol)).ToList());
             }
-            #endregion
 
-            return resultPts;
+            return participatedItems;
+            #endregion
         }
+
         #endregion
 
         #region  SortPointInAxis
@@ -365,8 +384,7 @@ namespace RadiWindAlgorithm.Sort
         [Pythonable]
         public static List<Point3d> SortPointInAxis(List<Point3d> points, int axisType, Plane plane, out List<int> indexes)
         {
-            List<Point3d> waitToSort = PlaneServer.PlaneCoordinate(plane, points);
-            return SortPointInAxis(waitToSort, axisType, out indexes);
+            return DispatchIt(SortPointInAxis(points, axisType, plane), out indexes);
         }
 
         /// <summary>
@@ -377,10 +395,15 @@ namespace RadiWindAlgorithm.Sort
         /// <param name="indexes">the sorted points' index</param>
         /// <returns>the sorted points.</returns>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static List<Point3d> SortPointInAxis(List<Point3d> points, int axisType, out List<int> indexes)
+        public static List<SortableItem<Point3d>> SortPointInAxis(List<Point3d> points, int axisType, Plane plane)
         {
-            return DispatchIt(SortPointInAxis(points, axisType), out indexes);
+            List<Point3d> waitToSort = PlaneServer.PlaneCoordinate(plane, points);
+            List<SortableItem<Point3d>> result = SortPointInAxis(waitToSort, axisType);
+            result.ForEach((item)=>item.Value = plane.PointAt(item.Value.X, item.Value.Y, item.Value.Z));
+            return result;
         }
+
+
 
         /// <summary>
         /// Sort point by one axis.

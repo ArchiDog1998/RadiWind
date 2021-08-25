@@ -20,7 +20,7 @@ namespace RadiWindAlgorithm.Sort
     public struct SortableItem<T>
     {
         public int Index { get; }
-        public T Value { get; }
+        public T Value { get; set; }
         public SortableItem(int index, T value)
         {
             this.Index = index;

@@ -44,7 +44,7 @@ namespace RadiWind.Sort
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            RegisterPointsInput(pManager);
+            base.RegisterInputParams(pManager);
             pManager.AddIntegerParameter("起点Index", "起点Index", "起点Index", GH_ParamAccess.item, 0);
             pManager.AddPointParameter("采样点", "点", "采样点", GH_ParamAccess.item);
 
