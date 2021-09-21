@@ -183,9 +183,29 @@ namespace RadiWind.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap guizheng {
+            get {
+                object obj = ResourceManager.GetObject("guizheng", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HeightIcon {
             get {
                 object obj = ResourceManager.GetObject("HeightIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap jindu {
+            get {
+                object obj = ResourceManager.GetObject("jindu", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

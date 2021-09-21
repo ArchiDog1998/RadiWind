@@ -39,8 +39,8 @@ namespace RadiWind.Sort
         {
             CollectPoints(DA);
 
-            double tol = 0;
             AverageFunction type = (AverageFunction)GetEnumParameter<AverageFunction>(DA);
+            double tol = GetTolerance(DA);
             DA.SetDataList(0, SortCalculator.PointTolerancePartition(InputPoints, tol, type));
         }
 
@@ -53,7 +53,7 @@ namespace RadiWind.Sort
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.guizheng ;
             }
         }
 

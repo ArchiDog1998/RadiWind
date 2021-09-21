@@ -197,10 +197,13 @@ namespace RadiWindAlgorithm.Sort
             //Get the Partition about x Direction
             List<List<SortableItem<Point3d>>> xPartitions = NumberTolerancePartitionSort(inputPoints, (x) => x.X, xTol);
 
+            List<List<SortableItem<Point3d>>> xyPartitions = new List<List<SortableItem<Point3d>>>();
+            xPartitions.ForEach((list) => xyPartitions.AddRange(NumberTolerancePartitionSort(list, (x) => x.Y, yTol)));
+
             List<List<SortableItem<Point3d>>> result = new List<List<SortableItem<Point3d>>>();
 
             //Make every xPartition parted by y Dierction.
-            foreach (List<SortableItem<Point3d>> xPartition in xPartitions)
+            foreach (List<SortableItem<Point3d>> xPartition in xyPartitions)
             {
                 foreach (List<SortableItem<Point3d>> partition in NumberTolerancePartitionSort(xPartition, (x) => x.Y, yTol))
                 {

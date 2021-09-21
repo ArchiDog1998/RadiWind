@@ -48,8 +48,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve A", "A", "Curve A", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Curve B", "B", "Curve B", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves", GH_ParamAccess.list);
+            pManager.AddBooleanParameter("Loop", "L", "Loop", GH_ParamAccess.item, false);
             base.RegisterInputParams(pManager);
 
             this.Message = "线线切方向夹角";
@@ -60,11 +60,11 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPointParameter("Point A", "PA", "Point A", GH_ParamAccess.item);
-            pManager.AddPointParameter("Point B", "PB", "Point B", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Vector A", "VA", "Vector A", GH_ParamAccess.item);
-            pManager.AddVectorParameter("Vector B", "VB", "Vector B", GH_ParamAccess.item);
-            pManager.AddTextParameter("Angle", "A", "Angle", GH_ParamAccess.item);
+            pManager.AddPointParameter("Point A", "PA", "Point A", GH_ParamAccess.list);
+            pManager.AddPointParameter("Point B", "PB", "Point B", GH_ParamAccess.list);
+            pManager.AddVectorParameter("Vector A", "VA", "Vector A", GH_ParamAccess.list);
+            pManager.AddVectorParameter("Vector B", "VB", "Vector B", GH_ParamAccess.list);
+            pManager.AddTextParameter("Angle", "A", "Angle", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -73,21 +73,20 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Curve curve1 = null;
-            Curve curve2 = null;
+            List<Curve> crvs = new List<Curve>();
+            bool loop = false;
 
-            DA.GetData(0, ref curve1);
-            DA.GetData(1, ref curve2);
+            DA.GetDataList(0, crvs);
+            DA.GetData(1, ref loop);
 
-            Point3d pt1, pt2;
-            Vector3d vec1, vec2;
-            //string ang;
+            List<Point3d> pt1, pt2;
+            List<Vector3d> vec1, vec2;
 
-            DA.SetData(4, MeasureCalculator.CCAngle(curve1, curve2, Decimal, out pt1, out pt2, out vec1, out vec2));
-            DA.SetData(0, pt1);
-            DA.SetData(1, pt2);
-            DA.SetData(2, vec1);
-            DA.SetData(3, vec2);
+            DA.SetDataList(4, MeasureCalculator.CCAngle(crvs, loop, Decimal, out pt1, out pt2, out vec1, out vec2));
+            DA.SetDataList(0, pt1);
+            DA.SetDataList(1, pt2);
+            DA.SetDataList(2, vec1);
+            DA.SetDataList(3, vec2);
         }
         #endregion
     }

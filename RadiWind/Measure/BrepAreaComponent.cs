@@ -52,7 +52,7 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBrepParameter("Brep", "B", "Brep", GH_ParamAccess.item);
+            pManager.AddBrepParameter("Breps", "Bs", "Breps", GH_ParamAccess.list);
             AddEnumParameter(pManager, "U", "Unit", MeasureCalculator.Unit.平方米);
             base.RegisterInputParams(pManager);
 
@@ -64,7 +64,8 @@ namespace RadiWind.Measure
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Area", "A", "Area", GH_ParamAccess.item);
+            pManager.AddTextParameter("Areas", "As", "Areas", GH_ParamAccess.list);
+            pManager.AddTextParameter("AllAreas", "aA", "All Areas", GH_ParamAccess.item);
             pManager.AddTextParameter("Unit", "U", "Unit", GH_ParamAccess.item);
         }
 
@@ -74,13 +75,15 @@ namespace RadiWind.Measure
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Brep brep = null;
+            List<Brep> breps = new List<Brep>(); ;
             int unit = 0;
+            string allArea;
 
-            DA.GetData(0, ref brep);
+            DA.GetDataList(0, breps);
             DA.GetData(1, ref unit);
-            DA.SetData(0, MeasureCalculator.BrepArea(brep, Decimal, unit));
-            DA.SetData(1, ((MeasureCalculator.Unit)unit).ToString());
+            DA.SetDataList(0, MeasureCalculator.BrepArea(breps, Decimal, unit, out allArea));
+            DA.SetData(1, allArea);
+            DA.SetData(2, ((MeasureCalculator.Unit)unit).ToString());
         }
         #endregion
     }

@@ -44,7 +44,7 @@ namespace RadiWind
             if (!typeof(Enum).IsAssignableFrom(typeof(T))) throw new ArgumentOutOfRangeException(typeof(T).ToString(), "It must be a Enum Type!");
 
             //Add to Input Param.
-            pManager.AddIntegerParameter(typeof(T).ToString(), nickName, descrption, GH_ParamAccess.item, (int)(object)defaultValue);
+            pManager.AddIntegerParameter(typeof(T).Name, nickName, descrption, GH_ParamAccess.item, (int)(object)defaultValue);
 
             //Add Description and NamedValue.
             Param_Integer param = pManager[pManager.ParamCount - 1] as Param_Integer;
@@ -57,7 +57,7 @@ namespace RadiWind
 
         protected int GetEnumParameter<T>(IGH_DataAccess DA)where T:Enum
         {
-            int value = GetParameterValue<int>(DA, typeof(T).ToString());
+            int value = GetParameterValue<int>(DA, typeof(T).Name);
             if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException(typeof(T).ToString());
             return value;
         }

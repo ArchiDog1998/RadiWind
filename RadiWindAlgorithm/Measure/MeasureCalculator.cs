@@ -79,6 +79,7 @@ namespace RadiWindAlgorithm.Measure
             ListCalculate(points, (pt1, pt2) =>
             {
                 Line line;
+                plane = new Plane(pt1, plane.ZAxis);
                 distances.Add(HDistance(pt1, pt2, plane, decimals, out line));
                 displayLinesRelay.Add(line);
             }, loop);
@@ -91,15 +92,15 @@ namespace RadiWindAlgorithm.Measure
         /// Get the horizonal distance between two points based on one plane.
         /// </summary>
         /// <param name="point1"></param>
-        /// <param name="poitn2"></param>
+        /// <param name="point2"></param>
         /// <param name="plane"></param>
         /// <param name="decimals">decimals count.</param>
         /// <param name="displayLine">a line to display</param>
         /// <returns>distance</returns>
         [Pythonable]
-        public static string HDistance(Point3d point1, Point3d poitn2, Plane plane, int decimals, out Line displayLine)
+        public static string HDistance(Point3d point1, Point3d point2, Plane plane, int decimals, out Line displayLine)
         {
-            double distance = HDistance(point1, poitn2, plane, out displayLine);
+            double distance = HDistance(point1, point2, plane, out displayLine);
             return NumberDecimal(distance.ToString(), decimals);
         }
 
@@ -557,6 +558,36 @@ namespace RadiWindAlgorithm.Measure
         //This method doesn't have a test.
         #region CCAngle
 
+        [Pythonable]
+        public static List<string> CCAngle(List<Curve> crvs, bool loop, int decimals, out List<Point3d> points1, out List<Point3d> points2, out List<Vector3d> vecs1, out List<Vector3d> vecs2)
+        {
+            List<string> distances = new List<string>();
+            List<Point3d> pts1Relay = new List<Point3d>();
+            List<Point3d> pts2Relay = new List<Point3d>();
+            List<Vector3d> vecs1Relay = new List<Vector3d>();
+            List<Vector3d> vecs2Relay = new List<Vector3d>();
+
+            ListCalculate(crvs, (pt1, pt2) =>
+            {
+                Point3d point1, point2;
+                Vector3d vec1, vec2;
+
+                distances.Add(CCAngle(pt1, pt2, decimals, out point1, out point2, out vec1, out vec2));
+                pts1Relay.Add(point1);
+                pts2Relay.Add(point2);
+                vecs1Relay.Add(vec1);
+                vecs2Relay.Add(vec2);
+
+            }, loop);
+
+            points1 = pts1Relay;
+            points2 = pts2Relay;
+            vecs1 = vecs1Relay;
+            vecs2 = vecs2Relay;
+
+            return distances;
+        }
+
         /// <summary>
         /// Get Curves' angle.
         /// </summary>
@@ -684,8 +715,13 @@ namespace RadiWindAlgorithm.Measure
             pl1 = new Plane(showPlane.ClosestPoint(pl1.Origin), pl1.XAxis, pl1.YAxis);
             pl2 = new Plane(showPlane.ClosestPoint(pl2.Origin), pl2.XAxis, pl2.YAxis);
 
-            //calculate the angle
-            double angle = Vector3d.VectorAngle(pl1.ZAxis, pl2.ZAxis);
+            //calculate the base angle
+            Vector3d vec1 = new Vector3d(Point3d.Subtract(pl1.Origin, showPlane.Origin));
+            Vector3d vec2 = new Vector3d(Point3d.Subtract(pl2.Origin, showPlane.Origin));
+            double baseAngle = Vector3d.VectorAngle(vec1, vec2);
+
+            double angle = pl1.DistanceTo(pl2.Origin) > 0 ? baseAngle : 2 * Math.PI - baseAngle;
+
             return Rhino.RhinoMath.ToDegrees(angle);
         }
 
@@ -723,6 +759,20 @@ namespace RadiWindAlgorithm.Measure
             平方米 = 1,
         }
 
+        public static List<string> BrepArea(List<Brep> breps, int decimals, int unit, out string allArea)
+        {
+            List<string> lengths = new List<string>();
+            double areas = 0;
+            foreach (var brep in breps)
+            {
+                double area;
+                lengths.Add(BrepArea(brep, decimals, unit, out area));
+                areas += area;
+            }
+            allArea = NumberDecimal(areas.ToString(), decimals);
+            return lengths;
+        }
+
         /// <summary>
         /// Get the brep's area.
         /// </summary>
@@ -730,7 +780,7 @@ namespace RadiWindAlgorithm.Measure
         /// <param name="decimals">decimals count.</param>
         /// <returns>area</returns>
         [Pythonable]
-        public static string BrepArea(Brep brep, int decimals, int unit)
+        public static string BrepArea(Brep brep, int decimals, int unit, out double area)
         {
             double mult = unit;
             switch (Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem)
@@ -746,7 +796,8 @@ namespace RadiWindAlgorithm.Measure
                 default:
                     break;
             }
-            return NumberDecimal((brep.GetArea() * Math.Pow(mult, 2)).ToString(), decimals);
+            area = (brep.GetArea() * Math.Pow(mult, 2));
+            return NumberDecimal(area.ToString(), decimals);
         }
         #endregion
     }
